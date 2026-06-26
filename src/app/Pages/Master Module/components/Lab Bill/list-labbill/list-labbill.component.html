@@ -1,0 +1,182 @@
+<div nz-row nzType="flex">
+      <div nz-col nzXs="24" nzSm="24" nzMd="20" nzLg="20" nzXl="8">
+    <div class="formname">
+      <span (click)="back()" nz-icon nzType="arrow-left" nzTheme="outline"
+        style="font-weight: bold; cursor: pointer"></span>&nbsp;&nbsp;
+      <b> {{ formTitle }} </b>
+    </div>
+  </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="4" nzLg="6" nzXl="16" style="display: flex;justify-content: flex-end">
+        <form nz-form [nzLayout]="'inline'">
+
+            <nz-form-item style="width: 47px">
+                <button nz-button nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip
+                    [nzType]="isfilterapply ? 'primary' : 'default'" (click)="showFilter()">
+                    <i nz-icon nzType="filter"></i>
+                </button>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-input-group [nzPrefix]="prefixIconSearch" class="custom-search-input">
+                    <input type="text" name="search" (keyup)="keyup()" [(ngModel)]="searchText" nz-input
+                        placeholder="Search..." />
+                </nz-input-group>
+    <ng-template #prefixIconSearch>
+      <span nz-icon nzType="search" class="search-icon"></span>
+    </ng-template>
+            </nz-form-item>
+        </form>
+    </div>
+</div>
+<br />
+
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <div class="filter {{ filterClass }}">
+            <div class="filter-box">
+                <form nz-form>
+                    <div nz-row [nzGutter]="24">
+
+                        <div nz-col nzSpan="7">
+                            <nz-form-label nzNoColon><b>From Date To Date</b></nz-form-label>
+                            <nz-range-picker name="datefilter" [nzFormat]="dateFormatMMM" [(ngModel)]="selectedDate"
+                                [nzDisabledDate]="disabledDate" [nzPlaceHolder]="['From Date', 'To Date']"
+                                style="width: 100%; margin-bottom: 0px"></nz-range-picker>
+                        </div>
+
+
+                        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="4" nzXl="6">
+                            <!-- <nz-form-item> -->
+                            <nz-form-label nzNoColon><b>Payment Status</b></nz-form-label>
+                            <nz-form-control nzErrorTip="Please select a Payment Status">
+                                <nz-select nzAllowClear="true" name="PAYMENT" [(ngModel)]="PAYMENT"
+                                    nzPlaceHolder="Select Payment Status">
+                                    <nz-option nzValue="S" nzLabel="Success"></nz-option>
+                                    <nz-option nzValue="P" nzLabel="Pending"></nz-option>
+                                    <nz-option nzValue="F" nzLabel="Fail"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                            <!-- </nz-form-item> -->
+                        </div>
+
+
+
+                        <div nz-col nzSpan="8">
+                            <nz-form-label nzNoColon></nz-form-label>
+                            <nz-form-item style="display: flex; margin-bottom: 0px">
+                                <button style="margin-right: 10px" nz-button [nzLoading]="isSpinning" nzType="primary"
+                                    (click)="applyFilter()">
+                                    <i nz-icon nzType="filter"></i>Apply Filter
+                                </button>
+                                <button nz-button nzType="primary" (click)="clearFilter()">
+                                    <i nz-icon nzType="filter"></i>Clear filter
+                                </button>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table -->
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-table class="my-scroll no-wrap1" nzBordered #desigTable nzShowSizeChanger [nzFrontPagination]="false"
+            [nzData]="dataList" [nzLoading]="loadingRecords" [nzSize]="'small'" [nzScroll]="{ x: '600px', y: '55vh' }"
+            [nzTotal]="totalRecords" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+            (nzPageIndexChange)="search()" (nzPageSizeChange)="search(true)" (nzQueryParams)="sort($event)">
+            <thead>
+                <tr>
+                    <th *ngIf="isColumnVisible('PAYMENT_DATE')" nzWidth="80px"
+                        style="font-weight: bold;text-align: center;" nzColumnKey="{{ 'PAYMENT_DATE' }}"
+                        [nzSortFn]="true" nzCustomFilter>Payment Date
+                        <!-- <nz-filter-trigger [(nzVisible)]="visible">
+                            <span nz-icon nzType="filter" nzTheme="fill"></span>
+                        </nz-filter-trigger> -->
+                    </th>
+
+                    <th *ngIf="isColumnVisible('PAYMENT_INFO')" nzWidth="80px"
+                        style="font-weight: bold;text-align: center;" nzColumnKey="{{ 'PAYMENT_INFO' }}"
+                        [nzSortFn]="true" nzCustomFilter>Payment Information
+                        <nz-filter-trigger [(nzVisible)]="visible" [nzDropdownMenu]="Payment">
+                            <span nz-icon nzType="filter" nzTheme="fill"></span>
+                        </nz-filter-trigger>
+                    </th>
+
+                    <th *ngIf="isColumnVisible('PAYMENT_STATUS')" nzWidth="30px"
+                        style="font-weight: bold; text-align: center;" nzColumnKey="PAYMENT_STATUS" [nzSortFn]="true"
+                        [nzFilters]="listOfFilter" [nzFilterFn]="true" [nzFilterMultiple]="false"
+                        (nzFilterChange)="onStatusFilterChange($event)">
+                        Payment Status
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of desigTable.data" style="text-align: center;">
+
+                    <td align="left" style="text-align: center;" *ngIf="isColumnVisible('PAYMENT_DATE')">
+                        <span>{{data.PAYMENT_DATE | date: 'dd/MMM/yyyy'}}</span>
+
+                    </td>
+
+                    <td align="left" *ngIf="isColumnVisible('PAYMENT_INFO')">
+                        <span *ngIf="data['PAYMENT_INFO'] != null">
+                            <span *ngIf="data['PAYMENT_INFO'].length >= 25" nz-popover
+                                [nzPopoverContent]="data['PAYMENT_INFO']" nzPopoverPlacement="topLeft">
+                                {{ data["PAYMENT_INFO"] == null ? "-" : (data["PAYMENT_INFO"] | slice : 0 : 25)
+                                }}{{ data["PAYMENT_INFO"].length > 25 ? "..." : "" }}
+                            </span>
+                            <span *ngIf="data['PAYMENT_INFO'].length < 25">
+                                {{
+                                data["PAYMENT_INFO"] == null ? "-" : (data["PAYMENT_INFO"] | slice : 0 :25)
+                                }}
+                                {{ data["PAYMENT_INFO"].length > 25 ? "..." : "" }}
+                            </span>
+                        </span>
+                        <span *ngIf="data['PAYMENT_INFO'] == null">-</span>
+
+                    </td>
+
+                    <td align="left" style="text-align: center;" *ngIf="isColumnVisible('PAYMENT_STATUS')">
+                        <span *ngIf="data['PAYMENT_STATUS']=='S'"><nz-tag [nzColor]="'green'">Success</nz-tag></span>
+                        <span *ngIf="data['PAYMENT_STATUS']=='P'"><nz-tag [nzColor]="'cyan'">Pending</nz-tag></span>
+                        <span *ngIf="data['PAYMENT_STATUS']=='F'"> <nz-tag style="width: 50px;"
+                                [nzColor]="'red'">Fail</nz-tag></span>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+
+        <!-- Hide show -->
+        <nz-dropdown-menu #showcolumn1="nzDropdownMenu">
+            <ul nz-menu nzPlacement="bottomRight">
+                <li nz-menu-item *ngFor="let column of showcolumn">
+                    <label nz-checkbox [(ngModel)]="column.visible" (ngModelChange)="isColumnVisible(column)">
+                        {{ column.label }}
+                    </label>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+
+
+        <nz-dropdown-menu #Payment="nzDropdownMenu">
+            <div class="ant-table-filter-dropdown">
+                <div class="search-box">
+                    <nz-input-group [nzSuffix]="inputClearTpl">
+                        <input type="text" nz-input [(ngModel)]="citytext" (ngModelChange)="search()"
+                            placeholder="Search Payment Information" />
+                    </nz-input-group>
+                    <ng-template #inputClearTpl>
+                        <span nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" *ngIf="citytext"
+                            (click)="reset()"></span>
+                        <span nz-icon nzType="search" nzTheme="outline" *ngIf="citytext == ''"></span>
+                    </ng-template>
+                </div>
+            </div>
+        </nz-dropdown-menu>
+    </div>
+</div>

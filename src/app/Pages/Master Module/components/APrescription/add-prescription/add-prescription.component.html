@@ -1,0 +1,70 @@
+<div>
+    <form nz-form #PrescriptionPage="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Drug</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Select Drug">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Drug" name="DRUG_ID"
+                                [(ngModel)]="data.DRUG_ID" nzShowSearch required >
+                                <nz-option *ngFor="let data of countryData" [nzValue]="data.ID" [nzLabel]="data.NAME"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+             <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Instruction</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Instruction">
+                            <textarea nz-input name="Name" [(ngModel)]="data.INSTRUCTION" placeholder="Enter Instruction"
+                                maxlength="1024" required autocomplete="off"(keypress)="commonFunction.alphaOnly($event)"></textarea>
+                        </nz-form-control>
+                        <span style="color: red; font-size: 10px" *ngIf="data.INSTRUCTION">{{ data.INSTRUCTION.length }}/1024</span>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <div nz-row>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Date</nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <nz-date-picker
+                            name="DATE"
+                            [nzFormat]="'dd/MMM/yyyy'"
+                            [(ngModel)]="data.DATE"
+                            
+                          ></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </nz-spin>
+    </form>
+
+    <div class="footer">
+        <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px;">
+            <span>Cancel</span>
+        </button>
+        <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.ID" nz-button nz-dropdown
+            [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false,PrescriptionPage)">
+            <span>Save & Close</span>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+                    <a style="color:white" (click)="save(true,PrescriptionPage)">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+        <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+            (click)="save(false,PrescriptionPage)">
+            <span>Update & Close</span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,459 @@
+<div *ngIf="data!== undefined">
+	<form #CityMasterPage="ngForm"
+		nz-form>
+		<nz-spin [nzSpinning]="false">
+			<div nz-row
+				class="my-box">
+				<div nz-col
+					nzSpan="24">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Name
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please Enter Name">
+							<input [(ngModel)]="data.name"
+								nz-input
+								name="Name"
+								placeholder="Enter Name"
+								maxlength="256"
+								required
+								autocomplete="off">
+						</nz-form-control>
+						<h6 *ngIf="data.name"
+							style="color: red; font-size: 10px">
+							{{ data.name.length }}/256
+						</h6>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="24">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon
+							nzFor="email">
+							Email Id
+						</nz-form-label>
+						<nz-form-control nzErrorTip="Please enter Email Id">
+							<input [pattern]="commonFunction.emailpattern"
+								[(ngModel)]="data.email"
+								nz-input
+								name="ownerEmail"
+								placeholder="Enter Email Id"
+								required>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Mobile No.
+						</nz-form-label>
+						<nz-form-control nzErrorTip="Please vaild Mobile No.">
+							<nz-input-group nzAddOnBefore="+91">
+								<input [(ngModel)]="data.mobile_number"
+									[pattern]="commonFunction.mobpattern"
+									(keypress)="commonFunction.omit($event)"
+									nz-input
+									name="MOBILE_NUMBER"
+									required
+									autocomplete="off"
+									placeholder="Enter Mobile No."
+									maxlength="10">
+							</nz-input-group>
+
+
+
+							<!-- Displaying mobile number length dynamically -->
+							<h6 *ngIf="
+                  data.mobile_number != undefined &&
+                  data.mobile_number != null &&
+                  data.mobile_number != ''
+                "
+								style="color: red; font-size: 10px">
+								{{ data.mobile_number.length }}/10
+							</h6>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Aadhar Card No.
+						</nz-form-label>
+						<nz-form-control>
+							<nz-input-group>
+								<input [(ngModel)]="data.adhar_card"
+									(keypress)="commonFunction.omit($event)"
+									nz-input
+									name="ADHAR_CARD"
+									required
+									autocomplete="off"
+									placeholder="Enter Aadhar Card No."
+									maxlength="12">
+							</nz-input-group>
+
+
+
+							<!-- Displaying mobile number length dynamically -->
+							<h6 *ngIf="
+                  data.adhar_card != undefined &&
+                  data.adhar_card != null &&
+                  data.adhar_card != ''
+                "
+								style="color: red; font-size: 10px">
+								{{ data.adhar_card.length }}/12
+							</h6>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Birth Date
+						</nz-form-label>
+						<nz-form-control nzErrorTip="Birth Date Required">
+							<nz-date-picker [(ngModel)]="data.date_of_birth"
+								[nzDisabledDate]="commonFunction.disabledAfterDate"
+								[nzFormat]="'dd/MM/yyyy'"
+								name="DOB"
+								nzPlaceHolder="Birth Date"
+								required
+								style="width: 100%"></nz-date-picker>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Gender
+						</nz-form-label>
+						<nz-radio-group [(ngModel)]="data.gender"
+							name="gender">
+							<label nz-radio
+								nzValue="M">
+								Male
+							</label>
+							<label nz-radio
+								nzValue="F">
+								Female
+							</label>
+						</nz-radio-group>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Blood Group
+						</nz-form-label>
+						<nz-form-control>
+							<nz-select [(ngModel)]="data.blood_group"
+								nzPlaceHolder="Select Blood Group"
+								name="BLOOD_GROUP"
+								required>
+								<nz-option [nzValue]="'A+'"
+									[nzLabel]="'A+'"></nz-option>
+								<nz-option [nzValue]="'A-'"
+									[nzLabel]="'A-'"></nz-option>
+								<nz-option [nzValue]="'B+'"
+									[nzLabel]="'B+'"></nz-option>
+								<nz-option [nzValue]="'B-'"
+									[nzLabel]="'B-'"></nz-option>
+								<nz-option [nzValue]="'AB+'"
+									[nzLabel]="'AB+'"></nz-option>
+								<nz-option [nzValue]="'AB-'"
+									[nzLabel]="'AB-'"></nz-option>
+								<nz-option [nzValue]="'O+'"
+									[nzLabel]="'O+'"></nz-option>
+								<nz-option [nzValue]="'O-'"
+									[nzLabel]="'O-'"></nz-option>
+
+
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzNoColon>Profile Photo</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Image">
+							<button *ngIf="data.profile_image?.trim() == '' || data.profile_image == null"
+								(click)="image1.click()"
+								nz-button
+								style="
+                      height: 28px;
+                      padding: 0px 7px;
+                      font-size: 12px;
+                      width: 100px;
+                    ">
+								<i nz-icon
+									nzType="upload"
+									nzTheme="outline"></i>
+								<input #image1
+									(change)="onFileSelected($event)"
+									name="image1"
+									type="file"
+									accept=".png, .jpg, .jpeg"
+									style="display: none">
+							</button>
+
+
+
+							<span *ngIf="
+                      data.profile_image != null &&
+                      data.profile_image != undefined &&
+                      data.profile_image?.trim() != ''
+                    ">
+								<div *ngIf="progressBarImageOne">
+									<nz-progress [style.width]="percentImageOne + '%'"
+										[nzPercent]="percentImageOne">
+										{{ percentImageOne }}%
+									</nz-progress>
+								</div>
+								{{ data.profile_image }} &nbsp;
+								<a (click)="viewImage(data.profile_image)"
+									style="color: blue; margin-right: 9px"
+									nz-tooltip
+									nzTooltipTitle="Click Here To View Uploaded Document">
+									<span nz-icon
+										nzType="eye"
+										nzTheme="outline"></span>
+								</a>
+								<span>
+									<span (nzOnConfirm)="image1DeleteConfirm(data)"
+										(nzOnCancel)="deleteCancel()"
+										style="cursor: pointer"
+										nz-popconfirm
+										nzPopconfirmTitle="Are you sure want delete?"
+										nzPopconfirmPlacement="top">
+										<span nz-icon
+											nzType="delete"
+											nzTheme="twotone"
+											nz-tooltip
+											nzTooltipTitle="Delete">
+										</span>
+									</span>
+								</span>
+
+
+
+							</span>
+							<br>
+
+
+
+							<!-- <div
+                    *ngIf="
+                      data2.PHOTO != null &&
+                      data2.PHOTO != undefined &&
+                      data2.PHOTO != ' '
+                    "
+                    style="display: flex; justify-content: center"
+                  >
+                   
+                    
+                  </div> -->
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+			</div>
+			<!-- <div nz-row class="my-box">
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon>Abha No.</nz-form-label>
+              <nz-form-control>
+                <nz-input-group >
+                  <input
+                    nz-input
+                    name="ABHA_NUMBER"
+                    required
+                    disabled
+                    [(ngModel)]="data.ABHA_NUMBER"
+                    autocomplete="off"
+                    placeholder="Enter Abha No."
+                  
+                    (keypress)="commonFunction.omit($event)"
+                  />
+                </nz-input-group>
+  
+                <h6
+                  style="color: red; font-size: 10px"
+                  *ngIf="
+                    data.ABHA_NUMBER != undefined &&
+                    data.ABHA_NUMBER != null &&
+                    data.ABHA_NUMBER != ''
+                  "
+                >
+                  {{ data.ABHA_NUMBER.length }}/10
+                </h6>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon>Abha Type</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Select Country">
+                <nz-select
+                  nzAllowClear="true"
+                  nzPlaceHolder="Select Abha Type"
+                  name="ABHA_TYPE"
+                  disabled
+                  [(ngModel)]="data.ABHA_TYPE"
+                  nzShowSearch
+                  required
+                >
+                  <nz-option
+                    [nzValue]="'AbhaType'"
+                    [nzLabel]="'AbhaType'"
+                  ></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzNoColon>Abha Status</nz-form-label>
+              <nz-form-control>
+                <nz-switch
+                  name="status"
+                  disabled
+                  nzCheckedChildren="Active"
+                  nzUnCheckedChildren="Inactive"
+                  [(ngModel)]="data.ABHA_STATUS"
+                ></nz-switch>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+      </div> -->
+
+
+
+			<div nz-row
+				class="my-box">
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Sequence No.
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please Enter Valid Sequence Number">
+							<nz-input-number [(ngModel)]="data.total_count"
+								[nzMin]="1"
+								[nzStep]="1"
+								disabled
+								style="width: 100%"
+								name="seqno"
+								required>
+							</nz-input-number>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+
+
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzNoColon>Status</nz-form-label>
+						<nz-form-control>
+							<nz-switch [(ngModel)]="data.is_active"
+								name="IS_ACTIVE"
+								nzCheckedChildren="Active"
+								nzUnCheckedChildren="Inactive"></nz-switch>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+			</div>
+		</nz-spin>
+	</form>
+
+
+
+	<div class="footer">
+		<button (click)="drawerClose()"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.id"
+			[nzDropdownMenu]="menu"
+			[nzLoading]="isSpinning"
+			(click)="save(false,CityMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px;background-color: #40a9ff;">
+					<a (click)="save(true,CityMasterPage)"
+						style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.id"
+			[nzLoading]="isSpinning"
+			(click)="save(false,CityMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>
+<nz-modal [nzWidth]="900"
+	[(nzVisible)]="ImageModalVisible"
+	[nzContent]="content"
+	[nzTitle]="'Image View'"
+	[nzFooter]="ImageModalFooter"
+	(nzOnCancel)="ImageModalCancel()"
+	nzMaskClosable="false"
+	nzClosable="false">
+	<ng-template #content>
+		<nz-spin [nzSpinning]="isSpinning">
+			<div *ngIf="imageshow != undefined && imageshow != null && imageshow != ''"
+				class="ss"
+				style="
+          height: 500px;
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        ">
+				<iframe [src]="imageshow"
+					style="width: 100%; height: 100%; border: none"
+					frameborder="0"></iframe>
+			</div>
+		</nz-spin>
+	</ng-template>
+	<ng-template #ImageModalFooter>
+		<button (click)="ImageModalCancel()"
+			nz-button
+			nzType="default">
+			Close
+		</button>
+	</ng-template>
+</nz-modal>

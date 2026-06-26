@@ -1,0 +1,265 @@
+<div>
+	<form #labtechician="ngForm" nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+			<div nz-row>
+				<!-- Personal Information Section -->
+
+
+				<!-- Name, Mobile, Gender, DOB -->
+
+
+				<!-- Name -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Name
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Valid Name">
+							<input [(ngModel)]="data.name" (keypress)="commonFunction.alphaOnly($event)" nz-input
+								name="name" maxlength="128" placeholder="Enter Name" required>
+						</nz-form-control>
+						<h6 *ngIf="data.name" class="input-length" style="font-size: 10px;color: red;">
+							{{ data.name?.length }}/128
+						</h6>
+					</nz-form-item>
+				</div>
+
+
+				<!-- Mobile Number -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Mobile Number
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Valid Mobile Number">
+							<input [(ngModel)]="data.mobile_no" [pattern]="commonFunction.mobpattern"
+								(keypress)="onKeyPress($event)" nz-input name="mobileNumber" maxlength="10"
+								placeholder="Enter Mobile Number" required>
+						</nz-form-control>
+						<h6 *ngIf="data.mobile_no" class="input-length" style="font-size: 10px;color: red;">
+							{{ data.mobile_no?.length }}/10
+						</h6>
+					</nz-form-item>
+				</div>
+
+
+				<!-- Gender -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Gender
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Gender">
+							<nz-select [(ngModel)]="data.gender" name="gender" nzPlaceHolder="Select Gender" required>
+								<nz-option nzValue="M" nzLabel="Male"></nz-option>
+								<nz-option nzValue="F" nzLabel="Female"></nz-option>
+								<nz-option nzValue="O" nzLabel="Other"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+
+				<!-- Date of Birth -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Date of Birth
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Date of Birth">
+							<nz-date-picker [(ngModel)]="data.dob" [nzDisabledDate]="disabledDate" name="dob"
+								nzPlaceHolder="Select Date" style="width: 100%;" nzFormat="dd/MM/yyyy"
+								required></nz-date-picker>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Registration Number
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Registration Number">
+							<input [(ngModel)]="data.registration_number" nz-input name="registrationNumber"
+								maxlength="20" placeholder="Enter Registration Number" required>
+						</nz-form-control>
+						<h6 *ngIf="data.registration_number" class="input-length" style="font-size: 10px;color: red;">
+							{{ data.registration_number?.length }}/20
+						</h6>
+					</nz-form-item>
+				</div>
+				<!-- About Section -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzNoColon>About</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter About Information">
+							<textarea [(ngModel)]="data.about" nz-input nz-input name="about" maxlength="512"
+								placeholder="Enter About Information" rows="3"></textarea>
+						</nz-form-control>
+						<h6 *ngIf="data.about" class="input-length" style="font-size: 10px;color: red;">
+							{{ data.about?.length }}/512
+						</h6>
+					</nz-form-item>
+				</div>
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Experience
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Experience Details">
+							<textarea [(ngModel)]="data.experience" nz-input name="experience" maxlength="512"
+								placeholder="Enter Experience Details" rows="1" required></textarea>
+						</nz-form-control>
+						<h6 *ngIf="data.experience" class="input-length" style="font-size: 10px;color: red;">
+							{{ data.experience?.length }}/512
+						</h6>
+					</nz-form-item>
+				</div>
+				<!-- Address Section -->
+				<!-- Address Line 1 -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Address Line 1
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Address Line 1">
+							<textarea [(ngModel)]="data.address_line_1" rows="2" nz-input name="addressLine1"
+								maxlength="256" placeholder="Enter Address Line 1" required></textarea>
+						</nz-form-control>
+						<h6 *ngIf="data.address_line_1" class="input-length" style="font-size: 10px;color: red;">
+							{{ data.address_line_1?.length }}/256
+						</h6>
+					</nz-form-item>
+				</div>
+
+
+				<!-- Address Line 2 -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzNoColon>Address Line 2</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Address Line 2">
+							<textarea [(ngModel)]="data.address_line_2" rows="2" nz-input name="addressLine2"
+								maxlength="256" placeholder="Enter Address Line 2"></textarea>
+						</nz-form-control>
+						<h6 *ngIf="data.address_line_2" class="input-length" style="font-size: 10px;color: red;">
+							{{ data.address_line_2?.length }}/256
+						</h6>
+					</nz-form-item>
+				</div>
+
+
+				<!-- Location Section -->
+				<!-- Country -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Country
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Country">
+							<nz-select [(ngModel)]="data.country_id" (ngModelChange)="onCountryChange($event)"
+								name="countyrid" nzPlaceHolder="Select Country" required nzShowSearch>
+								<nz-option *ngFor="let country of countries" [nzValue]="country.id"
+									[nzLabel]="country.name"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+
+				<!-- State -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							State
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select State">
+							<nz-select [(ngModel)]="data.state_id" name="stateid" nzPlaceHolder="Select State"
+								(ngModelChange)="onStateChange($event)" required nzShowSearch>
+								<nz-option *ngFor="let state of States" [nzValue]="state.id"
+									[nzLabel]="state.name"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+
+				<!-- District -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							District
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select District">
+							<nz-select [(ngModel)]="data.district_id" name="districtid" nzPlaceHolder="Select District"
+								required nzShowSearch (ngModelChange)="onDistrictChange($event)">
+								<nz-option *ngFor="let district of districts" [nzValue]="district.id"
+									[nzLabel]="district.name"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Pincode
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Pincode">
+							<nz-select [(ngModel)]="data.pincode_id" name="pincodeid" nzPlaceHolder="Select Pincode"
+								required nzShowSearch>
+								<nz-option *ngFor="let pincode of pincodes" [nzValue]="pincode.id"
+									[nzLabel]="pincode.pincode_number"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+
+				<!-- Pincode and Registration -->
+				<div nz-col nzSpan="24" nzRow>
+					<!-- Pincode -->
+					<!-- <div nz-col nzSpan="8" class="form-group">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>Pincode</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Select Pincode">
+                  <nz-select [(ngModel)]="data.PINCODE_ID" nzPlaceHolder="Select Pincode" required>
+                    <nz-option *ngFor="let pincode of pincodes" [nzValue]="pincode.ID" [nzLabel]="pincode.NAME"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div> -->
+
+
+					<!-- Registration Number -->
+
+
+				</div>
+
+
+				<!-- Footer Buttons -->
+			</div>
+
+
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close()" type="button" nz-button class="ant-btn" style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.id" [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false, labtechician)"
+			type="button" class="ant-btn ant-btn-primary" nz-button nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff;">
+					<a (click)="save(true, labtechician)" style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.id" [nzLoading]="isSpinning" (click)="save(false, labtechician)" type="button"
+			class="ant-btn ant-btn-primary" nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

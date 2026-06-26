@@ -1,0 +1,90 @@
+<div nz-row nzType="flex">
+  <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="7" nzXl="11">
+    <div class="formname">
+      <b> {{ formTitle }} </b>
+    </div>
+  </div>
+
+  <div nz-col nzXs="24" nzSm="24" nzMd="16" nzLg="17" nzXl="13" class="flex-end">
+    <form nz-form [nzLayout]="'inline'" class="w-100">
+      <nz-row nzGutter="[8, 8]" class="w-100">
+        <nz-col nzXs="24" nzSm="12" nzMd="16" nzLg="15" nzXl="15">
+          <nz-form-item>
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+              <input type="text" name="search" [(ngModel)]="searchText" nz-input placeholder="Search Records" />
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" (click)="search(true)" nzSearch>
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="9" nzXl="9">
+          <nz-form-item class="mr-0">
+            <button nz-button nzType="primary" id="search" (click)="add()" class="w-100">
+              <i nz-icon nzType="plus"></i>New User
+            </button>
+          </nz-form-item>
+        </nz-col>
+      </nz-row>
+    </form>
+  </div>
+</div>
+
+<div nz-row class="mt-10">
+  <div nz-col nzSpan="24">
+    <nz-table class="my-table" #userTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataList"
+      [nzLoading]="loadingRecords" [nzTotal]="totalRecords" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="search()" (nzPageSizeChange)="search(true)" (nzQueryParams)="sort($event)"
+      [nzSize]="'middle'" [nzScroll]="{ x: '800px' }">
+      <thead nzSingleSort>
+        <tr>
+          <th nzWidth="60px" style="text-align: center">Action</th>
+          <th nzWidth="120px" *ngFor="let column of columns" [nzSortFn]="true" nzColumnKey="{{ column[0] }}">
+            {{ column[1] }}
+          </th>
+          <th nzWidth="70px" style="text-align: center">Is Active?</th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of userTable.data">
+          <td align="center">
+            <a (click)="edit(data)" class="edit-action">
+              <span nz-icon nzType="edit" nzTheme="outline" nzTooltipTitle="Edit" nz-tooltip></span>
+            </a>
+          </td>
+
+          <td *ngFor="let column of columns" class="w-space-pre-line">
+            {{ data[column[0]] === null || data[column[0]] === '' ? '-' : data[column[0]] }}
+          </td>
+          <!-- <td align="center" class="w-space-pre-line">
+            <nz-switch nzCheckedChildren="Yes" nzUnCheckedChildren="No" [ngModel]="data['is_active'] == 1"
+              disabled="true"></nz-switch>
+          </td> -->
+          <td align="center">
+            <span class="status-badge" [class.active]="data['is_active']" [class.inactive]="!data['is_active']">
+              <i nz-icon *ngIf="data['is_active']" [nzType]="'check-circle'" nzTheme="outline"></i>
+              <i nz-icon *ngIf="!data['is_active']" [nzType]="'close-circle'" nzTheme="outline"></i>
+              <!-- {{ data['is_active'] ? 'Active' : 'Inactive' }} -->
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+<div *ngIf="drawerVisible">
+  <nz-drawer [nzBodyStyle]="{
+    height: 'calc(100% - 55px)',
+    overflow: 'auto',
+    'padding-bottom': '53px'
+  }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="320" [nzVisible]="drawerVisible"
+    [nzTitle]="drawerTitle" (nzOnClose)="drawerClose()" (nzKeyboard)="(true)">
+    <ng-container *nzDrawerContent>
+      <app-user [drawerClose]="closeCallback" [drawerVisible]="drawerVisible" [data]="drawerData"></app-user>
+    </ng-container>
+  </nz-drawer>
+</div>

@@ -1,0 +1,270 @@
+<div>
+  <form nz-form #Languagemaster="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Document Type </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Enter Document Type">
+              <input
+                nz-input
+                name="name"
+                placeholder="Enter Document Type"
+                required
+                [(ngModel)]="data.name"
+                #nameField="ngModel"
+                (keypress)="commonFunction.alphaOnly($event)"
+                maxlength="256"
+              />
+              <h6
+                style="color: red; font-size: 10px"
+                *ngIf="
+                  data.name != undefined && data.name != null && data.name != ''
+                "
+              >
+                {{ data.name.length }}/128
+              </h6>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="15">
+          <nz-form-item>
+            <nz-form-label nzNoColon nzRequired> Image Url </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Image">
+              <button
+                *ngIf="data.image_url == null || data.image_url.trim() == ''"
+                (click)="photoInput.click()"
+                nz-button
+                style="
+                  height: 31px;
+                  padding: 0px 7px;
+                  font-size: 10px;
+                  width: 100%;
+                "
+              >
+                Upload Photo
+                <input
+                  #photoInput
+                  (change)="onPhotoFileSelected($event)"
+                  name="photoInput"
+                  type="file"
+                  accept=".png, .jpg, .jpeg"
+                  style="display: none"
+                  required
+                />
+              </button>
+              <span
+                *ngIf="!data.image_url || data.image_url.trim() === ''"
+                style="
+                  color: #107dd5;
+                  font-size: 10px !important;
+                  display: block;
+                  margin-top: 5px;
+                "
+              >
+                Please select an image file (PNG, JPG, JPEG) with a size up to
+                1MB.
+              </span>
+              <span
+                *ngIf="
+                  data.image_url != null &&
+                  data.image_url != undefined &&
+                  data.image_url.trim() != ''
+                "
+              >
+                <div *ngIf="progressBarPhoto">
+                  <nz-progress
+                    [style.width]="percentPhoto + '%'"
+                    [nzPercent]="percentPhoto"
+                  >
+                    {{ percentPhoto }}%
+                  </nz-progress>
+                </div>
+              </span>
+              <div
+                *ngIf="
+                  data.image_url != null &&
+                  data.image_url != undefined &&
+                  data.image_url.trim() != ''
+                "
+              >
+                <a
+                  (click)="viewImage(data.image_url)"
+                  style="color: blue; margin-right: 9px"
+                >
+                  {{ data.image_url }}
+                </a>
+                <a
+                  (click)="viewImage(data.image_url)"
+                  style="color: blue; margin-right: 9px"
+                  nz-tooltip
+                  nzTooltipTitle="Click Here To View Uploaded Image"
+                >
+                  <span nz-icon nzType="eye" nzTheme="outline"></span>
+                </a>
+                <span *ngIf="data.id">
+                  <span
+                    (nzOnConfirm)="photoDeleteConfirm(data)"
+                    (nzOnCancel)="deleteCancel()"
+                    style="cursor: pointer"
+                    nz-popconfirm
+                    nzPopconfirmTitle="Are you sure want delete?"
+                    nzPopconfirmPlacement="top"
+                    style="cursor: pointer; color: red"
+                  >
+                    <span
+                      [nzTwotoneColor]="'#FF0000'"
+                      nz-icon
+                      nzType="delete"
+                      nzTheme="twotone"
+                      nz-tooltip
+                      nzTooltipTitle="Delete"
+                    ></span>
+                  </span>
+                </span>
+                <span *ngIf="!data.id">
+                  <span
+                    (nzOnConfirm)="removePhoto()"
+                    (nzOnCancel)="deleteCancel()"
+                    style="cursor: pointer; margin-left: 10px"
+                    nz-popconfirm
+                    nzPopconfirmTitle="Are you sure want Delete?"
+                    nzPopconfirmPlacement="top"
+                    style="cursor: pointer; color: red"
+                  >
+                    <span
+                      [nzTwotoneColor]="'#FF0000'"
+                      nz-icon
+                      nzType="delete"
+                      nzTheme="twotone"
+                      nz-tooltip
+                      nzTooltipTitle="Delete"
+                    ></span>
+                  </span>
+                </span>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzXs="9">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Plese Enter Sequence No">
+              <input
+                nz-input
+                name="SeqNo"
+                placeholder="Enter Sequence No"
+                required
+                [(ngModel)]="data.seq_no"
+                #nameField="ngModel"
+                (keypress)="commonFunction.onlynum($event)"
+                maxlength="8"
+                disabled
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch
+                name="status"
+                nzCheckedChildren="Active"
+                nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.is_active"
+              ></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+</div>
+
+<div class="footer">
+  <button
+    nz-button
+    nzType="default"
+    (click)="close()"
+    class="ant-btn"
+    style="margin-right: 12px"
+  >
+    Cancel
+  </button>
+
+  <button
+    nz-button
+    *ngIf="!data.id"
+    nzType="primary"
+    nz-dropdown
+    [nzDropdownMenu]="menu"
+    [nzLoading]="isSpinning"
+    (click)="save(false, Languagemaster)"
+    class="ant-btn ant-btn-primary"
+  >
+    Save & Close
+  </button>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li
+        nz-menu-item
+        class="menuc"
+        style="border-radius: 4px; background-color: #40a9ff"
+      >
+        <a
+          class="footer-button"
+          style="color: white"
+          (click)="save(true, Languagemaster)"
+          >Save & New</a
+        >
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    [nzLoading]="isSpinning"
+    *ngIf="data.id"
+    (click)="save(false, Languagemaster)"
+  >
+    <span>Update & Close</span>
+  </button>
+
+  <nz-modal
+    [nzWidth]="900"
+    [(nzVisible)]="ImageModalVisible"
+    [nzContent]="content"
+    [nzTitle]="'Image View'"
+    [nzFooter]="ImageModalFooter"
+    (nzOnCancel)="ImageModalCancel()"
+    nzMaskClosable="false"
+    nzClosable="false"
+  >
+    <ng-template #content>
+      <nz-spin [nzSpinning]="isSpinning">
+        <div
+          *ngIf="imageshow != undefined && imageshow != null && imageshow != ''"
+          class="ss"
+          style="height: 400px; overflow: auto"
+        >
+          <img
+            [src]="imageshow"
+            style="width: 832px; height: 396px"
+            frameborder="0"
+          />
+        </div>
+      </nz-spin>
+    </ng-template>
+    <ng-template #ImageModalFooter>
+      <button (click)="ImageModalCancel()" nz-button nzType="default">
+        Close
+      </button>
+    </ng-template>
+  </nz-modal>
+</div>

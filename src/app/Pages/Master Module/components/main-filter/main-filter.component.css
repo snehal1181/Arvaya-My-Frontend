@@ -1,0 +1,76 @@
+﻿.filter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.condition-group {
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.condition-actions {
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+
+  .condition-when,
+  .condition-field,
+  .condition-compare,
+  .condition-value {
+    margin-bottom: 10px;
+  }
+
+  .condition-actions {
+    justify-content: flex-start;
+  }
+
+  ::ng-deep .ant-drawer-content-wrapper {
+    width: 100vw !important;
+  }
+
+  ::ng-deep .ant-drawer-content {
+    width: 100vw !important;
+  }
+
+  ::ng-deep .ant-drawer-body {
+    padding: 16px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: calc(100vh - 120px) !important;
+    margin-bottom: 60px !important;
+  }
+
+  ::ng-deep .ant-drawer-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: white !important;
+    padding: 12px 16px !important;
+    border-top: 1px solid #f0f0f0 !important;
+    z-index: 1000 !important;
+  }
+}
+
+@media (max-width: 425px) {
+  .filter-actions {
+    justify-content: center;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  .filter-actions {
+    justify-content: flex-end;
+  }
+}

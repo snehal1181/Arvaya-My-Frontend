@@ -1,0 +1,63 @@
+<div>
+    <form nz-form #hereditarycondions="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+
+
+
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Name</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Enter Name ">
+                            <input nz-input name="Name" [(ngModel)]="data.name" placeholder="Enter name" maxlength="256"
+                                required autocomplete="off" />
+                        </nz-form-control>
+                        <span style="color: red; font-size: 10px" *ngIf="data.name">{{ data.name.length }}/256</span>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <div nz-row>
+                <div nz-col nzSpan="24" class="form-group">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>
+                            Description
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Enter Description">
+                            <textarea [(ngModel)]="data.description" name="description" placeholder="Enter Description"
+                                maxlength="1024" nz-input rows="3" style="width: 100%;" required></textarea>
+                        </nz-form-control>
+                        <h6 *ngIf="data.description" style="font-size: 10px;color: red;">
+                            {{data.description.length}}/1024
+                        </h6>
+
+                    </nz-form-item>
+                </div>
+            </div>
+
+
+
+        </nz-spin>
+    </form>
+
+    <div class="footer">
+        <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px;">
+            <span>Cancel</span>
+        </button>
+        <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown
+            [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false,hereditarycondions)">
+            <span>Save & Close</span>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+                    <a style="color:white" (click)="save(true,hereditarycondions)">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+        <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+            (click)="save(false,hereditarycondions)">
+            <span>Update & Close</span>
+        </button>
+    </div>
+</div>

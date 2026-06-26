@@ -1,0 +1,15 @@
+{
+    "model": "gpt-3.5-turbo",
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a medical document analyzer. Always respond with valid JSON only."
+        },
+        {
+            "role": "user",
+            "content": "Extract medical info from filename: \"lab_report.pdf\"\n\nReturn valid JSON with keys: documentDate (YYYY-MM-DD), documentType, patientId, department, summary (2 sentences).\nJSON only:"
+        }
+    ],
+    "temperature": 0.3,
+    "max_tokens": 500
+}

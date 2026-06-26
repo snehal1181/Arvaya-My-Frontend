@@ -1,0 +1,100 @@
+<div nz-row nzType="flex">
+  <div nz-col nzXs="24" nzSm="24" nzMd="20" nzLg="20" nzXl="8">
+    <div class="formname">
+      <b>
+        <span (click)="back()" nz-icon nzType="arrow-left" nzTheme="outline" style="font-weight: bold; cursor: pointer"></span>&nbsp;&nbsp; {{ formTitle }}
+      </b>
+    </div>
+  </div>
+</div>
+
+<div nz-row style="text-align: left;">
+  <div nz-col nzSpan="7">
+    <div nz-row style="margin-left: 62px;">
+      <button nz-button style="height: 28px;margin-top: 30px;padding: 0px 7px;font-size: 10px;width: 70%;" (click)="imageInput.click()">
+        Upload Medical Record
+        <input #imageInput name="imageInput" type="file" style="margin-top: 54px; display: none;" accept="image/*,application/pdf,video/*" (change)="onFileSelected($event)" />
+      </button>
+    </div>
+
+    <br><br>
+    <div class="my-box1">
+      <div nz-row>
+        <div nz-col nzSpan="24" style="margin-bottom: 10px;">
+          <span><b>Preview:</b></span>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <img #qrImage *ngIf="imagePreviewUrl" [src]="imagePreviewUrl" alt="QR Image" width="311" height="370" />
+          <div *ngIf="pdfPreviewUrl">
+            <iframe [src]="pdfPreviewUrl" width="311" height="370"></iframe>
+          </div>
+          <canvas #canvas style="display: none;"></canvas>
+          <video *ngIf="videoPreviewUrl" [src]="videoPreviewUrl" width="311" height="370" controls></video>
+        </div>
+      </div>
+      <nz-empty [nzNotFoundContent]="null" *ngIf="!imagePreviewUrl && !pdfPreviewUrl" style="margin-top: 96px;"></nz-empty>
+    </div>
+
+    <br>
+    <button *ngIf="isShow" style="border: 1px solid #dcd1d1;color: white;background-color: #0f74dc;height: 33px;margin-left: 119px;border-radius: 5px;" [disabled]="isIdentifyDisabled" (click)="identifyFile()">
+      Evaluate
+    </button>
+  </div>
+
+  <div nz-col nzSpan="17">
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; max-width: 1000px; margin: 30px auto; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; overflow-x: auto; font-family: Arial, sans-serif;">
+          <nz-steps [nzCurrent]="currentStep" nzDirection="horizontal" [nzLabelPlacement]="'vertical'" [nzSize]="'small'">
+            <nz-step *ngFor="let step of timelineSteps; let i = index" [nzTitle]="step.label" [nzStatus]="getStepStatus(step.status)">
+              <ng-template #nzIcon>
+                <ng-container [ngSwitch]="step.status">
+                  <i *ngSwitchCase="'processing'" nz-icon nzType="loading" style="color:#1890ff;"></i>
+                  <i *ngSwitchCase="'success'" nz-icon nzType="check-circle" style="color:green;"></i>
+                  <i *ngSwitchCase="'failed'" nz-icon nzType="close-circle" style="color:red;"></i>
+                  <i *ngSwitchDefault nz-icon nzType="clock-circle" style="color: #faad14;"></i>
+                </ng-container>
+              </ng-template>
+            </nz-step>
+          </nz-steps>
+        </div>
+      </div>
+
+      <div class="my-box">
+        <div nz-row>
+          <div nz-col nzSpan="24">
+            <span><b>Extracted Summary:</b></span>
+          </div>
+        </div>
+        <div nz-col nzSpan="24">
+          <div style="justify-content: 18px;border: 2px solid #a19696;width:100%;margin-top: 15px;padding: 11px;text-align: center;">
+            <pre style="text-align: justify;">{{ descriptionText }}</pre>
+            <nz-empty [nzNotFoundContent]="null" *ngIf="!descriptionText"></nz-empty>
+          </div>
+        </div>
+
+        <div nz-row *ngIf="qrCodeTexts.length > 0">
+          <div nz-col nzSpan="24">
+            <span><b>QR/Barcode Results:</b></span>
+          </div>
+        </div>
+        <div *ngIf="qrCodeTexts.length > 0" style="justify-content: 18px; border: 2px solid #a19696; width: 100%; margin-top: 15px; padding: 11px; text-align: center;">
+          <div *ngFor="let text of qrCodeTexts">
+            <p>{{ text }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="qrCodeTexts.length === 0 && descriptiontexttt" style="justify-content: 18px; border: 2px solid #a19696; width: 100%; margin-top: 15px; padding: 11px; text-align: center;">
+          <p>{{ descriptiontexttt }}</p>
+        </div>
+      </div>
+
+      <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 10px;">
+        <button *ngIf="isShow" style="border: 1px solid #dcd1d1; color: white; background-color: #dc0f20; height: 33px; border-radius: 5px; margin-top: 9px;" [disabled]="isIdentifyDisabled" (click)="cleardata()">
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

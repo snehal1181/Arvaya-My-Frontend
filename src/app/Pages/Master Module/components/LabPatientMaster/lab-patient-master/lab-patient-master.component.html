@@ -1,0 +1,462 @@
+<div nz-row nzType="flex">
+  <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="11">
+    <div class="formname">
+      <span (click)="back()" nz-icon nzType="arrow-left" nzTheme="outline"
+        style="font-weight: bold; cursor: pointer"></span>&nbsp;&nbsp;
+      <b> {{ formTitle }} </b>
+    </div>
+  </div>
+  <div nz-col nzXs="24" nzSm="24" nzMd="16" nzLg="16" nzXl="13" class="flex-end">
+    <form nz-form [nzLayout]="'inline'" class="w-100">
+      <nz-row nzGutter="[8, 8]" class="w-100">
+        <nz-col nzXs="3" nzSm="3" nzMd="3" nzLg="3" nzXl="3">
+          <nz-form-item style="width: 47px">
+            <button nz-button nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip
+              [nzType]="isfilterapply ? 'primary' : 'default'" (click)="showMainFilter()">
+              <i nz-icon nzType="filter"></i>
+            </button>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzXs="21" nzSm="21" nzMd="11" nzLg="10" nzXl="12">
+          <nz-form-item>
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+              <input type="text" name="search" (keyup)="keyup()" [(ngModel)]="searchText" nz-input
+                placeholder="Min 3 chars required" />
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" (click)="search(true)" nzSearch>
+                <i nz-icon nzType="search"></i>
+              </button>
+            </ng-template>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzXs="24" nzSm="24" nzMd="10" nzLg="11" nzXl="9">
+          <nz-form-item class="mr-0 ">
+            <button class="w-100" nz-button nzType="primary" (click)="add()" id="search" nzJustify="end">
+              <i nz-icon nzType="plus"></i>Add New Lab Patient
+            </button>
+          </nz-form-item>
+        </nz-col>
+      </nz-row>
+    </form>
+  </div>
+</div>
+<!-- <br> -->
+
+<!-- Main Filter -->
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <div class="filter {{ filterClass }}">
+      <div class="filter-box">
+        <div nz-row class="filter-header">
+          <div nz-col [nzSpan]="24">
+            <div class="filter-content-container">
+              <ng-container *ngIf="isDeleting; else filtersContent">
+                <div style="text-align: center">
+                  <nz-spin nzSimple></nz-spin>
+                </div>
+              </ng-container>
+              <ng-template #filtersContent>
+                <ng-container *ngIf="savedFilters && savedFilters.length > 0; else noData">
+                  <div class="filter-tags-container">
+                    <ng-container *ngFor="let item of savedFilters">
+                      <div class="filter-tag" [class.active-filter]="selectedFilter === item.ID">
+                        <div class="filter-tag-content">
+                          <span class="filter-name">{{
+                            item.FILTER_NAME
+                            }}</span>
+                          <div class="filter-actions">
+                            <i nz-icon nzType="search" nzTheme="outline" nz-tooltip [nzTooltipTitle]="'Apply Filter'"
+                              (click)="applyfilter(item)" class="action-icon apply-icon"></i>
+                            <i nz-icon nzType="delete" nzTheme="outline" nz-tooltip [nzTooltipTitle]="'Delete'"
+                              class="action-icon delete-icon" nz-popconfirm
+                              nzPopconfirmTitle="Are you sure to delete this record?" nzPopconfirmPlacement="top"
+                              (nzOnConfirm)="deleteItem(item)">
+                            </i>
+                            <i nz-icon nzType="eye" nzTheme="outline" nz-tooltip [nzTooltipTitle]="'Show Query'"
+                              (click)="toggleLiveDemo(item)" class="action-icon view-icon"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </ng-container>
+              </ng-template>
+              <ng-template #noData>
+                <div class="no-filters-message">
+                  <i nz-icon nzType="inbox" nzTheme="outline" class="no-data-icon"></i>
+                  <span>No Previous Filters Are Found</span>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="24" class="filter-actions-container">
+            <button nz-button nzType="primary" nzSize="small" *ngIf="savedFilters && savedFilters.length > 0"
+              (click)="Clearfilter()" class="filter-action-btn clear-btn">
+              <i nz-icon nzType="clear" nzTheme="outline"></i>
+              Clear Applied Filter
+            </button>
+            <button nz-button nzType="primary" nzSize="small" (click)="openfilter()" class="filter-action-btn add-btn">
+              <i nz-icon nzType="plus" nzTheme="outline"></i>
+              Add New Filter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Main Filter -->
+
+<!-- Table -->
+<div nz-row class="mt-10">
+  <div nz-col nzSpan="24">
+    <nz-table class="my-table" [nzData]="dataList" #desigTable nzShowSizeChanger [nzPageSize]="10"
+      [nzShowPagination]="true" [nzFrontPagination]="false" [nzLoading]="loadingRecords" [nzTotal]="totalRecords"
+      [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzQueryParams)="sort($event)" [nzSize]="'middle'"
+      nzShowSizeChanger [nzScroll]="{ x: '1400px' }">
+      <thead nzSingleSort>
+        <tr>
+          <!-- Action Column -->
+          <th nzWidth="60px" style="text-align: center">
+            Action
+            <!-- <nz-filter-trigger [(nzVisible)]="showcloumnVisible"
+							[nzDropdownMenu]="showcolumn1">
+							<span nz-icon
+								nzType="down"
+								nzTheme="outline"></span>
+						</nz-filter-trigger> -->
+          </th>
+
+          <!-- Patient Number -->
+          <th *ngIf="isColumnVisible('patient_no')" [nzSortFn]="true" nzWidth="85px" style="text-align: center"
+            nzColumnKey="patient_no" nzCustomFilter>
+            Patient No
+            <nz-filter-trigger [(nzVisible)]="patientNoVisible" [nzDropdownMenu]="patientNo">
+              <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </nz-filter-trigger>
+          </th>
+
+          <th *ngIf="isColumnVisible('lab_name')" [nzSortFn]="true" nzWidth="200px" style="text-align: center"
+            nzColumnKey="lab_name" nzCustomFilter>
+            Lab Name
+            <nz-filter-trigger [(nzVisible)]="labnameVisible" [nzDropdownMenu]="Labname">
+              <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </nz-filter-trigger>
+          </th>
+          <!-- Name -->
+          <th *ngIf="isColumnVisible('name')" [nzSortFn]="true" nzWidth="200px" style="text-align: center"
+            nzColumnKey="name" nzCustomFilter>
+            Name
+            <nz-filter-trigger [(nzVisible)]="nameVisible" [nzDropdownMenu]="name">
+              <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </nz-filter-trigger>
+          </th>
+
+          <!-- Date of Birth -->
+          <th *ngIf="isColumnVisible('dob')" [nzSortFn]="true" nzWidth="100px" style="text-align: center"
+            nzColumnKey="dob" nzCustomFilter>
+            Date of Birth
+            <nz-filter-trigger [(nzVisible)]="dobVisible" [nzDropdownMenu]="dob">
+              <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </nz-filter-trigger>
+          </th>
+
+          <!-- Blood Group -->
+          <th *ngIf="isColumnVisible('blood_group')" [nzSortFn]="true" nzWidth="100px" style="text-align: center"
+            nzColumnKey="blood_group" nzCustomFilter>
+            Blood Group
+            <nz-filter-trigger [(nzVisible)]="bloodGroupVisible" [nzDropdownMenu]="bloodGroup">
+              <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </nz-filter-trigger>
+          </th>
+
+          <!-- Gender -->
+          <th *ngIf="isColumnVisible('gender')" [nzSortFn]="true" nzWidth="80px" style="text-align: center"
+            nzColumnKey="gender" nzCustomFilter>
+            Gender
+            <nz-filter-trigger [(nzVisible)]="genderVisible" [nzDropdownMenu]="gender">
+              <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </nz-filter-trigger>
+          </th>
+
+          <!-- Mobile Number -->
+          <th *ngIf="isColumnVisible('mobile_number')" [nzSortFn]="true" nzWidth="120px" style="text-align: center"
+            nzColumnKey="mobile_number" nzCustomFilter>
+            Mobile Number
+            <nz-filter-trigger [(nzVisible)]="mobileNumberVisible" [nzDropdownMenu]="mobileNumber">
+              <span nz-icon nzType="filter" nzTheme="fill"></span>
+            </nz-filter-trigger>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of desigTable.data" style="text-align: center">
+          <!-- Action Column -->
+          <td align="center">
+            <a (click)="edit(data)" class="edit-action">
+              <span nz-icon nzType="edit" nzTheme="outline" nzTooltipTitle="Edit" nz-tooltip>
+              </span>
+            </a>
+          </td>
+
+          <!-- Patient Number -->
+          <td *ngIf="isColumnVisible('patient_no')">
+            {{ data.patient_no == null ? "-" : data.patient_no }}
+          </td>
+
+          <td *ngIf="isColumnVisible('lab_name')" style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              text-align: left;
+            ">
+            <span *ngIf="data.lab_name != null">
+              <span *ngIf="data.lab_name.length >= 40" [nzPopoverContent]="data.lab_name" nz-popover
+                nzPopoverPlacement="topLeft">
+                {{ data.lab_name | slice : 0 : 40
+                }}{{ data.lab_name.length > 40 ? "..." : "" }}
+              </span>
+              <span *ngIf="data.lab_name.length < 40">{{
+                data.lab_name
+                }}</span>
+            </span>
+            <span *ngIf="data.lab_name == null">-</span>
+          </td>
+          <!-- Name -->
+          <td *ngIf="isColumnVisible('name')" style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              text-align: left;
+            ">
+            <span *ngIf="data.name != null">
+              <span *ngIf="data.name.length >= 25" [nzPopoverContent]="data.name" nz-popover
+                nzPopoverPlacement="topLeft">
+                {{ data.name | slice : 0 : 25
+                }}{{ data.name.length > 25 ? "..." : "" }}
+              </span>
+              <span *ngIf="data.name.length < 25">{{ data.name }}</span>
+            </span>
+            <span *ngIf="data.name == null">-</span>
+          </td>
+
+          <!-- Date of Birth -->
+          <td *ngIf="isColumnVisible('dob')" style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            ">
+            {{
+            data.dob == null ? "-" : (data.dob | date : "dd/MM/yyyy")
+            }}
+          </td>
+
+          <!-- Blood Group -->
+          <td *ngIf="isColumnVisible('blood_group')" style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            ">
+            {{ data.blood_group == null ? "-" : data.blood_group }}
+          </td>
+
+          <!-- Gender -->
+
+          <td *ngIf="isColumnVisible('gender')">
+            <span *ngIf="data.gender == 'M'">Male</span>
+            <span *ngIf="data.gender == 'F'">Female</span>
+            <span *ngIf="data.gender == 'null'">-</span>
+          </td>
+
+          <!-- Mobile Number -->
+          <td *ngIf="isColumnVisible('mobile_number')" style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            ">
+            {{ data.mobile_number == null ? "-" : data.mobile_number }}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <!-- Hide show -->
+    <nz-dropdown-menu #showcolumn1="nzDropdownMenu">
+      <ul nz-menu nzPlacement="bottomRight">
+        <li *ngFor="let column of showcolumn" nz-menu-item>
+          <label [(ngModel)]="column.visible" (ngModelChange)="isColumnVisible(column)" nz-checkbox>
+            {{ column.label }}
+          </label>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <!-- Name Filter Dropdown -->
+    <!-- Patient Number Filter Dropdown -->
+    <nz-dropdown-menu #patientNo="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-input-group [nzSuffix]="inputClearTplPatientNo">
+            <input [(ngModel)]="patientNoText" (ngModelChange)="search()" type="text" nz-input
+              placeholder="Search Patient Number" />
+          </nz-input-group>
+          <ng-template #inputClearTplPatientNo>
+            <span *ngIf="patientNoText" (click)="reset()" nz-icon class="ant-input-clear-icon" nzTheme="fill"
+              nzType="close-circle"></span>
+            <span *ngIf="patientNoText == ''" nz-icon nzType="search" nzTheme="outline"></span>
+          </ng-template>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!-- Name Filter Dropdown -->
+    <nz-dropdown-menu #name="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-input-group [nzSuffix]="inputClearTplName">
+            <input [(ngModel)]="nameText" (ngModelChange)="search()" type="text" nz-input placeholder="Search Name" />
+          </nz-input-group>
+          <ng-template #inputClearTplName>
+            <span *ngIf="nameText" (click)="reset()" nz-icon class="ant-input-clear-icon" nzTheme="fill"
+              nzType="close-circle"></span>
+            <span *ngIf="nameText == ''" nz-icon nzType="search" nzTheme="outline"></span>
+          </ng-template>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #Labname="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-select [(ngModel)]="LabText" (ngModelChange)="search()" nzPlaceHolder="Select Lab" nz-input
+            name="selectedCategoryId" nzMode="multiple">
+            <nz-option *ngFor="let category of labs" [nzValue]="category.id" [nzLabel]="category.name"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+    <!-- Date of Birth Filter Dropdown -->
+
+    <nz-dropdown-menu #dob="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="select">
+          <nz-date-picker name="DATE" [nzFormat]="'dd/MMM/yyyy'" [(ngModel)]="dobDate" (ngModelChange)="search()"
+            nzPlaceHolder="Select Date"></nz-date-picker>
+          <ng-template #multipleTemplate let-selected>
+            <div class="ant-select-selection-item-content">
+              <span nz-icon [nzType]="selected.nzValue"></span>
+              {{ selected.nzLabel }}
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!-- Blood Group Filter Dropdown -->
+    <!-- <nz-dropdown-menu #bloodGroup="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<nz-input-group [nzSuffix]="inputClearTplBloodGroup">
+					<input [(ngModel)]="bloodGroupText"
+						(ngModelChange)="search()"
+						type="text"
+						nz-input
+						placeholder="Search Blood Group">
+				</nz-input-group>
+				<ng-template #inputClearTplBloodGroup>
+					<span *ngIf="bloodGroupText"
+						(click)="resetBloodGroup()"
+						nz-icon
+						class="ant-input-clear-icon"
+						nzTheme="fill"
+						nzType="close-circle"></span>
+					<span *ngIf="bloodGroupText == ''"
+						nz-icon
+						nzType="search"
+						nzTheme="outline"></span>
+				</ng-template>
+			</div>
+		</nz-dropdown-menu> -->
+
+    <nz-dropdown-menu #bloodGroup="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-select [(ngModel)]="bloodGroupText" (ngModelChange)="search()" nzPlaceHolder="Select Blood Group" nz-input
+            name="selectedblood" nzMode="multiple">
+            <nz-option *ngFor="let category of bloodlistt" [nzValue]="category.value"
+              [nzLabel]="category.text"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!-- Gender Filter Dropdown -->
+    <nz-dropdown-menu #gender="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-select [(ngModel)]="selectedGender" nzAllowClear (ngModelChange)="search()" nzPlaceHolder="Select Gender">
+            <nz-option *ngFor="let gender of listOfGender" [nzValue]="gender.value" [nzLabel]="gender.text"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!-- Mobile Number Filter Dropdown -->
+    <nz-dropdown-menu #mobileNumber="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-input-group [nzSuffix]="inputClearTplMobileNumber">
+            <input [(ngModel)]="mobileNumberText" (ngModelChange)="search()" type="text" nz-input
+              placeholder="Search Mobile Number" />
+          </nz-input-group>
+          <ng-template #inputClearTplMobileNumber>
+            <span *ngIf="mobileNumberText" (click)="reset()" nz-icon class="ant-input-clear-icon" nzTheme="fill"
+              nzType="close-circle"></span>
+            <span nz-icon nzType="search" nzTheme="outline" *ngIf="mobileNumberText == ''"></span>
+          </ng-template>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+
+    <!-- Country Filter -->
+  </div>
+</div>
+
+<div *ngIf="drawerVisible">
+  <nz-drawer [nzBodyStyle]="{
+      height: 'calc(100% - 55px)',
+      overflow: 'auto',
+      'padding-bottom': '53px'
+    }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="410" [nzVisible]="drawerVisible"
+    [nzTitle]="drawerTitle" (nzOnClose)="drawerClose()" (nzKeyboard)="(true)">
+    <ng-container *nzDrawerContent>
+      <app-lab-patient-master-form [drawerClose]="closeCallback" [showdata]="showdata" [drawerVisible]="drawerVisible"
+        [data]="drawerData" [isSavePatient]="true">
+      </app-lab-patient-master-form>
+    </ng-container>
+  </nz-drawer>
+</div>
+
+<!-- Main Filter Drawer -->
+<div *ngIf="drawerFilterVisible">
+  <nz-drawer [nzBodyStyle]="{
+      height: 'calc(100% - 55px)',
+      overflow: 'auto',
+      'padding-bottom': '53px'
+    }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="'70%'" [nzVisible]="drawerFilterVisible"
+    [nzTitle]="drawerTitle" (nzOnClose)="drawerflterClose()" (nzKeyboard)="(true)" [nzPlacement]="'right'">
+    <ng-container *nzDrawerContent>
+      <app-main-filter [filterGroups]="[]" [drawerClose]="closefilterCallback" [fields]="filterFields" [TabId]="TabId"
+        (filterApplied)="onFilterApplied($event)">
+      </app-main-filter>
+    </ng-container>
+  </nz-drawer>
+</div>
+
+<!-- Query Model -->
+<nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="'Query Details'" [nzFooter]="null"
+  (nzOnCancel)="handleCancel()"><ng-container *nzModalContent>
+    <h6 style="text-align: center">{{ selectedQuery }}</h6>
+  </ng-container>
+</nz-modal>

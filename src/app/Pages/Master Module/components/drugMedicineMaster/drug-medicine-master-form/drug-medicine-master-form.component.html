@@ -1,0 +1,150 @@
+<div>
+  <form nz-form #CityMasterPage="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Hospital</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please select a valid Hospital">
+              <nz-select name="hospital_id" [(ngModel)]="data.hospital_id" nzPlaceHolder="Select Hospital" required>
+                <nz-option *ngFor="let hospital of entityData" [nzValue]="hospital.id" [nzLabel]="hospital.name">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <!-- Type ID Field -->
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Type</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please select a valid Type">
+              <nz-select name="type_id" [(ngModel)]="data.type_id" nzPlaceHolder="Select Type" required>
+                <nz-option *ngFor="let type of typeIdList" [nzValue]="type.id" [nzLabel]="type.name">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <!-- Name Field -->
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Name</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid name">
+              <input nz-input name="name" [(ngModel)]="data.name" placeholder="Enter Name" maxlength="256" required
+                (keypress)="commonFunction.alphaOnly($event)" autocomplete="off" />
+            </nz-form-control>
+            <h6 style="color: red; font-size: 10px" *ngIf="data.name">{{ data.name.length }}/256</h6>
+          </nz-form-item>
+        </div>
+      </div>
+
+
+
+
+
+      <!-- Strength and Strength Unit Fields -->
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Strength</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid strength">
+              <input nz-input name="strength" [(ngModel)]="data.strength" placeholder="Enter Strength" maxlength="64"
+                required />
+            </nz-form-control>
+            <h6 style="color: red; font-size: 10px" *ngIf="data.strength">{{ data.strength.length }}/64</h6>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Strength Unit</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid strength unit">
+              <input nz-input name="strength_unit" [(ngModel)]="data.strength_unit" placeholder="Enter Strength Unit"
+                maxlength="64" required />
+            </nz-form-control>
+            <h6 style="color: red; font-size: 10px" *ngIf="data.strength_unit">{{ data.strength_unit.length }}/64</h6>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Dosage Field -->
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Dosage</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid dosage">
+              <input nz-input name="dosage" [(ngModel)]="data.dosage" placeholder="Enter Dosage" maxlength="64"
+                required />
+            </nz-form-control>
+            <h6 style="color: red; font-size: 10px" *ngIf="data.dosage">{{ data.dosage.length }}/64</h6>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Instructions Field -->
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Instructions</nz-form-label>
+            <nz-form-control>
+              <textarea nz-input name="instructions" [(ngModel)]="data.instructions" placeholder="Enter Instructions"
+                rows="3" maxlength="512" required>
+              </textarea>
+            </nz-form-control>
+            <h6 style="color: red; font-size: 10px" *ngIf="data.instructions">{{ data.instructions.length }}/512</h6>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Sequence Number and Status Fields -->
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid sequence number">
+              <nz-input-number style="width: 100%;" name="seq_no" [(ngModel)]="data.seq_no"
+                nzPlaceHolder="Enter Sequence No" disabled required>
+              </nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="is_active" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.is_active">
+              </nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+
+  </form>
+
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px;">
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false,CityMasterPage)">
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+          <a style="color:white" (click)="save(true,CityMasterPage)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false,CityMasterPage)">
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>

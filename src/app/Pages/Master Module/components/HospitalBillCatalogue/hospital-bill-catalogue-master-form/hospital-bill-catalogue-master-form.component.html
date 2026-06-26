@@ -1,0 +1,152 @@
+<div>
+	<form #labtechician="ngForm" nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+			<div nz-row>
+				<!-- Personal Information Section -->
+
+				<!-- HOSPITAL_ID -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Hospital
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Hospital">
+							<nz-select [(ngModel)]="data.HOSPITAL_ID" name="hospitalid" nzPlaceHolder="Select Hospital"
+								required>
+								<nz-option *ngFor="let hospital of hospitals" [nzValue]="hospital.ID"
+									[nzLabel]="hospital.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- DOCTOR_ID -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Doctor
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Doctor">
+							<nz-select [(ngModel)]="data.DOCTOR_ID" name="doctorid" nzPlaceHolder="Select Doctor"
+								required>
+								<nz-option *ngFor="let doctor of doctors" [nzValue]="doctor.ID"
+									[nzLabel]="doctor.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- CONSULTATION_MODE -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Consultation Mode
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Consultation Mode">
+							<nz-select [(ngModel)]="data.CONSULTATION_MODE" name="consultationMode"
+								nzPlaceHolder="Select Consultation Mode" required>
+								<nz-option *ngFor="let mode of consultationModes" [nzValue]="mode.ID"
+									[nzLabel]="mode.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- CONSULTATION_TYPE_ID -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Consultation Type
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Consultation Type">
+							<nz-select [(ngModel)]="data.CONSULTATION_TYPE_ID" name="consultationType"
+								nzPlaceHolder="Select Consultation Type" required>
+								<nz-option *ngFor="let type of consultationTypes" [nzValue]="type.ID"
+									[nzLabel]="type.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- BILL_AMOUNT -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Bill Amount
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Bill Amount">
+							<input [(ngModel)]="data.BILL_AMOUNT" nz-input name="billAmount" maxlength="20"
+								placeholder="Enter Bill Amount" required>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- TAX_ID -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Tax
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Tax">
+							<nz-select [(ngModel)]="data.TAX_ID" name="taxid" nzPlaceHolder="Select Tax" required>
+								<nz-option *ngFor="let tax of taxes" [nzValue]="tax.ID"
+									[nzLabel]="tax.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- TOTAL_AMOUNT -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Total Amount
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Total Amount">
+							<input [(ngModel)]="data.TOTAL_AMOUNT" nz-input name="totalAmount" maxlength="20"
+								placeholder="Enter Total Amount" required>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- IS_ACTIVE -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Is Active
+						</nz-form-label>
+						<nz-form-control>
+							<nz-switch [(ngModel)]="data.IS_ACTIVE" name="isActive" nzCheckedChildren="Active"
+								nzUnCheckedChildren="Inactive"></nz-switch>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- Footer Buttons -->
+			</div>
+
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close()" type="button" nz-button class="ant-btn" style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.ID" [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false, labtechician)"
+			type="button" class="ant-btn ant-btn-primary" nz-button nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff;">
+					<a (click)="save(true, labtechician)" style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.ID" [nzLoading]="isSpinning" (click)="save(false, labtechician)" type="button"
+			class="ant-btn ant-btn-primary" nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

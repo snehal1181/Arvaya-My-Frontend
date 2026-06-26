@@ -1,0 +1,12 @@
+export class TechnicianAvailability{
+    ID:any
+    LAB_ID
+TECHNICIAN_ID
+SESSION_NAME
+START_TIME
+END_TIME
+MODE
+PINCODE_ID
+SLOT_DURATION
+DAY_OF_WEEK
+}

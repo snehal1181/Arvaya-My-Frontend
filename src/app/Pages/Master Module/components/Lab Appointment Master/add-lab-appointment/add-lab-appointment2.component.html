@@ -1,0 +1,421 @@
+<div class="my-box">
+  <form nz-form #PatientForm="ngForm">
+    <nz-spin [nzSpinning]="isSpinning" [nzTip]="isSummaryLoading?'Analysing Report':''">
+      <!-- Appointment Details -->
+      <nz-row>
+        <!-- {{slotMatched  | json}} -->
+
+        <div nz-col nzXs="24" nzSm="24" nzMd="11" nzLg="11" nzXl="11">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Search by Number</nz-form-label>
+            <nz-input-group [nzSuffix]="suffixIconSearch">
+              <input type="text" nz-input placeholder="Search Number" name="iiii" maxlength="10"
+                [(ngModel)]="searchNumber" (ngModelChange)="onSearchNumberChange(searchNumber)" />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+              <span nz-icon nzType="search"></span>
+            </ng-template>
+          </nz-form-item>
+        </div>
+
+        <!-- <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Patient</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please select a patient">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Patient" name="PATIENT_ID"
+                                [(ngModel)]="data.PATIENT_ID" nzShowSearch required>
+                                <nz-option *ngFor="let patient of filteredPatients" [nzValue]="patient.ID"
+                                    [nzLabel]="patient.name">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+
+        <div nz-col nzXs="20" nzSm="20" nzMd="11" nzLg="11" nzXl="11">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Patient Name</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Name">
+              <input nz-input name="patient_NAME" [(ngModel)]="data.name" placeholder="Enter Name" maxlength="128"
+                required autocomplete="off" disabled />
+            </nz-form-control>
+            <span style="color: red; font-size: 10px" *ngIf="data.name">{{ data.name.length
+              }}/128</span>
+          </nz-form-item>
+        </div>
+        <div nz-col nzXs="4" nzSm="4" nzMd="2" nzLg="2" nzXl="2" *ngIf="filteredPatients.length == 0">
+          <!-- <nz-form-item
+            style="margin-top: 32px"
+            nz-tooltip
+            nzTooltipTitle="Add Patient"
+          > -->
+          <nz-form-label nzNoColon> </nz-form-label>
+          <span>
+            <button nz-button nzType="primary" nzShape="circle" (click)="openPatientDrawer()" style="margin-top: 25px"
+              nz-tooltip nzTooltipTitle="Add Patient">
+              <i nz-icon nzType="plus"></i>
+            </button>
+          </span>
+          <!-- </nz-form-item> -->
+        </div>
+        <!-- <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Slot</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Select Slot">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Slot" name="SLOT_ID"
+                                [(ngModel)]="data.SLOT_ID" nzShowSearch required>
+                                <nz-option *ngFor="let slot of slotData" [nzValue]="slot.ID"
+                                    [nzLabel]="slot.SESSION_START_TIME + ' to ' + slot.SESSION_END_TIME"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+
+        <div nz-col nzXs="12" nzSm="12" nzMd="11" nzLg="11" nzXl="11">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Select Technician
+            </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Technician">
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Technician" name="TECH_ID"
+                [(ngModel)]="data.technician_id" (ngModelChange)="techid($event)" nzShowSearch required>
+                <nz-option *ngFor="let slot of Technician" [nzValue]="slot.technician_id"
+                  [nzLabel]="slot.lab_technician_name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzXs="12" nzSm="12" nzMd="5" nzLg="5" nzXl="5" *ngIf="data.name && data.technician_id">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Select Slot</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Slot" nzFlex nzAlign="center" nzJustify="space-between"
+              style="    text-align: center;
+    padding-right: 22px;">
+              <!-- <i
+                nz-icon
+                nzType="clock-circle"
+                nzTheme="outline"
+                (click)="showModal()"
+              ></i> -->
+              <img src="assets/clock.png" alt="Clock" style="width: 20px; height: 20px; cursor: pointer;"
+                (click)="showModal()" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzXs="12" nzSm="12" nzMd="5" nzLg="5" nzXl="5" style="display: flex; align-items: center;">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Selected Slot</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Selected Slot" nzFlex nzAlign="center" nzJustify="space-between"
+              style="    text-align: center;
+    padding-right: 22px;">
+              <!-- <label style="font-weight: 600; font-size: 16px; margin: 0;">Selected Slot</label> -->
+              <i nz-icon nzType="info-circle" nzTheme="twotone" (click)="openSlotModal()" style="
+      cursor: pointer; 
+      font-size: 18px; 
+      color: #2f80ed;
+      margin-top: 8px;
+      margin-left: 6px;
+      transition: transform 0.2s ease-in-out;" (mouseenter)="hover = true" (mouseleave)="hover = false"
+                [style.transform]="hover ? 'scale(1.1)' : 'scale(1)'"></i>
+            </nz-form-control>
+          </nz-form-item>
+
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" class="form-group" style="padding-left: 10px">
+          <nz-form-label nzNoColon>Select Test/Package</nz-form-label>
+          <nz-form-control>
+            <nz-radio-group [(ngModel)]="radiovalue" (ngModelChange)="ontypeChange($event)" name="radio">
+              <label nz-radio nzValue="T"> Test </label>
+              <label nz-radio nzValue="P"> Package </label>
+            </nz-radio-group>
+          </nz-form-control>
+        </div>
+        <!-- Test -->
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" *ngIf="radiovalue == 'T'">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Test</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please select a test">
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Test" name="test_id" [(ngModel)]="data.test_id"
+                nzShowSearch required>
+                <nz-option *ngFor="let test of TesttData" [nzValue]="test.test_id"
+                  [nzLabel]="test.test_name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- Package -->
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" *ngIf="radiovalue == 'P'">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Package</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please select a package">
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Package" name="package_id"
+                [(ngModel)]="data.package_id" nzShowSearch required>
+                <!-- <nz-option></nz-option> -->
+                <nz-option *ngFor="let test of packagedata" [nzValue]="test.package_id"
+                  [nzLabel]="test.package_name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- Follow-Up Details -->
+        <div nz-col nzXs="12" nzSm="12" nzMd="7" nzLg="7" nzXl="7">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Next Follow-Up Date</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please select a follow-up date">
+              <nz-date-picker name="next_folloup_date" [(ngModel)]="data.next_folloup_date" nzFormat="yyyy-MM-dd"
+                [nzDisabledDate]="disabledDate"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- Report Upload -->
+        <div nz-col nzXs="12" nzSm="12" nzMd="7" nzLg="7" nzXl="7">
+          <nz-form-item>
+            <nz-form-label nzNoColon> &nbsp; Report</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please upload a report file">
+              <button *ngIf="!data.report?.trim()" nz-button style="height: 28px; padding: 0px 7px; font-size: 12px"
+                (click)="reportInput.click()">
+                Upload Report
+                <input #reportInput name="report" type="file" accept=".png, .jpg, .jpeg, .pdf,.dim,.dic"
+                  (change)="onFileSelected($event)" style="display: none" />
+              </button>
+              <span *ngIf="data.report?.trim()">{{ data.report }}</span>
+              <span *ngIf="data.report?.trim()" style="cursor: pointer; margin-top: 12px; padding-left: 7px"
+                nz-popconfirm nzPopconfirmTitle="Are you sure you want to delete?" nzPopconfirmPlacement="top"
+                (nzOnConfirm)="removeLogo(data.report)" (nzOnCancel)="deleteCancel()">
+                <span nz-icon nzType="delete" nzTheme="twotone"></span>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="7" nzLg="7" nzXl="7">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.status"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- Additional Details -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Notes</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter notes">
+              <textarea nz-input name="notes" [(ngModel)]="data.notes" placeholder="Enter Notes" maxlength="1024"
+                rows="2"></textarea>
+            </nz-form-control>
+            <span style="color: red; font-size: 10px" *ngIf="data.notes">
+              {{ data.notes.length }}/1024
+            </span>
+          </nz-form-item>
+        </div>
+        <!-- <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Sequence Number">
+                            <nz-input-number style="width: 100%;" name="SEQ_NO" [(ngModel)]="data.SEQ_NO" [nzMin]="1"
+                                [nzStep]="1" disabled required>
+                            </nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                   </div> -->
+        <!-- Status -->
+
+
+      </nz-row>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false, PatientForm)">
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+          <a style="color: white" (click)="save(true, PatientForm)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false, PatientForm)">
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="isVisible">
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Clinic Visit Slots" nzWidth="1100px" [nzFooter]="null"
+    (nzOnCancel)="handleCancell()" [nzStyle]="{ 'margin-top': '-85px' }">
+    <ng-container *nzModalContent>
+      <nz-spin [nzSpinning]="generatingModelspinning">
+        <!-- Header -->
+
+        <!-- Date Cards -->
+        <div class="date-section">
+          <div class="date-grid">
+            <div *ngFor="let date of dates" class="date-card" [class.selected]="selectedDate?.LABEL === date.LABEL"
+              (click)="selectDate(date, true)">
+              <p class="date-label">{{ date.LABEL }}</p>
+              <p class="slot-count" [class.green]="date.SLOTS > 0" [class.red]="date.SLOTS == 0">
+                {{ date.SLOTS }} slots available
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Morning Slots -->
+        <div class="slot-section">
+          <div class="slot-header morning">
+            <i class="ri-sun-line icon"></i>
+            <h3>Morning</h3>
+            <span>{{ morningSlots.length }} slots</span>
+          </div>
+          <div class="slot-grid">
+            <div *ngFor="let slot of morningSlots" class="time-slot" [ngClass]="{
+                selected:
+                  isSelected(slot) && !slot.IS_BOOKED && !slot.IS_BLOCKED,
+                booked: slot.IS_BOOKED && !slot.IS_BLOCKED,
+                blocked: slot.IS_BLOCKED
+              }" (click)="toggleSlot(slot)" [class.disabled]="slot.IS_BOOKED || slot.IS_BLOCKED">
+              <!-- <p>{{ slot.START }} to {{ slot.END }}</p> -->
+              <p>
+                {{
+                (getProperShowDate(slot.START) | date : "hh:mm a") +
+                " to " +
+                (getProperShowDate(slot.END) | date : "hh:mm a")
+                }}
+              </p>
+              <div class="status">
+
+                <span *ngIf="slot.IS_BLOCKED"><i class="ri-close-circle-line"></i> Blocked</span>
+                <span *ngIf="slot.IS_BOOKED && !slot.IS_BLOCKED"><i class="ri-lock-line"></i> Booked</span>
+                <span *ngIf="!slot.IS_BOOKED && !slot.IS_BLOCKED" class="available">Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evening Slots -->
+        <div class="slot-section">
+          <div class="slot-header evening">
+            <i class="ri-moon-line icon"></i>
+            <h3>Evening</h3>
+            <span>{{ eveningSlots.length }} slots</span>
+          </div>
+          <div class="slot-grid">
+            <div *ngFor="let slot of eveningSlots" class="time-slot" [ngClass]="{
+                selected:
+                  isSelected(slot) && !slot.IS_BOOKED && !slot.IS_BLOCKED,
+                booked: slot.IS_BOOKED && !slot.IS_BLOCKED,
+                blocked: slot.IS_BLOCKED
+              }" (click)="toggleSlot(slot)" [class.disabled]="slot.IS_BOOKED || slot.IS_BLOCKED">
+              <p>
+                {{
+                (getProperShowDate(slot.START) | date : "hh:mm a") +
+                " to " +
+                (getProperShowDate(slot.END) | date : "hh:mm a")
+                }}
+              </p>
+              <div class="status">
+                <span *ngIf="slot.IS_BLOCKED"><i class="ri-close-circle-line"></i> Blocked</span>
+                <span *ngIf="slot.IS_BOOKED && !slot.IS_BLOCKED"><i class="ri-lock-line"></i> Booked</span>
+                <span *ngIf="!slot.IS_BOOKED && !slot.IS_BLOCKED" class="available">Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="action-buttons">
+          <button class="btn cancel" (click)="handleCancell()">Cancel</button>
+          <button class="btn confirm" (click)="handleOk()">OK</button>
+        </div>
+      </nz-spin>
+    </ng-container>
+  </nz-modal>
+</div>
+
+<div *ngIf="isAddPatientVisible">
+  <nz-drawer [nzBodyStyle]="{
+      height: 'calc(100% - 55px)',
+      overflow: 'auto',
+      'padding-bottom': '53px'
+    }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="500" [nzVisible]="isAddPatientVisible"
+    [nzTitle]="'Add Lab Patient'" (nzOnClose)="patientDrawerClose()" (nzKeyboard)="(true)">
+    <ng-container *nzDrawerContent>
+      <app-lab-patient-master-form [showdata]="showdata" [drawerClose]="closeCallbackpateint" [data]="patientDatasend"
+        [isSavePatient]="false" [linkedLabId]="LabBindingId" [mobileNo]="mobileNo" [LAB_NAME]="LAB_NAME">
+      </app-lab-patient-master-form>
+    </ng-container>
+  </nz-drawer>
+</div>
+
+<!-- Modal -->
+<nz-modal [(nzVisible)]="isSlotModalVisible" nzTitle="Selected Slot Details" [nzFooter]="null"
+  (nzOnCancel)="isSlotModalVisible = false">
+
+  <ng-container *nzModalContent>
+    <div nz-row nzJustify="center">
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-control>
+            <ng-container *ngIf="normalizedSlots?.length; else noSlot">
+              <div *ngFor="let slot of normalizedSlots" style="
+                background: linear-gradient(135deg, #e3f2fd, #ffffff);
+                border-left: 5px solid #1890ff;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 12px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+                color: #333;
+                font-size: 15px;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                row-gap: 12px;
+                column-gap: 12px;
+                align-items: center;
+              ">
+                <i nz-icon nzType="calendar" style="color: #1890ff; font-size: 18px;"></i>
+                <div><strong>Session:</strong> {{ slot.session }}</div>
+
+                <i nz-icon nzType="clock-circle" style="color: #1890ff; font-size: 18px;"></i>
+                <div><strong>Time:</strong> {{ slot.start }} - {{ slot.end }}</div>
+
+                <i nz-icon nzType="appstore" style="color: #1890ff; font-size: 18px;"></i>
+                <div><strong>Mode:</strong> {{ slot.mode }}</div>
+
+                <i nz-icon nzType="calendar" nzTheme="outline" style="color: #1890ff; font-size: 18px;"></i>
+
+                <!-- <i nz-icon nzType="calendar-outline" style="color: #1890ff; font-size: 18px;"></i> -->
+                <div *ngIf="slot.day != null && slot.day !== undefined">
+                  <strong>Day:</strong> {{ slot.day }}
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #noSlot>
+              <div style="
+                padding: 16px;
+                color: #999;
+                background: #fafafa;
+                border-radius: 8px;
+                font-style: italic;
+                text-align: center;
+                border: 1px dashed #ccc;
+              ">
+                No slot selected
+              </div>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </ng-container>
+
+</nz-modal>

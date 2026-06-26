@@ -1,0 +1,248 @@
+<div>
+	<nz-spin [nzSpinning]="isSpinning">
+		<form #practiceTimingsForm="ngForm">
+			<div class="timing-config-wrapper">
+				<!-- Timing rows -->
+				<div *ngFor="let data of ConfigurationData; let i = index">
+					<!-- Day Selector -->
+					<div nz-row>
+						<div nz-col
+							nzSpan="22"
+							style="padding: 0px 10px; margin-bottom: 24px;">
+							<label *ngFor="let day of days"
+								[(ngModel)]="data['day_' + day]"
+								[name]="'day_' + i + '_' + day"
+								(ngModelChange)="onDayChange(i)"
+								nz-checkbox>
+								{{ day }}
+							</label>
+						</div>
+						<!-- Remove Timing -->
+						<div nz-col
+							nzSpan="2"
+							style="padding: 0px 10px; margin-bottom: 24px;">
+							<div *ngIf="i > 0"
+								class="remove-timing">
+								<button (click)="removeTiming(i)"
+									nz-button
+									nzType="link"
+									nzDanger>
+									<i nz-icon
+										nzType="delete"
+										nzTheme="outline"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<!-- Session Details -->
+					<div nz-row
+						class="my-box custom">
+						<!-- Session Name -->
+						<div nz-col
+							nzXs="24"
+							nzSm="24"
+							nzMd="24"
+							nzLg="24"
+							nzXl="10">
+							<nz-form-item>
+								<nz-form-label nzRequired
+									nzNoColon>
+									Session Name
+								</nz-form-label>
+								<nz-form-control nzHasFeedback
+									nzErrorTip="Please Enter a Session Name">
+									<input [(ngModel)]="data.SESSION_NAME"
+										nz-input
+										name="sessionName{{i}}"
+										placeholder="Enter Session Name"
+										required>
+								</nz-form-control>
+							</nz-form-item>
+						</div>
+						<!-- Start Time -->
+						<div nz-col
+							nzXs="24"
+							nzSm="24"
+							nzMd="12"
+							nzLg="12"
+							nzXl="5">
+							<nz-form-item>
+								<nz-form-label nzRequired
+									nzNoColon>
+									Start Time
+								</nz-form-label>
+								<nz-form-control nzHasFeedback
+									nzErrorTip="Please Select Start Time">
+									<nz-time-picker [(ngModel)]="ConfigurationData[i].START_TIME"
+										(ngModelChange)="onTimeChange(i)"
+										name="START_TIME{{i}}"
+										nzFormat="HH:mm"
+                                        
+										required>
+									</nz-time-picker>
+								</nz-form-control>
+							</nz-form-item>
+						</div>
+						<!-- End Time -->
+						<div nz-col
+							nzXs="24"
+							nzSm="24"
+							nzMd="12"
+							nzLg="12"
+							nzXl="5">
+							<nz-form-item>
+								<nz-form-label nzRequired
+									nzNoColon>
+									End Time
+								</nz-form-label>
+								<nz-form-control nzHasFeedback
+									nzErrorTip="Please Select End Time">
+									<nz-time-picker [(ngModel)]="ConfigurationData[i].END_TIME"
+										(ngModelChange)="onTimeChange(i)"
+										name="END_TIME{{i}}"
+										nzFormat="HH:mm"
+										required>
+									</nz-time-picker>
+								</nz-form-control>
+							</nz-form-item>
+						</div>
+						<!-- Mode -->
+						<div nz-col
+							nzXs="24"
+							nzSm="24"
+							nzMd="24"
+							nzLg="24"
+							nzXl="4">
+							<nz-form-item>
+								<nz-form-label nzRequired
+									nzNoColon>
+									Mode
+								</nz-form-label>
+								<nz-form-control nzHasFeedback
+									nzErrorTip="Please Select Mode">
+									<nz-select [(ngModel)]="data.MODE"
+										name="modeId{{i}}"
+										placeholder="Select Mode"
+										required>
+										<nz-option nzValue="online"
+											nzLabel="Online"></nz-option>
+										<nz-option nzValue="offline"
+											nzLabel="Offline"></nz-option>
+									</nz-select>
+								</nz-form-control>
+							</nz-form-item>
+						</div>
+						<!-- Type (Dependent on Mode) -->
+						<div nz-col
+							nzXs="24"
+							nzSm="24"
+							nzMd="24"
+							nzLg="24"
+							nzXl="4">
+							<nz-form-item>
+								<nz-form-label nzRequired
+									nzNoColon>
+									Type
+								</nz-form-label>
+								<nz-form-control nzHasFeedback
+									nzErrorTip="Please Select Type">
+									<nz-select [(ngModel)]="data.TYPE_ID"
+										name="typeId{{i}}"
+										nzPlaceholder="Type"
+										required>
+										<nz-option *ngIf="data.MODE === 'online'"
+											nzValue="video"
+											nzLabel="Video"></nz-option>
+										<nz-option *ngIf="data.MODE === 'online'"
+											nzValue="call"
+											nzLabel="Call"></nz-option>
+										<nz-option *ngIf="data.MODE === 'online'"
+											nzValue="chat"
+											nzLabel="Chat"></nz-option>
+										<nz-option *ngIf="data.MODE === 'offline'"
+											nzValue="clinic"
+											nzLabel="In Clinic"></nz-option>
+										<nz-option *ngIf="data.MODE === 'offline'"
+											nzValue="home"
+											nzLabel="In Home"></nz-option>
+									</nz-select>
+								</nz-form-control>
+							</nz-form-item>
+						</div>
+						<div nz-col
+							nzXs="12"
+							nzSm="24"
+							nzMd="10"
+							nzLg="9"
+							nzXl="6">
+							<nz-form-item>
+								<nz-form-label nzNoColon>Slot Duration</nz-form-label>
+								<nz-form-control nzHasFeedback
+									nzErrorTip="Please Enter Duration in Minutes">
+									<nz-input-group nzAddOnAfter="Min">
+										<input [(ngModel)]="data.SLOT_DURATION"
+											(keypress)="commonFunction.onlynum($event)"
+											nz-input
+											name="durationdata{{i}}"
+											autocomplete="off"
+											placeholder="Enter Duration in Minutes"
+											maxlength="6">
+									</nz-input-group>
+									<span style="color: red; font-size: 10px !important; display: block; margin-top: 5px;">e.g., 120 minutes</span>
+								</nz-form-control>
+							</nz-form-item>
+						</div>
+					</div>
+					<hr>
+				</div>
+				<!-- Add More Timings -->
+				<div class="add-more-wrapper">
+					<button (click)="addMoreTimings()"
+						nz-button
+						nzType="dashed">
+						+ Add More Timings
+					</button>
+				</div>
+			</div>
+		</form>
+	</nz-spin>
+    <div class="footer">
+		<button (click)="close()"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.ID"
+			[nzDropdownMenu]="menu"
+			[nzLoading]="isSpinning"
+			(click)="save(false, practiceTimingsForm)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px; background-color: #40a9ff;">
+					<a (click)="save(true, practiceTimingsForm)"
+						style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.ID"
+			[nzLoading]="isSpinning"
+			(click)="save(false, practiceTimingsForm)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

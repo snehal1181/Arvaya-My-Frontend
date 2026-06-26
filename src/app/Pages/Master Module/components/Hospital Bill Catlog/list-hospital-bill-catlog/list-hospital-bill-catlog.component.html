@@ -1,0 +1,431 @@
+<div nz-row nzType="flex">
+	<div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="8">
+		<div class="formname">
+			<b>{{formTitle}}</b>
+		</div>
+	</div>
+	<div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="16" class="flex-end">
+		<form nz-form [nzLayout]="'inline'" class="w-100">
+			<nz-row nzGutter="[8, 8]" class="w-100">
+				<nz-col nzXs="4" nzSm="3" nzMd="2" nzLg="2" nzXl="2">
+					<!-- <nz-form-item> -->
+					<nz-form-item style="width: 47px">
+						<button [nzType]="isfilterapply ? 'primary' : 'default'" (click)="showMainFilter()" nz-button
+							nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip>
+							<i nz-icon nzType="filter"></i>
+						</button>
+					</nz-form-item>
+				</nz-col>
+				<!-- <nz-input-group [nzPrefix]="prefixIconSearch" class="custom-search-input">
+						<input [(ngModel)]="searchText" (keyup)="keyup()" (keydown.enter)="preventDefault($event)"
+							type="text" name="search" nz-input placeholder="Search...">
+					</nz-input-group>
+					<ng-template #prefixIconSearch>
+						<span nz-icon nzType="search" class="search-icon"></span>
+					</ng-template> -->
+				<!-- </nz-form-item> -->
+
+
+				<nz-col nzXs="20" nzSm="21" nzMd="11" nzLg="9" nzXl="11">
+					<nz-form-item>
+						<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+							<input type="text" name="search" (keyup)="keyup()" [(ngModel)]="searchText" nz-input
+								placeholder="Search..." />
+						</nz-input-group>
+						<ng-template #suffixIconButton>
+							<button nz-button nzType="primary" (click)="search(true)" nzSearch>
+								<i nz-icon nzType="search"></i>
+							</button>
+						</ng-template>
+					</nz-form-item>
+				</nz-col>
+				<nz-col nzXs="24" nzSm="24" nzMd="11" nzLg="13" nzXl="11">
+					<nz-form-item class="mr-0 ">
+						<button class="w-100" nz-button nzType="primary" id="search" (click)="add()" nzJustify="end">
+							<i nz-icon nzType="plus"></i>Add New Hospital Bill Catalogue
+						</button>
+					</nz-form-item>
+				</nz-col>
+			</nz-row>
+
+		</form>
+	</div>
+</div>
+<!-- Main Filter -->
+
+<div nz-row>
+	<div nz-col nzSpan="24">
+		<div class="filter {{ filterClass }}">
+			<div class="filter-box">
+				<div nz-row class="filter-header">
+					<div nz-col [nzSpan]="24">
+						<div class="filter-content-container">
+							<ng-container *ngIf="isDeleting; else filtersContent">
+								<div style="text-align: center">
+									<nz-spin nzSimple></nz-spin>
+								</div>
+							</ng-container>
+							<ng-template #filtersContent>
+								<ng-container *ngIf="savedFilters && savedFilters.length > 0; else noData">
+									<div class="filter-tags-container">
+										<ng-container *ngFor="let item of savedFilters">
+											<div class="filter-tag" [class.active-filter]="selectedFilter === item.ID">
+												<div class="filter-tag-content">
+													<span class="filter-name">{{ item.FILTER_NAME }}</span>
+													<div class="filter-actions">
+														<i nz-icon nzType="search" nzTheme="outline" nz-tooltip
+															[nzTooltipTitle]="'Apply Filter'"
+															(click)="applyfilter(item)"
+															class="action-icon apply-icon"></i>
+														<i nz-icon nzType="delete" nzTheme="outline" nz-tooltip
+															[nzTooltipTitle]="'Delete'" class="action-icon delete-icon"
+															nz-popconfirm
+															nzPopconfirmTitle="Are you sure to delete this record?"
+															nzPopconfirmPlacement="top"
+															(nzOnConfirm)="deleteItem(item)">
+														</i>
+														<i nz-icon nzType="eye" nzTheme="outline" nz-tooltip
+															[nzTooltipTitle]="'Show Query'"
+															(click)="toggleLiveDemo(item)"
+															class="action-icon view-icon"></i>
+													</div>
+												</div>
+											</div>
+										</ng-container>
+									</div>
+								</ng-container>
+							</ng-template>
+							<ng-template #noData>
+								<div class="no-filters-message">
+									<i nz-icon nzType="inbox" nzTheme="outline" class="no-data-icon"></i>
+									<span>No Previous Filters Are Found</span>
+								</div>
+							</ng-template>
+						</div>
+					</div>
+					<div nz-col [nzSpan]="24" class="filter-actions-container">
+						<button nz-button nzType="primary" nzSize="small"
+							*ngIf="savedFilters && savedFilters.length > 0" (click)="Clearfilter()"
+							class="filter-action-btn clear-btn">
+							<i nz-icon nzType="clear" nzTheme="outline"></i>
+							Clear Applied Filter
+						</button>
+						<button nz-button nzType="primary" nzSize="small" (click)="openfilter()"
+							class="filter-action-btn add-btn">
+							<i nz-icon nzType="plus" nzTheme="outline"></i>
+							Add New Filter
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- End Main Filter -->
+
+<div nz-row class="mt-10">
+	<div nz-col nzSpan="24">
+		<nz-table #desigTable [nzFrontPagination]="false" [nzData]="dataList" [nzLoading]="loadingRecords"
+			[nzSize]="'small'" [nzScroll]="{ x: '800px', y: '55vh' }" [nzTotal]="totalRecords"
+			[(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="search()"
+			(nzPageSizeChange)="search(true)" (nzQueryParams)="sort($event)" class="my-table" nzBordered
+			nzShowSizeChanger>
+			<thead>
+				<tr>
+					<th nzWidth="20px" style="font-weight: bold;text-align: center;">
+						Action
+						<nz-filter-trigger [(nzVisible)]="showcloumnVisible" [nzDropdownMenu]="showcolumn1">
+							<span nz-icon nzType="down" nzTheme="outline"></span>
+						</nz-filter-trigger>
+					</th>
+
+
+					<!-- DOCTOR_ID -->
+					<th *ngIf="isColumnVisible('doctor_name')" [nzSortFn]="true" [nzFilterFn]="true" nzWidth="50px"
+						style="font-weight: bold; text-align: center;" nzColumnKey="doctor_id" nzCustomFilter>
+						Doctor
+						<nz-filter-trigger [(nzVisible)]="doctorIdVisible" [nzDropdownMenu]="doctorId">
+							<span nz-icon nzType="filter" nzTheme="fill"></span>
+						</nz-filter-trigger>
+					</th>
+
+					<!-- CONSULTATION_MODE -->
+					<th *ngIf="isColumnVisible('consultation_mode')" [nzSortFn]="true" [nzFilterFn]="true"
+						nzWidth="50px" style="font-weight: bold; text-align: center;" nzColumnKey="consultation_mode"
+						nzCustomFilter>
+						Consultation Mode
+						<nz-filter-trigger [(nzVisible)]="consultationModeVisible" [nzDropdownMenu]="consultationMode">
+							<span nz-icon nzType="filter" nzTheme="fill"></span>
+						</nz-filter-trigger>
+					</th>
+
+
+					<!-- BILL_AMOUNT -->
+					<th *ngIf="isColumnVisible('bill_amount')" [nzSortFn]="true" [nzFilterFn]="true" nzWidth="50px"
+						style="font-weight: bold; text-align: center;" nzColumnKey="bill_amount" nzCustomFilter>
+						Bill Amount
+						<nz-filter-trigger [(nzVisible)]="billAmountVisible" [nzDropdownMenu]="billAmount">
+							<span nz-icon nzType="filter" nzTheme="fill"></span>
+						</nz-filter-trigger>
+					</th>
+
+
+
+					<!-- IS_ACTIVE -->
+					<th *ngIf="isColumnVisible('is_active')" nzWidth="20px"
+						style="font-weight: bold; text-align: center;" nzColumnKey="is_active" [nzSortFn]="true"
+						[nzFilters]="listOfFilter" [nzFilterFn]="true" [nzFilterMultiple]="false"
+						(nzFilterChange)="onStatusFilterChange($event)">
+						Status
+					</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let data of desigTable.data" style="text-align: center;">
+					<!-- Action Column -->
+					<td>
+						<nz-space>
+							<a *nzSpaceItem (click)="edit(data)">
+								<span nz-icon nzType="edit" nzTheme="twotone" style="font-size: 15px"
+									nzTooltipTitle="Edit" nz-tooltip></span>
+							</a>
+
+						</nz-space>
+
+					</td>
+
+					<!-- Name Column -->
+					<!-- LAB ID Column -->
+
+					<!-- DOCTOR_ID Column -->
+					<td *ngIf="isColumnVisible('doctor_name')" align="left">
+						{{ data['doctor_name'] ? data['doctor_name'] : '-' }}
+					</td>
+
+					<!-- CONSULTATION_MODE Column -->
+					<td *ngIf="isColumnVisible('consultation_mode')" align="left">
+						<!-- {{ data['CONSULTATION_MODE'] ? data['CONSULTATION_MODE'] : '-' }} -->
+						<span *ngIf="data.consultation_mode =='OF'">Offline</span>
+						<span *ngIf="data.consultation_mode =='ON'">Online</span>
+						<span *ngIf="data.consultation_mode ==''">-</span>
+
+					</td>
+
+					<!-- BILL_AMOUNT Column -->
+					<td *ngIf="isColumnVisible('bill_amount')" align="center">
+						{{ data['bill_amount'] ? data['bill_amount'] : '-' }}
+					</td>
+
+					<!-- IS_ACTIVE Column -->
+					<!-- <td *ngIf="isColumnVisible('is_active')">
+						<i nz-icon *ngIf="data['is_active']" [nzType]="'check-circle'" [nzTheme]="'twotone'"
+							[nzTwotoneColor]="'#52c41a'"></i>
+						<i nz-icon *ngIf="!data['is_active']" [nzType]="'close-circle'" [nzTheme]="'twotone'"
+							[nzTwotoneColor]="'#f50'"></i>
+					</td> -->
+
+					<td align="center">
+						<span class="status-badge" [class.active]="data['is_active']"
+							[class.inactive]="!data['is_active']">
+							<i nz-icon *ngIf="data['is_active']" [nzType]="'check-circle'" nzTheme="outline"></i>
+							<i nz-icon *ngIf="!data['is_active']" [nzType]="'close-circle'" nzTheme="outline"></i>
+							<!-- {{ data['is_active'] ? 'Active' : 'Inactive' }} -->
+						</span>
+					</td>
+				</tr>
+			</tbody>
+
+		</nz-table>
+
+		<!-- Country Filter -->
+		<nz-dropdown-menu #showcolumn1="nzDropdownMenu">
+			<ul nz-menu nzPlacement="bottomRight">
+				<li *ngFor="let column of showcolumn" nz-menu-item>
+					<label [(ngModel)]="column.visible" (ngModelChange)="isColumnVisible(column)" nz-checkbox>
+						{{ column.label }}
+					</label>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<!-- LAB_ID Dropdown -->
+		<!-- HOSPITAL_ID Dropdown -->
+		<nz-dropdown-menu #hospitalId="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-select [(ngModel)]="selectedHospitalId" [nzPlaceHolder]="'Select Hospital ID'"
+						(ngModelChange)="search()" nz-input name="selectedHospital" nzMode="multiple">
+						<nz-option *ngFor="let hospital of hospitalIdOptions" [nzValue]="hospital.ID"
+							[nzLabel]="hospital.NAME"></nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+		<!-- DOCTOR_ID Dropdown -->
+
+		<nz-dropdown-menu #doctorId="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="select">
+					<nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="Select Doctor"
+						nzMode="multiple" [nzCustomTemplate]="multipleTemplate" [(ngModel)]="selectedCountries"
+						(ngModelChange)="onCountryChange()">
+						<nz-option *ngFor="let data of doctors" [nzValue]="data.ID" [nzLabel]="data.NAME"></nz-option>
+					</nz-select>
+					<ng-template #multipleTemplate let-selected>
+						<div class="ant-select-selection-item-content">
+							<span nz-icon [nzType]="selected.nzValue"></span>
+							{{ selected.nzLabel }}
+						</div>
+					</ng-template>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+		<!-- CONSULTATION_MODE Dropdown -->
+		<nz-dropdown-menu #consultationMode="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-select [(ngModel)]="selectedConsultationMode" [nzPlaceHolder]="'Select Consultation Mode'"
+						(ngModelChange)="search()" nz-input name="selectedConsultationMode">
+						<!-- <nz-option *ngFor="let mode of consultationModeOptions" [nzValue]="mode.ID"
+							[nzLabel]="mode.NAME"></nz-option> -->
+
+						<nz-option nzValue="ON" nzLabel="Online"></nz-option>
+						<nz-option nzValue="OF" nzLabel="Offline"></nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+		<!-- CONSULTATION_TYPE_ID Dropdown -->
+		<nz-dropdown-menu #consultationType="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-select [(ngModel)]="selectedConsultationType" [nzPlaceHolder]="'Select Consultation Type'"
+						(ngModelChange)="search()" nz-input name="selectedConsultationType">
+						<nz-option *ngFor="let type of consultationTypeOptions" [nzValue]="type.ID"
+							[nzLabel]="type.NAME"></nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+		<!-- BILL_AMOUNT Dropdown -->
+		<!-- <nz-dropdown-menu #billAmount="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-input-group [nzSuffix]="inputClearTplBill">
+						<input [(ngModel)]="billAmountText" (ngModelChange)="search()" type="text" nz-input
+							placeholder="Search Bill Amount">
+					</nz-input-group>
+					<ng-template #inputClearTplBill>
+						<span *ngIf="billAmountText" (click)="reset()" nz-icon class="ant-input-clear-icon"
+							nzTheme="fill" nzType="close-circle"></span>
+						<span *ngIf="billAmountText == ''" nz-icon nzType="search" nzTheme="outline"></span>
+					</ng-template>
+				</div>
+			</div>
+		</nz-dropdown-menu> -->
+
+
+		<nz-dropdown-menu #billAmount="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-input-group [nzSuffix]="inputClearTpl">
+						<input type="text" nz-input [(ngModel)]="citytext" (ngModelChange)="search()"
+							placeholder="Search Bill Amount" />
+					</nz-input-group>
+					<ng-template #inputClearTpl>
+						<span nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" *ngIf="citytext"
+							(click)="reset()"></span>
+						<span nz-icon nzType="search" nzTheme="outline" *ngIf="citytext == ''"></span>
+					</ng-template>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+		<!-- TAX_ID Dropdown -->
+		<nz-dropdown-menu #taxId="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-select [(ngModel)]="selectedTaxId" (ngModelChange)="search()" nz-input name="selectedTaxId"
+						nzMode="multiple" nzPlaceHolder="Search Tax ID">
+						<nz-option *ngFor="let option of taxIdOptions" [nzValue]="option.ID"
+							[nzLabel]="option.VALUE"></nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+		<!-- TOTAL_AMOUNT Dropdown -->
+		<nz-dropdown-menu #totalAmount="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-input-group [nzSuffix]="inputClearTplAmount">
+						<input [(ngModel)]="totalAmountText" (ngModelChange)="search()" type="text" nz-input
+							placeholder="Search Total Amount">
+					</nz-input-group>
+					<ng-template #inputClearTplAmount>
+						<span *ngIf="totalAmountText" (click)="reset()" nz-icon class="ant-input-clear-icon"
+							nzTheme="fill" nzType="close-circle"></span>
+						<span *ngIf="totalAmountText == ''" nz-icon nzType="search" nzTheme="outline"></span>
+					</ng-template>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+		<!-- IS_ACTIVE Dropdown -->
+		<nz-dropdown-menu #isActive="nzDropdownMenu">
+			<div class="ant-table-filter-dropdown">
+				<div class="search-box">
+					<nz-select [(ngModel)]="selectedIsActive" (ngModelChange)="search()" nz-input
+						name="selectedIsActive" nzPlaceHolder="Select Active Status">
+						<nz-option *ngFor="let option of isActiveOptions" [nzValue]="option.ID"
+							[nzLabel]="option.VALUE"></nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</nz-dropdown-menu>
+
+	</div>
+</div>
+
+<div *ngIf="drawerVisible">
+	<nz-drawer [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+		[nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="500" [nzVisible]="drawerVisible"
+		[nzTitle]="drawerTitle" (nzOnClose)="drawerClose()" (nzKeyboard)="true">
+		<ng-container *nzDrawerContent>
+
+
+			<app-add-hospital-bill-catlog [drawerClose]="closeCallback" [drawerVisible]="drawerVisible"
+				[data]="drawerData"></app-add-hospital-bill-catlog>
+
+
+		</ng-container>
+	</nz-drawer>
+</div>
+
+<!-- Main Filter Drawer -->
+<div *ngIf="drawerFilterVisible">
+	<nz-drawer [nzBodyStyle]="{
+		height: 'calc(100% - 55px)',
+		overflow: 'auto',
+		'padding-bottom': '53px'
+	  }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="'70%'" [nzVisible]="drawerFilterVisible"
+		[nzTitle]="drawerTitle" (nzOnClose)="drawerflterClose()" (nzKeyboard)="(true)" [nzPlacement]="'right'">
+		<ng-container *nzDrawerContent>
+			<app-main-filter [filterGroups]="[]" [drawerClose]="closefilterCallback" [fields]="filterFields"
+				[TabId]="TabId" (filterApplied)="onFilterApplied($event)">
+			</app-main-filter>
+		</ng-container>
+	</nz-drawer>
+</div>
+
+<!-- Query Model -->
+<nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="'Query Details'" [nzFooter]="null"
+	(nzOnCancel)="handleCancel()"><ng-container *nzModalContent>
+		<h6 style="text-align: center">{{ selectedQuery }}</h6>
+	</ng-container>
+</nz-modal>

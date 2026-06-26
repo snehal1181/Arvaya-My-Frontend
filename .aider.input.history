@@ -1,0 +1,51 @@
+
+# 2026-05-15 11:25:33.322367
++n
+
+# 2026-05-15 11:28:59.879851
++in @patientmasterlist.component.html It opens a drawer after clicking Add New Filter it opens drawer app-main-filter , this drawer is already responsive  
+
+# 2026-05-15 11:29:51.586432
++in @patientmasterlist.component.html It opens a drawer after clicking Add New Filter it opens drawer app-main-filter , this drawer is already responsive ,  I want that make UI insid this fully responsive in all device properly
+
+# 2026-05-15 11:30:27.008087
++in @patientmasterlist.component.html It opens a drawer after clicking Add New Filter it opens drawer app-main-filter , this drawer is already responsive ,  I want that make UI insid this fully responsive in all device properly , without affecting on other css and without any error
+
+# 2026-05-15 11:32:54.024280
++I want to make ui inside @main-filter.component.html fully reponsive in all devices
+
+# 2026-05-15 11:34:54.776552
++start doing changes 
+
+# 2026-05-15 11:36:07.275620
++& 'd:\Arvaya Frontend\src\app\Pages\Master Module\components\main-filter\main-filter.component.html'
+
+# 2026-05-15 11:37:18.922330
++n
+
+# 2026-05-15 11:37:42.291598
++make changes in already available file
+
+# 2026-05-15 11:38:49.118161
++n
+
+# 2026-05-15 11:39:00.923353
++& 'd:\Arvaya Frontend\src\app\Pages\Master Module\components\main-filter\main-filter.component.html'    make changes in this file
+
+# 2026-05-15 11:41:19.328334
++n
+
+# 2026-05-15 11:41:21.370493
++/add "src/app/Pages/Master Module/components/main-filter/main-filter.component.html"
+
+# 2026-05-15 11:41:35.700620
++I want to make ui inside @main-filter.component.html fully reponsive in all devices
+
+# 2026-05-15 11:45:25.568204
++n
+
+# 2026-05-15 11:45:43.856614
++/add "src/app/Pages/Master Module/components/main-filter/main-filter.component.html"
+
+# 2026-05-15 11:45:55.059471
++I want to make ui inside @main-filter.component.html fully reponsive in all devices

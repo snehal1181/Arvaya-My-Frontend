@@ -1,0 +1,77 @@
+<div>
+
+    <div nz-row>
+        <div nz-col nzSpan="18"></div>
+
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-input-group [nzPrefix]="prefixIconSearch" class="custom-search-input">
+                    <input type="text" autocomplete="off" name="search" (ngModelChange)="search($event)" nz-input
+                        placeholder="Search..." [(ngModel)]="searchText" />
+                </nz-input-group>
+    <ng-template #prefixIconSearch>
+      <span nz-icon nzType="search" class="search-icon"></span>
+    </ng-template>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row>
+        <div nz-col nzSpan="24">
+            <nz-table class="my-scroll no-wrap1" nzBordered #promote [nzData]="dataList1"
+                [nzLoading]="tecnicalSpecificationisSpinning" [nzSize]="'small'" [nzScroll]="{ x: '800px', y: '55vh' }"
+                nzShowSizeChanger [nzFrontPagination]="true">
+                <thead>
+                    <tr>
+                        <th nzLeft nzWidth="20px" style="font-weight: bold; text-align: center" [(nzChecked)]="checked"
+                            (nzCheckedChange)="onAllChecked($event)"> &nbsp;
+
+                        </th>
+
+                        <th nzWidth="100px" [nzSortFn]="true"> Duration</th>
+
+                        <th nzWidth="100px" [nzSortFn]="true" (nzSortOrderChange)="sortData('DESCRIPTION', $event)">
+                            Instructions
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let data of promote.data; ">
+
+
+                        <td nzLeft style="text-align: center">
+                            <!-- <label nz-checkbox [nzChecked]="data.IS_ACTIVE === 1"(nzCheckedChange)="onItemChecked(data, $event)"></label> -->
+                            <label nz-checkbox (nzCheckedChange)="onItemChecked(data, $event)"></label>
+                        </td>
+
+
+                        <td style="white-space: pre-line; text-align: left">
+                            <input type="text" class="form-control" placeholder="Enter Duration"
+                                [(ngModel)]="data.DURATION" maxlength="64" />
+                        </td>
+
+
+                        <td style="text-align: left; white-space: pre-line">
+                            <textarea class="form-control" rows="2" placeholder="Enter Instructions here"
+                                [(ngModel)]="data.INSTRUCTIONS" maxlength="512">
+                            </textarea>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+
+
+<div class="footer">
+    <button type="button" nz-button (click)="mapTechnicalDrawerClose()" class="ant-btn"
+        style="margin-right: 8px;"><span>Cancel</span></button>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning"
+        (click)="mapTechnicalDrawerSave()"><span>Save &
+            Close</span></button>
+</div>

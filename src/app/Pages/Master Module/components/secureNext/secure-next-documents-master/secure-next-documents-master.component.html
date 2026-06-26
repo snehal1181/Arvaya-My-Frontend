@@ -1,0 +1,438 @@
+<div nz-row nzType="flex">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="11">
+        <div class="formname">
+            <b> {{ formTitle }} </b>
+        </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="13" class="flex-end">
+        <form nz-form [nzLayout]="'inline'" class="w-100">
+            <nz-row nzGutter="[8, 8]" class="w-100">
+                <nz-col nzXs="4" nzSm="3" nzMd="2" nzLg="2" nzXl="3">
+                    <nz-form-item style="width: 47px">
+                        <button nz-button nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip
+                            [nzType]="isfilterapply ? 'primary' : 'default'" (click)="showMainFilter()">
+                            <i nz-icon nzType="filter"></i>
+                        </button>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col nzXs="20" nzSm="21" nzMd="11" nzLg="11" nzXl="12">
+                    <!-- <nz-form-item>
+                        <nz-input-group [nzPrefix]="prefixIconSearch" class="custom-search-input">
+                            <input [(ngModel)]="searchText" (keyup)="keyup()" type="text" name="search" nz-input
+                                placeholder="Search..." />
+                        </nz-input-group>
+                        <ng-template #prefixIconSearch>
+                            <span nz-icon nzType="search" class="search-icon"></span>
+                        </ng-template>
+                    </nz-form-item> -->
+                    <nz-form-item>
+                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                            <input type="text" name="search" (keyup)="keyup()" [(ngModel)]="searchText" nz-input
+                                placeholder="Search..." />
+                        </nz-input-group>
+                        <ng-template #suffixIconButton>
+                            <button nz-button nzType="primary" (click)="search(true)" nzSearch>
+                                <i nz-icon nzType="search"></i>
+                            </button>
+                        </ng-template>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col nzXs="24" nzSm="24" nzMd="11" nzLg="11" nzXl="9">
+                    <nz-form-item class="mr-0">
+                        <button class="w-100" nz-button nzType="primary" (click)="openUploadDrawer()">
+                            <span nz-icon nzType="upload"></span> Upload Documents
+                        </button>
+                    </nz-form-item>
+                </nz-col>
+            </nz-row>
+        </form>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <div class="filter {{ filterClass }}">
+            <div class="filter-box">
+                <div nz-row class="filter-header">
+                    <div nz-col [nzSpan]="24">
+                        <div class="filter-content-container">
+                            <div nz-row [nzGutter]="16" class="custom">
+                                <!-- Patient Filter -->
+                                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="12" nzXl="6">
+                                    <nz-form-item>
+                                        <nz-form-label [nzNoColon]="true">Patient ID</nz-form-label>
+                                        <nz-form-control>
+                                            <nz-select nzMode="multiple" nzAllowClear nzShowSearch nzServerSearch
+                                                nzPlaceHolder="Select Patients" [(ngModel)]="selectedPatients"
+                                                (nzOnSearch)="onSearchPatient($event)" (ngModelChange)="search()"
+                                                [nzLoading]="isLoadingPatients" style="width: 100%;">
+                                                <nz-option *ngFor="let p of patientList" [nzLabel]="p.NAME"
+                                                    [nzValue]="p.NAME"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <!-- Document Type Filter -->
+                                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="12" nzXl="6">
+                                    <nz-form-item>
+                                        <nz-form-label [nzNoColon]="true">Document Type</nz-form-label>
+                                        <nz-form-control>
+                                            <nz-select nzMode="multiple" nzAllowClear
+                                                nzPlaceHolder="Select Document Types"
+                                                [(ngModel)]="selectedDocumentTypes" (ngModelChange)="search()"
+                                                style="width: 100%;">
+                                                <nz-option *ngFor="let d of documentTypeList" [nzLabel]="d.NAME"
+                                                    [nzValue]="d.NAME"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <!-- Department Filter -->
+                                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="12" nzXl="6">
+                                    <nz-form-item>
+                                        <nz-form-label [nzNoColon]="true">Department</nz-form-label>
+                                        <nz-form-control>
+                                            <nz-select nzMode="multiple" nzAllowClear nzPlaceHolder="Select Departments"
+                                                [(ngModel)]="selectedDepartments" (ngModelChange)="search()"
+                                                style="width: 100%;">
+                                                <nz-option *ngFor="let d of departmentList" [nzLabel]="d.NAME"
+                                                    [nzValue]="d.NAME"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <!-- Date Range Filter -->
+                                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="12" nzXl="6">
+                                    <nz-form-item>
+                                        <nz-form-label [nzNoColon]="true">Date Range</nz-form-label>
+                                        <nz-form-control>
+                                            <nz-range-picker nzAllowClear [(ngModel)]="selectedDateRange"
+                                                (ngModelChange)="search()" style="width: 100%;"></nz-range-picker>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="24" class="filter-actions-container">
+                        <button nz-button nzType="primary" nzSize="small" (click)="resetFilters()"
+                            class="filter-action-btn clear-btn">
+                            <i nz-icon nzType="clear" nzTheme="outline"></i>
+                            Reset
+                        </button>
+                        <button nz-button nzType="primary" nzSize="small" (click)="search(true)"
+                            class="filter-action-btn add-btn">
+                            <i nz-icon nzType="filter" nzTheme="outline"></i>
+                            Apply Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div nz-row class="mt-10">
+    <div nz-col nzSpan="24">
+        <nz-table class="my-table" #basicTable [nzFrontPagination]="false" [nzData]="dataList"
+            [nzLoading]="loadingRecords" [nzSize]="'middle'" [nzScroll]="{ x: '1200px' }" [nzTotal]="totalRecords"
+            [nzShowPagination]="true" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+            (nzPageIndexChange)="search()" (nzPageSizeChange)="search(true)" (nzQueryParams)="sort($event)"
+            nzShowSizeChanger>
+            <thead nzSingleSort>
+                <tr>
+                    <!-- Action Column Header -->
+                    <!-- <th nzWidth="50px" style="font-weight: bold; text-align: center" nzLeft>
+                        Action
+                        <nz-filter-trigger [(nzVisible)]="showcloumnVisible" [nzDropdownMenu]="showcolumn1">
+                            <span nz-icon nzType="down" nzTheme="outline"></span>
+                        </nz-filter-trigger>
+                    </th> -->
+
+                    <!-- Data Columns -->
+                    <th *ngIf="isColumnVisible('DOCUMENT_DATE')" nzWidth="150px" style="text-align: center">
+                        Date
+                    </th>
+                    <th *ngIf="isColumnVisible('DOCUMENT_TYPE')" nzWidth="150px" style="text-align: center">
+                        Document Type
+                    </th>
+                    <th *ngIf="isColumnVisible('PATIENT_ID')" nzWidth="120px" style="text-align: center">
+                        Patient ID
+                    </th>
+                    <th *ngIf="isColumnVisible('DEPARTMENT')" nzWidth="150px" style="text-align: center">
+                        Department
+                    </th>
+                    <th *ngIf="isColumnVisible('SUMMARY')" nzWidth="300px" style="text-align: center">
+                        Summary
+                    </th>
+                    <th *ngIf="isColumnVisible('VIEW_DOCUMENT')" nzWidth="100px" style="text-align: center">
+                        View Document
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data" style="text-align: center">
+
+                    <!-- Action Column Content -->
+                    <!-- <td nzLeft> -->
+                    <!-- Add actions here if needed -->
+                    <!-- </td> -->
+
+                    <!-- Data Columns Content -->
+                    <td *ngIf="isColumnVisible('DOCUMENT_DATE')">
+                        {{ data['DOCUMENT_DATE'] }}
+                    </td>
+                    <td *ngIf="isColumnVisible('DOCUMENT_TYPE')">
+                        {{ data['DOCUMENT_TYPE'] }}
+                    </td>
+                    <td *ngIf="isColumnVisible('PATIENT_ID')">
+                        {{ data['PATIENT_ID'] }}
+                    </td>
+                    <td *ngIf="isColumnVisible('DEPARTMENT')">
+                        {{ data['DEPARTMENT'] }}
+                    </td>
+                    <td *ngIf="isColumnVisible('SUMMARY')">
+                        <span *ngIf="data['SUMMARY']?.length >= 50" nz-popover [nzPopoverContent]="data['SUMMARY']">
+                            {{ data['SUMMARY'] | slice:0:50 }}...
+                        </span>
+                        <span *ngIf="data['SUMMARY']?.length < 50">
+                            {{ data['SUMMARY'] }}
+                        </span>
+                        <span *ngIf="!data['SUMMARY']">-</span>
+                    </td>
+                    <td *ngIf="isColumnVisible('VIEW_DOCUMENT')">
+                        <button nz-button nzType="primary" nzSize="small" (click)="viewDocument(data)" nz-tooltip
+                            nzTooltipTitle="View Document">
+                            <span nz-icon nzType="eye" nzTheme="outline"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<!-- Column Visibility Dropdown -->
+<nz-dropdown-menu #showcolumn1="nzDropdownMenu">
+    <ul nz-menu nzPlacement="bottomRight">
+        <li *ngFor="let column of showcolumn" nz-menu-item>
+            <label [(ngModel)]="column.visible" (ngModelChange)="isColumnVisible(column.key)" nz-checkbox>
+                {{ column.label }}
+            </label>
+        </li>
+    </ul>
+</nz-dropdown-menu>
+
+<!-- Upload Documents Drawer -->
+<nz-drawer [nzClosable]="true" [nzVisible]="uploadDrawerVisible" [nzPlacement]="'right'" [nzWidth]="'100%'"
+    [nzFooter]="drawerFooter" nzTitle="Upload Documents" (nzOnClose)="closeUploadDrawer()">
+    <ng-container *nzDrawerContent>
+        <div style="width: 100%; padding: 0px;">
+            <!-- <nz-steps [nzCurrent]="currentStep" nzSize="default" style="margin-bottom: 40px; width: 100%;">
+                <nz-step nzTitle="Select & Upload File"></nz-step>
+                <nz-step nzTitle="Process & Extract Data"></nz-step>
+                <nz-step nzTitle="Review & Save"></nz-step>
+            </nz-steps> -->
+            <div class="steps-wrapper">
+                <nz-steps [nzCurrent]="currentStep" nzSize="default" class="custom-steps">
+                    <nz-step nzTitle="Select & Upload File"></nz-step>
+                    <nz-step nzTitle="Process & Extract Data"></nz-step>
+                    <nz-step nzTitle="Review & Save"></nz-step>
+                </nz-steps>
+            </div>
+
+     
+            <div class="steps-content" style="min-height: 400px; display: flex; flex-direction: column;">
+                <!-- Step 0: Select Files -->
+                <div *ngIf="currentStep === 0"
+                    style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div
+                        style="position: relative; text-align: center; padding: 20px; width: 100%; max-width: 800px; cursor: pointer;">
+
+                        <input type="file" multiple (change)="onFileSelected($event)"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;"
+                            title="Click to upload" />
+
+                        <span nz-icon nzType="cloud-upload" nzTheme="outline"
+                            style="font-size: 60px !important; width: 60px !important; height: 60px !important; color: #1890ff;"></span>
+
+                        <h2
+                            style="font-weight: 500; font-size: 24px; margin-top: 20px; margin-bottom: 10px; color: #000;">
+                            Upload Files</h2>
+                    </div>
+
+                    <div *ngIf="uploadedFilesList.length > 0"
+                        style="width: 100%; margin-top: 20px; align-self: flex-start;">
+                        <h4 style="margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #595959;">Selected
+                            Files ({{ uploadedFilesList.length }})</h4>
+                        <nz-table class="my-table" #uploadTable [nzData]="uploadedFilesList" [nzSize]="'small'" nzBordered
+                            [nzFrontPagination]="false">
+                            <thead style="background: #fafafa;">
+                                <tr>
+                                    <th style="font-weight: 600; text-align: left; padding: 8px;">File Name</th>
+                                    <th style="font-weight: 600; text-align: center; width: 150px; padding: 8px;">Upload
+                                        Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let file of uploadTable.data">
+                                    <td style="padding: 8px;">
+                                        <span nz-icon *ngIf="file.isLoading" nzType="loading" nzTheme="outline"
+                                            style="margin-right: 8px; color: #1890ff;"></span>
+                                        <span style="font-size: 13px;">{{ file.NAME }}</span>
+                                    </td>
+                                    <td style="padding: 8px; text-align: center; font-size: 13px;">
+                                        {{ file.uploadDate | date:'yyyy-MM-dd' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </div>
+
+                <!-- Step 1: Processing -->
+                <div *ngIf="currentStep === 1" style="padding: 10px;">
+                    <h3 style="margin-bottom: 12px; font-size: 16px;">Processing Files ({{uploadedFilesList.length}})
+                    </h3>
+
+                    <nz-table class="my-table" #processingTable [nzData]="uploadedFilesList" [nzSize]="'small'" nzBordered
+                        [nzFrontPagination]="false" [nzScroll]="{'x':'400px'}">
+                        <thead style="background: #fafafa;">
+                            <tr>
+                                <th style="font-weight: 600;" nzWidth="60px">File Name</th>
+                                <th style="font-weight: 600;" nzWidth="70px">Progress</th>
+                                <th style="font-weight: 600; text-align: center;" nzWidth="90px">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let file of processingTable.data">
+                                <td style="padding: 8px;">
+                                    <span style="font-weight: 500; font-size: 13px;">{{ file.NAME }}</span>
+                                </td>
+                                <td style="padding: 8px;">
+                                    <nz-progress [nzPercent]="file.uploadPercentage"
+                                        [nzStatus]="file.status === 'Completed' ? 'success' : 'active'"
+                                        [nzShowInfo]="false" [nzStrokeWidth]="6"></nz-progress>
+                                </td>
+                                <td style="padding: 8px; text-align: center;">
+                                    <nz-tag [nzColor]="file.status === 'Completed' ? 'success' : 'processing'">
+                                        <span nz-icon *ngIf="file.status === 'Completed'" nzType="check-circle"
+                                            nzTheme="outline"></span>
+                                        <span nz-icon *ngIf="file.status !== 'Completed'" nzType="loading"
+                                            nzTheme="outline"></span>
+                                        {{ file.status || 'Pending' }}
+                                    </nz-tag>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </div>
+
+                <!-- Step 2: Review/Success -->
+                <div *ngIf="currentStep === 2">
+                    <nz-alert nzType="success" nzMessage="Processing Complete"
+                        nzDescription="All files have been processed and are ready to be saved." nzShowIcon
+                        style="margin-bottom: 24px;"></nz-alert>
+
+                    <nz-table class="my-table" #reviewTable [nzData]="uploadedFilesList" [nzSize]="'middle'" nzBordered
+                        [nzFrontPagination]="false" [nzScroll]="{'x':'400px'}">
+                        <thead style="background: #fafafa;">
+                            <tr>
+                                <th style="font-weight: 600; text-align: center"  nzWidth="80px">File Name</th>
+                                <th style="font-weight: 600; text-align: center"  nzWidth="110px">Date of Document</th>
+                                <th style="font-weight: 600; text-align: center"  nzWidth="110px">Type Of Document</th>
+                                <th style="font-weight: 600; text-align: center"  nzWidth="80px">Patient ID</th>
+                                <th style="font-weight: 600; text-align: center"  nzWidth="100px">Department</th>
+                                <th style="font-weight: 600; text-align: center"  nzWidth="100px">Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let file of reviewTable.data">
+                                <td>{{ file.NAME }}</td>
+                                <td>{{ file.DOCUMENT_DATE }}</td>
+                                <td>{{ file.DOCUMENT_TYPE }}</td>
+                                <td>{{ file.PATIENT_ID }}</td>
+                                <td>{{ file.DEPARTMENT }}</td>
+                                <td>{{ file.SUMMARY }}</td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-template #drawerFooter>
+        <div style="float: right">
+            <button nz-button style="margin-right: 8px;" (click)="closeUploadDrawer()" *ngIf="currentStep === 0">
+                Cancel
+            </button>
+            <button nz-button style="margin-right: 8px;" (click)="pre()" *ngIf="currentStep > 0 && !isProcessing">
+                Previous
+            </button>
+
+            <button nz-button nzType="primary" (click)="next()" *ngIf="currentStep === 0">
+                Upload & Next
+            </button>
+
+            <button nz-button nzType="primary" (click)="next()" *ngIf="currentStep === 1" [nzLoading]="isProcessing"
+                [disabled]="isProcessing">
+                {{ isProcessing ? 'Processing AI Data...' : 'Next' }}
+            </button>
+
+            <button nz-button nzType="primary" (click)="done()" *ngIf="currentStep === 2">
+                Finish & Close
+            </button>
+        </div>
+    </ng-template>
+
+    <!-- View Document Modal -->
+    <nz-modal [(nzVisible)]="isViewModalVisible" [nzTitle]="'Document Details'" [nzFooter]="modalFooter"
+        (nzOnCancel)="closeViewModal()" [nzWidth]="'60%'">
+        <ng-container *nzModalContent>
+            <div *ngIf="viewingDocument" style="padding: 10px;">
+                <div nz-row [nzGutter]="16" style="margin-bottom: 15px;">
+                    <div nz-col nzSpan="12">
+                        <strong>Document Date:</strong> {{ viewingDocument.DOCUMENT_DATE | date:'mediumDate' }}
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <strong>Type:</strong> {{ viewingDocument.DOCUMENT_TYPE }}
+                    </div>
+                </div>
+                <div nz-row [nzGutter]="16" style="margin-bottom: 15px;">
+                    <div nz-col nzSpan="12">
+                        <strong>Patient ID:</strong> {{ viewingDocument.PATIENT_ID }}
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <strong>Department:</strong> {{ viewingDocument.DEPARTMENT }}
+                    </div>
+                </div>
+                <div nz-row [nzGutter]="16" style="margin-bottom: 20px;">
+                    <div nz-col nzSpan="24">
+                        <strong>Summary:</strong>
+                        <p style="background: #fafafa; padding: 10px; border-radius: 4px; margin-top: 5px;">
+                            {{ viewingDocument.SUMMARY || 'No summary available.' }}
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 20px; height: 600px; border: 1px solid #d9d9d9; border-radius: 4px; overflow: hidden;">
+                    <iframe *ngIf="viewingDocument?.fileUrl" [src]="getSafeUrl(viewingDocument.fileUrl)" width="100%"
+                        height="100%" style="border: none;"></iframe>
+                    <div *ngIf="!viewingDocument?.fileUrl"
+                        style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; background: #f0f2f5;">
+                        <span nz-icon nzType="file-exception" nzTheme="outline"
+                            style="font-size: 48px; color: #ff4d4f;"></span>
+                        <p style="margin-top: 10px; color: #888;">No document file available for preview.</p>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #modalFooter>
+            <button nz-button nzType="primary" (click)="closeViewModal()">Close</button>
+        </ng-template>
+    </nz-modal>

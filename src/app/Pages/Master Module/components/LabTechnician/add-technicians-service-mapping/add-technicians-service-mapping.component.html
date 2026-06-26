@@ -1,0 +1,94 @@
+<div>
+
+
+	<div nz-row>
+		<div nz-col nzXs="8" nzSm="9" nzMd="15" nzLg="16" nzXl="18"></div>
+		<div nz-col nzXs="16" nzSm="15" nzMd="9" nzLg="8" nzXl="6">
+			<!-- <nz-form-item>
+				<nz-input-group [nzAddOnAfter]="suffixIconButton" nzSearch class="custom-search-input">
+					<input [(ngModel)]="searchText2" (ngModelChange)="searchDoctor()" type="text" autocomplete="off"
+						name="search" nz-input placeholder="Search...">
+				</nz-input-group>
+				<ng-template #suffixIconButton>
+					<span nz-icon nzType="search" class="search-icon"></span>
+				</ng-template>
+			</nz-form-item> -->
+			<nz-form-item>
+				<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+					<input [(ngModel)]="searchText2" (ngModelChange)="searchDoctor()" type="text" autocomplete="off"
+						name="search" nz-input placeholder="Search...">
+				</nz-input-group>
+				<ng-template #suffixIconButton>
+					<button nz-button nzType="primary" (click)="search(true)" nzSearch>
+						<i nz-icon nzType="search"></i>
+					</button>
+				</ng-template>
+			</nz-form-item>
+		</div>
+	</div>
+
+
+	<div nz-row>
+		<div nz-col nzSpan="24">
+			<nz-table #promote [nzData]="dataList1" [nzLoading]="tecnicalSpecificationisSpinning" [nzSize]="'small'"
+				[nzScroll]="{ x: '330px', y: '55vh' }" [nzShowPagination]="false" class="my-table" nzBordered>
+				<thead>
+					<tr>
+						<th [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+							(nzCheckedChange)="onAllChecked($event)" nzWidth="50px"
+							style="font-weight: bold; text-align: center">
+							&nbsp;
+							Select All
+						</th>
+
+
+						<th [nzSortFn]="true" nzWidth="100px" (nzSortOrderChange)="sortData('name', $event)">
+							Name
+						</th>
+
+
+					</tr>
+				</thead>
+
+
+				<tbody>
+					<tr *ngFor="let data of promote.data">
+
+
+
+						<td style="text-align: center;">
+							<!-- <label nz-checkbox [nzChecked]="data.is_active === 1"(nzCheckedChange)="onItemChecked(data, $event)"></label> -->
+							<label [nzChecked]="setOfCheckedId.has(data.id)"
+								(nzCheckedChange)="onItemChecked(data, $event)" nz-checkbox></label>
+						</td>
+
+
+
+						<td style="white-space: pre-line; text-align: left">
+							<span>{{data.name}}</span>
+						</td>
+
+
+
+
+					</tr>
+				</tbody>
+			</nz-table>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="footer">
+	<button (click)="mapTechnicalDrawerClose()" type="button" nz-button class="ant-btn" style="margin-right: 8px;">
+		<span>Cancel</span>
+	</button>
+	<button [nzLoading]="tecnicalSpecificationisSpinning" (click)="mapTechnicalDrawerSave()" type="button"
+		class="ant-btn ant-btn-primary" nz-button>
+		<span>
+			Save &
+			Close
+		</span>
+	</button>
+</div>

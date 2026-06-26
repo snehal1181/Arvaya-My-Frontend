@@ -1,0 +1,86 @@
+<div>
+  <form nz-form #SpecializationMasterPage="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+
+      <div nz-row>
+        <!-- PROFESSION Input -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Profession</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Profession">
+              <input nz-input name="profession" [(ngModel)]="data.profession" placeholder="Enter Profession"
+                maxlength="128" required autocomplete="off" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- SPECIALIZATION Input -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Specialization</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Specialization Name">
+              <input nz-input name="specialization" [(ngModel)]="data.specialization"
+                placeholder="Enter Specialization Name" maxlength="128" required autocomplete="off" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- SPECIALIZATION_TYPE Dropdown -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Specialization Type</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Specialization Type">
+              <nz-select nzShowSearch nzAllowClear="true" name="specialization_type"
+                nzPlaceHolder="Select Specialization Type" [(ngModel)]="data.specialization_type" required>
+                <nz-option *ngFor="let type of specializationTypes" [nzValue]="type.id"
+                  [nzLabel]="type.label"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- SEQ_NO Input -->
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon nzRequired>Sequence No.</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Sequence No.">
+              <input nz-input placeholder="Sequence No." name="seq_no" required [(ngModel)]="data.seq_no" required
+                (keypress)="commonFunction.onlynum($event)" maxlength="8" autocomplete="off" disabled />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- IS_ACTIVE Switch -->
+        <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="is_active" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.is_active"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+
+
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn"
+      style="margin-right: 8px;"><span>Cancel</span></button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false,SpecializationMasterPage)"><span>Save &
+        Close</span></button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+          <a style="color:white" (click)="save(true,SpecializationMasterPage)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false,SpecializationMasterPage)"><span>Update & Close</span></button>
+  </div>
+</div>

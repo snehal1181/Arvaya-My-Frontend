@@ -1,0 +1,222 @@
+<div>
+	<form #TestMasterPage="ngForm" nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+			<div nz-row>
+				<!-- NAME -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Test Category
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Category">
+							<nz-select [(ngModel)]="data.category_id" name="categoryId" nzPlaceHolder="Select Category"
+								required>
+								<nz-option *ngFor="let category of categoryIdOptions" [nzValue]="category.id"
+									[nzLabel]="category.name">
+								</nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Name
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Name">
+							<input [(ngModel)]="data.name" (keypress)="commonFunction.alphaOnly($event)" nz-input
+								name="name" placeholder="Enter Name" required maxlength="256">
+						</nz-form-control>
+						<h6 *ngIf="data.name" style="font-size: 10px;color: red;">
+							{{data.name.length}}/256
+						</h6>
+					</nz-form-item>
+				</div>
+				<!-- <div nz-col
+					nzSpan="24"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Provide Details
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Provide Details">
+							
+								<textarea [(ngModel)]="data.PROVIDE_DETAILS"
+								
+								nz-input
+								rows="3"
+								name="providedetails"
+								placeholder="Provide Details"
+								required
+								maxlength="256">
+							</textarea>
+						</nz-form-control>
+						<h6 *ngIf="data.PROVIDE_DETAILS"
+							style="font-size: 10px;color: red;">
+							{{data.PROVIDE_DETAILS?.length}}/256
+						</h6>
+					</nz-form-item>
+				</div> -->
+
+				<div nz-col nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Samples
+						</nz-form-label>
+						<nz-form-control nzErrorTip="Please Select Samples">
+							<input [(ngModel)]="data.samples" name="samples" nz-input placeholder="Enter Samples"
+								maxlength="128">
+
+						</nz-form-control>
+						<h6 *ngIf="data.samples" style="font-size: 10px;color: red;">
+							{{data.samples.length}}/128
+						</h6>
+					</nz-form-item>
+				</div>
+
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>Test For</nz-form-label>
+						<nz-form-control nzHasFeedback>
+							<nz-select name="testfor" [(ngModel)]="data.test_for" required
+								nzPlaceHolder="Select Option">
+								<nz-option nzValue="M" nzLabel="Male"></nz-option>
+								<nz-option nzValue="F" nzLabel="Female"></nz-option>
+								<nz-option nzValue="O" nzLabel="Other"></nz-option>
+								<nz-option nzValue="A" nzLabel="All"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<!-- <div nz-col
+					nzSpan="24"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Test For
+						</nz-form-label>
+						<nz-form-control nzHasFeedback>
+							<nz-checkbox-group [(ngModel)]="checkOptionsOne"
+								(ngModelChange)="checkboxEvent($event)"
+								name="testfor">
+
+							</nz-checkbox-group>
+						</nz-form-control>
+					</nz-form-item>
+
+					
+				</div> -->
+
+
+				<!-- DESCRIPTION -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Description
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Description">
+							<textarea [(ngModel)]="data.description" name="description" nz-input rows="3"
+								placeholder="Enter Description" required maxlength="1024">
+							</textarea>
+						</nz-form-control>
+						<h6 *ngIf="data.description" style="font-size: 10px;color: red;">
+							{{data.description?.length}}/1024
+						</h6>
+					</nz-form-item>
+				</div>
+
+				<!-- CATEGORY_ID -->
+
+				<!-- INSTRUCTION -->
+				<div nz-col nzSpan="24" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzNoColon nzRequired>
+							Instruction
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Instruction">
+							<textarea [(ngModel)]="data.instruction" name="instruction" nz-input rows="3"
+								placeholder="Enter Instruction" maxlength="1024">
+							</textarea>
+						</nz-form-control>
+						<h6 *ngIf="data.instruction" style="font-size: 10px;color: red;">
+							{{data.instruction?.length}}/1024
+						</h6>
+					</nz-form-item>
+				</div>
+
+				<!-- SEQ_NO -->
+				<!-- <div nz-col
+					nzSpan="12"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Category
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Category">
+							<nz-select [(ngModel)]="data.CATEGORY_ID"
+								name="categoryId"
+								nzPlaceHolder="Select Category"
+								required>
+								<nz-option *ngFor="let category of categoryOptions"
+									[nzValue]="category.ID"
+									[nzLabel]="category.NAME">
+								</nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div> -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Sequence Number
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Sequence Number">
+							<input [(ngModel)]="data.seq_no" nz-input name="seqNo" type="number"
+								placeholder="Enter Sequence Number" required min="1" disabled>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- IS_ACTIVE -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Active Status
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Toggle Active Status">
+							<nz-switch [(ngModel)]="data.is_active" name="isActive" nzCheckedChildren="Active"
+								nzUnCheckedChildren="Inactive"></nz-switch>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+			</div>
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close()" type="button" nz-button class="ant-btn" style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.id" [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false, TestMasterPage)"
+			type="button" class="ant-btn ant-btn-primary" nz-button nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff;">
+					<a (click)="save(true, TestMasterPage)" style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.id" [nzLoading]="isSpinning" (click)="save(false, TestMasterPage)" type="button"
+			class="ant-btn ant-btn-primary" nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,185 @@
+<div>
+  <form nz-form #healthsurveyquestions="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Question</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Enter Question ">
+              <input
+                nz-input
+                name="question"
+                [(ngModel)]="data.question"
+                placeholder="Enter Question"
+                maxlength="512"
+                required
+                autocomplete="off"
+              />
+            </nz-form-control>
+            <span
+              style="color: red; font-size: 10px !important"
+              *ngIf="data.question"
+              >{{ data.question.length }}/512</span
+            >
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24" class="form-group">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Category </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Enter Category ">
+              <input
+                nz-input
+                name="category"
+                [(ngModel)]="data.category"
+                placeholder="Enter Category"
+                maxlength="128"
+                required
+                autocomplete="off"
+              />
+            </nz-form-control>
+            <h6 *ngIf="data.category" style="font-size: 10px; color: red">
+              {{ data.category.length }}/128
+            </h6>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" class="form-group">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Points </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Enter Points">
+              <input
+                [(ngModel)]="data.points"
+                nz-input
+                name="points"
+                maxlength="10"
+                (keypress)="commonFunction.onlynumdot($event)"
+                placeholder="Enter Points"
+                required
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" class="form-group">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Question For</nz-form-label>
+            <nz-form-control nzHasFeedback>
+              <nz-select
+                name="genderg"
+                [(ngModel)]="data.question_for"
+                required
+                nzPlaceHolder="Select Option"
+              >
+                <nz-option nzValue="M" nzLabel="Male"></nz-option>
+                <nz-option nzValue="F" nzLabel="Female"></nz-option>
+                <nz-option nzValue="O" nzLabel="Other"></nz-option>
+                <nz-option nzValue="A" nzLabel="All"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Input Type Selection -->
+        <div nz-col nzSpan="12" class="form-group">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Input Type </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Input Type">
+              <nz-select
+                [(ngModel)]="data.input_type"
+                name="inputtype"
+                nzPlaceHolder="Select Input Type"
+              >
+                <nz-option nzValue="R" nzLabel="Radio Button"></nz-option>
+                <nz-option nzValue="D" nzLabel="Dropdown"></nz-option>
+                <nz-option nzValue="I" nzLabel="Input"></nz-option>
+                <nz-option nzValue="DP" nzLabel="Datepicker"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Show for Radio or Dropdown -->
+        <div
+          *ngIf="data.input_type === 'R' || data.input_type === 'D'"
+          nz-col
+          nzSpan="24"
+          class="form-group"
+        >
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Input Value</nz-form-label>
+            <nz-form-control
+              nzHasFeedback
+              nzErrorTip="Please Enter Input Value"
+            >
+              <input
+                nz-input
+                [(ngModel)]="tagInput"
+                (keydown.enter)="addTag()"
+                placeholder="Add a Input Value"
+                name="Input Value"
+              />
+              <div style="margin-top: 8px">
+                <ng-container *ngFor="let tag of tags; let i = index">
+                  <nz-tag
+                    [nzColor]="'cyan'"
+                    nzMode="closeable"
+                    (nzOnClose)="removeTag(i)"
+                    >{{ tag }}</nz-tag
+                  >
+                </ng-container>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button
+      type="button"
+      nz-button
+      (click)="close()"
+      class="ant-btn"
+      style="margin-right: 8px"
+    >
+      <span>Cancel</span>
+    </button>
+    <button
+      type="button"
+      class="ant-btn ant-btn-primary"
+      *ngIf="!data.id"
+      nz-button
+      nz-dropdown
+      [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning"
+      (click)="save(false, healthsurveyquestions)"
+    >
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li
+          nz-menu-item
+          class="menuc"
+          style="border-radius: 4px; background-color: #40a9ff"
+        >
+          <a style="color: white" (click)="save(true, healthsurveyquestions)"
+            >Save & New</a
+          >
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button
+      type="button"
+      class="ant-btn ant-btn-primary"
+      nz-button
+      [nzLoading]="isSpinning"
+      *ngIf="data.id"
+      (click)="save(false, healthsurveyquestions)"
+    >
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>

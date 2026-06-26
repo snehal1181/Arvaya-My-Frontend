@@ -1,0 +1,280 @@
+<div>
+  <form #CityMasterPage="ngForm" nz-form>
+    <nz-spin [nzSpinning]="isSpinning" [nzTip]="isSummaryLoading?'Analysing Report':''">
+      <!-- FILE_TYPE (Select) -->
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Select Patient </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Patient">
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Patient" name="app_user_id"
+                [(ngModel)]="data.app_user_id" nzShowSearch required>
+                <nz-option *ngFor="let slot of Patients" [nzValue]="slot.id" [nzLabel]="slot.name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- PATIENT-->
+
+        <!-- HOSPITAL_NAME -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Hospital Name</nz-form-label>
+            <nz-form-control>
+              <input nz-input name="hospital_name" [(ngModel)]="data.hospital_name" placeholder="Enter Hospital Name" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- LAB_ID (Select) -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Lab Name</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Lab">
+              <!-- <input
+                nz-input
+                name="lab_name"
+                [(ngModel)]="data.lab_name"
+                placeholder="Enter Lab Name" -->
+              <!-- /> -->
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Lab" name="lab_name_select" [(ngModel)]="data.lab_name"
+                nzShowSearch required>
+                <nz-option *ngFor="let slot of labList" [nzValue]="slot.name" [nzLabel]="slot.name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Title</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Enter title">
+              <input nz-input name="title" [(ngModel)]="data.title" placeholder="Enter Title" required />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Description</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Enter Description">
+              <textarea nz-input name="description" [(ngModel)]="data.description"
+                placeholder="Enter Description"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- HI_TYPE (Select) -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>HI Type</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select HI Type">
+              <nz-select [(ngModel)]="data.hi_type" name="hi_type" nzPlaceHolder="Select HI Type" style="width: 100%"
+                nzShowSearch required>
+                <nz-option *ngFor="let option of hitypes" [nzValue]="option.id" [nzLabel]="option.name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- <div nz-col nzSpan="8">
+          <nz-form-item>
+            <nz-form-label nzNoColon>File Type</nz-form-label>
+            <nz-form-control>
+              <nz-select
+                [(ngModel)]="data.FILE_TYPE"
+                name="FILE_TYPE"
+                nzPlaceHolder="Select File Type"
+              >
+                <nz-option nzValue="PDF" nzLabel="PDF"></nz-option>
+                <nz-option nzValue="Image" nzLabel="Image"></nz-option>
+                <nz-option nzValue="Dicom" nzLabel="Dicom"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+
+        <!-- CREATION_DATE -->
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Creation Date</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select creation date">
+              <nz-date-picker [(ngModel)]="data.creation_date" name="creation_date" style="width: 100%"
+                nzFormat="dd/MM/yyyy" required />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- REPORT_DATE -->
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Report Date</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select report date">
+              <nz-date-picker [(ngModel)]="data.report_date" name="report_date" style="width: 100%"
+                nzFormat="dd/MM/yyyy" required />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- COMPOSITION_DATA -->
+        <!-- <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Composition Data</nz-form-label>
+            <nz-form-control>
+              <nz-spin [nzSpinning]="isSummaryLoading">
+                <textarea
+                  nz-input
+                  name="COMPOSITION_DATA"
+                  [(ngModel)]="data.COMPOSITION_DATA"
+                  placeholder="Enter Composition Data"
+                  [rows]="3"
+                ></textarea>
+              </nz-spin>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+
+        <!-- FILE_URL (Upload) -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Upload Document</nz-form-label>
+            <nz-form-control>
+              <!-- <div nz-row style="margin-left: 62px"> -->
+              <button *ngIf="!data.file_url?.trim()" style="margin-top: 10px" nz-button (click)="imageInput.click()">
+                Upload Document
+                <input #imageInput name="imageInput" type="file" style="margin-top: 54px"
+                  accept="image/*,application/pdf,.dcm,.dic" (change)="onFileSelected($event)" style="display: none"
+                  required />
+
+                <!-- <span
+                  *ngIf="data.FILE_URL"
+                  nz-icon
+                  nzType="eye"
+                  nzTheme="outline"
+                  nz-tooltip
+                  nzTooltipTitle="View Document"
+                  style="
+                    cursor: pointer;
+                    color: rgb(24, 144, 255);
+                    margin-left: 11px;
+                  "
+                  (click)="viewImage()"
+                ></span> -->
+              </button>
+              <!-- </div> -->
+              <span *ngIf="data.file_url?.trim()">{{ data.file_url }}</span>
+              <span *ngIf="data.file_url?.trim()" style="cursor: pointer; margin-top: 12px; padding-left: 7px"
+                nz-popconfirm nzPopconfirmTitle="Are you sure you want to delete?" nzPopconfirmPlacement="top"
+                (nzOnConfirm)="removeLogo(data.file_url)" (nzOnCancel)="deleteCancel()">
+                <span nz-icon nzType="delete" nzTheme="twotone"></span>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- STATUS (Switch) -->
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch [(ngModel)]="data.status" name="status" [nzUnCheckedChildren]="'Inactive'"
+                [nzCheckedChildren]="'Active'"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- IS_SYNCED_ABHA (Switch) -->
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Synced with ABHA</nz-form-label>
+            <nz-form-control>
+              <nz-switch [(ngModel)]="data.is_synced_abha" name="is_synced_abha" [nzCheckedChildren]="'Yes'"
+                [nzUnCheckedChildren]="'No'"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- TAGS -->
+        <!-- TAGS (Free-text multi-select input) -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Tags</nz-form-label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="data.tags" name="tags" nzMode="tags" nzPlaceHolder="Enter or select tags"
+                [nzAllowClear]="true" style="width: 100%">
+                <nz-option *ngFor="let tag of availableTags" [nzValue]="tag" [nzLabel]="tag"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- RECORD_TYPE (Select) -->
+        <!-- <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Record Type</nz-form-label>
+            <nz-form-control>
+              <nz-select
+                [(ngModel)]="data.RECORD_TYPE"
+                name="RECORD_TYPE"
+                nzPlaceHolder="Select Record Type"
+              >
+                <nz-option [nzValue]="'A'" nzLabel="Abha"></nz-option>
+                <nz-option [nzValue]="'P'" nzLabel="Personal"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+      </div>
+    </nz-spin>
+  </form>
+
+  <!-- Footer Buttons -->
+  <div class="footer">
+    <button (click)="close()" type="button" nz-button style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+
+    <!-- Save & Close -->
+    <button *ngIf="!data.id" [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false, CityMasterPage)"
+      type="button" class="ant-btn ant-btn-primary" nz-button nz-dropdown>
+      <span>Save & Close</span>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+          <a (click)="save(true, CityMasterPage)" style="color: white">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <!-- Update & Close -->
+    <button *ngIf="data.id" [nzLoading]="isSpinning" (click)="save(false, CityMasterPage)" type="button"
+      class="ant-btn ant-btn-primary" nz-button>
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>
+<!-- <div *ngIf="documentVerificationVisible">
+  <nz-modal
+    [nzWidth]="1200"
+    [nzStyle]="{'margin-top':'-83px'}"
+    [(nzVisible)]="documentVerificationVisible"
+    [nzContent]="content"
+    [nzTitle]="'Document Verification'"
+    [nzFooter]="ImageModalFooter"
+    (nzOnCancel)="onCancel()"
+    nzMaskClosable="false"
+    nzClosable="false"
+  >
+    <ng-template #content>
+      <nz-spin [nzSpinning]="isDocumentLoading"> 
+          <app-doc-verification></app-doc-verification>
+      </nz-spin>
+    </ng-template>
+    <ng-template #ImageModalFooter>
+      <button (click)="onCancel()" nz-button nzType="default">Close</button>
+    </ng-template>
+  </nz-modal>
+</div> -->

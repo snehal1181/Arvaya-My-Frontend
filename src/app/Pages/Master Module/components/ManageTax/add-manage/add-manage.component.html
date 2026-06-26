@@ -1,0 +1,118 @@
+<div>
+  <form nz-form #TaxCatlogPage="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+
+      <div nz-row>
+
+        <div nz-col nzSpan="24" class="form-group">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Select Type</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group [(ngModel)]="radiovalue" (ngModelChange)="ontypeChange($event)" name="radio">
+                <label nz-radio nzValue="L">Lab</label>
+                <label nz-radio nzValue="H">Hospital</label>
+                <label nz-radio nzValue="A">All</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <div nz-col nzSpan="24" *ngIf="!data.lab_id && radiovalue == 'H'">
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon>Hospital</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Select Hospital">
+                <nz-select nzAllowClear="true" nzPlaceHolder="Select Hospital" name="hospital_id"
+                  [(ngModel)]="data.hospital_id" nzShowSearch required>
+                  <nz-option *ngFor="let data of entityData" [nzValue]="data.id" [nzLabel]="data.name"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-col nzSpan="24" *ngIf="!data.hospital_id && radiovalue == 'L'">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Lab</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Lab">
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Lab" name="lab_id" [(ngModel)]="data.lab_id"
+                nzShowSearch required>
+                <nz-option *ngFor="let data of labData" [nzValue]="data.id" [nzLabel]="data.name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Tax Name</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Tax Name ">
+              <input nz-input name="tax_name" [(ngModel)]="data.tax_name" (keypress)="commonFunction.alphaOnly($event)"
+                placeholder="Enter Tax Name" maxlength="128" required autocomplete="off" />
+            </nz-form-control>
+            <span style="color: red; font-size: 10px" *ngIf="data.tax_name">{{ data.tax_name.length }}/128</span>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Tax Type</nz-form-label>
+            <nz-form-control nzErrorTip="Please Select Tax Type">
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Tax Type" name="tax_type" [(ngModel)]="data.tax_type"
+                nzShowSearch required>
+                <nz-option nzValue="PA" nzLabel="Percent"></nz-option>
+                <nz-option nzValue="FA" nzLabel="Amount"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="data.tax_type == 'FA'">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Value</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Value">
+              <input nz-input style="width: 100%" (keypress)="commonFunction.numberWithDecimal($event)" name="value"
+                [(ngModel)]="data.value" placeholder="Enter Value" required />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="data.tax_type == 'PA'">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Value</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Value">
+              <input nz-input style="width: 100%" (keypress)="onlynumdott1($event)" name="value"
+                [(ngModel)]="data.value" placeholder="Enter Value" required />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="is_active" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [ngModel]="data.is_active == 1" (ngModelChange)="data.is_active = $event ? 1 : 0"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false, TaxCatlogPage)">
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+          <a style="color: white" (click)="save(true, TaxCatlogPage)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false, TaxCatlogPage)">
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>

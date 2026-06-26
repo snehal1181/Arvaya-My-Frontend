@@ -1,0 +1,65 @@
+<div>
+  <form nz-form #Languagemaster="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <!-- Name Field -->
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Name</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid name">
+              <input nz-input name="NAME" [(ngModel)]="data.name" placeholder="Enter Name" maxlength="256" required
+                autocomplete="off" />
+            </nz-form-control>
+            <h6 style="color: red; font-size: 10px" *ngIf="data.name">{{ data.name.length }}/256</h6>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Sequence Number Field -->
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid sequence number">
+              <nz-input-number style="width: 100%;" name="SEQ_NO" [(ngModel)]="data.seq_no"
+                nzPlaceHolder="Enter Sequence No" [nzMin]="1" [nzStep]="1" required disabled></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="IS_ACTIVE" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.is_active"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+
+    </nz-spin>
+  </form>
+
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px;">
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false,Languagemaster)">
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+          <a style="color:white" (click)="save(true,Languagemaster)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false,Languagemaster)">
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>

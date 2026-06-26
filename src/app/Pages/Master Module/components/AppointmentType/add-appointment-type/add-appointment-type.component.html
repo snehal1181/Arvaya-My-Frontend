@@ -1,0 +1,141 @@
+<div>
+    <form nz-form #websitebannerPage="ngForm">
+      <nz-spin [nzSpinning]="isSpinning">
+        <div nz-row>
+          <div nz-col nzSpan="24">
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon> Appointment Type</nz-form-label>
+              <nz-form-control nzErrorTip="Please Enter Appointment Type">
+                <input
+                  nz-input
+                  placeholder="Enter Appointment Type"
+                  name="name"
+                  required
+                  [(ngModel)]="data.name"
+                  (keypress)="commonFunction.alphaOnly($event)"
+                  #name="ngModel"
+                  maxlength="128"
+                  autocomplete="off"
+                />
+                <h6
+                  style="color: red; font-size: 10px"
+                  *ngIf="
+                    data.name != undefined && data.name != null && data.name != ''
+                  "
+                >
+                  {{ data.name.length }}/128
+                </h6>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col nzSpan="14">
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon> Mode</nz-form-label>
+              <nz-form-control nzErrorTip="Please Select Mode">
+                <!-- <nz-radio-group
+                name="mode"
+                [(ngModel)]="data.MODE"
+                required
+              >
+                <label nz-radio nzValue="ON">Online</label>
+                <label nz-radio nzValue="OF">Offline</label>
+              </nz-radio-group> -->
+              <nz-select nzAllowClear="true" nzPlaceHolder="Select Mode"   name="mode"
+              [(ngModel)]="data.mode" nzShowSearch required >
+            <nz-option  nzValue="ON" nzLabel="Online"></nz-option>
+            <nz-option  nzValue="OF" nzLabel="Offline"></nz-option>
+            <nz-option  nzValue="IL" nzLabel="In Lab"></nz-option>
+            <nz-option  nzValue="IH" nzLabel="In Home"></nz-option>
+           </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+                
+          </div>
+          <div nz-col nzSpan="10">
+            <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Sequence No">
+                    <input
+                    nz-input style="width: 100%;" name="seqno"  placeholder="Enter Sequence No"
+                    required
+                    disabled
+                    [(ngModel)]="data.seq_no"
+                    #nameField="ngModel"
+                    (keypress)="commonFunction.onlynum($event)"
+                    maxlength="8"/>
+                    
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+          <div nzSpan="4"></div>
+          <div nz-col nzSpan="8">
+            <nz-form-item>
+              <nz-form-label nzNoColon>Status</nz-form-label>
+              <nz-form-control>
+                <nz-switch
+                  nzCheckedChildren="Active"
+                  nzUnCheckedChildren="Inactive"
+                  [(ngModel)]="data['is_active']"
+                  [ngModelOptions]="{ standalone: true }"
+                ></nz-switch>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </nz-spin>
+    </form>
+  
+    <div class="footer">
+      <button
+        type="button"
+        nz-button
+        (click)="close()"
+        class="ant-btn"
+        style="margin-right: 8px"
+      >
+        <span>Cancel</span>
+      </button>
+  
+      <button
+        type="button"
+        class="ant-btn ant-btn-primary"
+        *ngIf="!data.id"
+        nz-button
+        nz-dropdown
+        [nzDropdownMenu]="menu"
+        [nzLoading]="isSpinning"
+        (click)="save(false, websitebannerPage)"
+      >
+        <span>Save & Close</span>
+      </button>
+  
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li
+            nz-menu-item
+            class="menuc"
+            style="border-radius: 4px; background-color: #40a9ff"
+          >
+            <a style="color: white" (click)="save(true, websitebannerPage)"
+              >Save & New</a
+            >
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+  
+      <button
+        type="button"
+        class="ant-btn ant-btn-primary"
+        nz-button
+        [nzLoading]="isSpinning"
+        *ngIf="data.id"
+        (click)="save(false, websitebannerPage)"
+      >
+        <span>Update & close</span>
+      </button>
+    </div>
+  </div>
+  

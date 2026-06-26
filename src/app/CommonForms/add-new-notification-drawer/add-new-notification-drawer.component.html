@@ -1,0 +1,217 @@
+<div>
+  <!-- <div class="header">
+    <button type="button" nz-button (click)="close(myForm)" class="ant-btn">
+      <i nz-icon nzType="close" nzTheme="outline"></i>
+    </button>
+  </div> -->
+
+  <form nz-form #myForm="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row class="my-box" [nzGutter]="15">
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24" style="text-align: center">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Push Notification To</nz-form-label>
+
+            <nz-input-group>
+              <nz-radio-group name="sharingMode" [(ngModel)]="sharingMode" (ngModelChange)="changeRadioButton($event)">
+                <label nz-radio nzValue="1">App User</label>
+                <label nz-radio nzValue="2">Roles</label>
+              </nz-radio-group>
+            </nz-input-group>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row class="my-box" nzGutter="5">
+        <div nz-col nzXs="16" nzSm="16" nzMd="16" nzXl="20" nzLg="20">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>{{ heading }}</nz-form-label>
+
+            <!-- [nzValue]="emp.ID"
+                  [nzLabel]="sharingMode == '1' ? emp.NAME : emp.NAME" -->
+
+            <nz-form-control>
+              <nz-select name="userID" nzShowSearch nzAllowClear nzMode="multiple" style="width: 100%"
+                [nzPlaceHolder]="heading" [nzLoading]="loadingList" [(ngModel)]="USER_IDS" [nzMaxTagCount]="6">
+                <nz-option nzCustomContent style="min-height: 32px" *ngFor="let emp of employeeList" [nzValue]="emp.ID"
+                  [nzLabel]="emp.NAME">
+                  <div nz-row>
+                    <div nz-col nzSpan="2" style="margin-top: 2px">
+                      <nz-avatar [nzText]="emp.NAME?.charAt(0) | uppercase" nzSize="large" style="
+                          color: red;
+                          background-color: #fde3cf;
+                          vertical-align: middle;
+                        ">
+                      </nz-avatar>
+                    </div>
+
+                    <div nz-col nzSpan="22">
+                      <div nz-row>
+                        <!-- Common NAME field -->
+                        <div *ngIf="emp.NAME" nz-col nzSpan="24" style="color: black; font-size: 14px">
+                          <b>{{ emp.NAME }}</b>
+                        </div>
+
+                        <!-- Only for App Users -->
+                        <ng-container *ngIf="sharingMode == '1'">
+                          <div *ngIf="emp.MOBILE_NUMBER" nz-col nzSpan="12" style="font-size: 11px">
+                            <i nz-icon nzType="mobile" nzTheme="outline" style="color: black"></i>&nbsp;
+                            {{ emp.MOBILE_NUMBER }}
+                          </div>
+
+                          <div *ngIf="emp.GENDER" nz-col nzSpan="12" style="font-size: 11px">
+                            <i nz-icon nzType="user" nzTheme="outline" style="color: black"></i>&nbsp;
+                            {{
+                            emp.GENDER == "M"
+                            ? "Male"
+                            : emp.GENDER == "F"
+                            ? "Female"
+                            : emp.GENDER
+                            }}
+                          </div>
+
+                          <div *ngIf="emp.DATE_OF_BIRTH" nz-col nzSpan="12" style="font-size: 11px">
+                            <i nz-icon nzType="calendar" nzTheme="outline" style="color: black"></i>&nbsp;
+                            {{ emp.DATE_OF_BIRTH | date : "dd MMM yyyy" }}
+                          </div>
+
+                          <div *ngIf="emp.ACTIVE_ABHA_ADDRESS" nz-col nzSpan="12" style="font-size: 11px">
+                            <i nz-icon nzType="idcard" nzTheme="outline" style="color: black"></i>&nbsp;
+                            {{ emp.ACTIVE_ABHA_ADDRESS }}
+                          </div>
+                        </ng-container>
+
+                        <!-- Only for Roles -->
+                        <ng-container *ngIf="sharingMode == '2'">
+                          <div *ngIf="emp.TYPE" nz-col nzSpan="12" style="font-size: 11px">
+                            <i nz-icon nzType="team" nzTheme="outline" style="color: black"></i>&nbsp; Type: {{ emp.TYPE
+                            }}
+                          </div>
+
+                          <div *ngIf="emp.DESCRIPTION" nz-col nzSpan="12" style="font-size: 11px">
+                            <i nz-icon nzType="info-circle" nzTheme="outline" style="color: black"></i>&nbsp;
+                            {{ emp.DESCRIPTION }}
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzXs="8" nzSm="8" nzMd="8" nzXl="4" nzLg="4">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Select All</nz-form-label>
+
+            <nz-form-control>
+              <nz-switch name="selectAll" nzCheckedChildren="Yes" nzUnCheckedChildren="No"
+                (ngModelChange)="onSelectAllChecked($event)" [(ngModel)]="SELECT_ALL">
+              </nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Title</nz-form-label>
+
+            <nz-form-control nzHasFeedback nzErrorTip="Notification title is required">
+              <input nz-input autocomplete="off" placeholder="Enter notification title" name="title" type="text"
+                pattern="([A-Za-z0-9\s]){1,}" [(ngModel)]="TITLE" required maxlength="64" (focus)="isFocused = 'title'"
+                (blur)="isFocused = ''" />
+            </nz-form-control>
+
+            <h6 *ngIf="TITLE && isFocused === 'title'" style="font-size: 10px; color: red">
+              {{ TITLE.length }}/ 64
+            </h6>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Description</nz-form-label>
+
+            <nz-form-control nzHasFeedback nzErrorTip="Notification description is required">
+              <textarea nz-input rows="5" name="description" placeHolder="Enter notification description"
+                [(ngModel)]="DESCRIPTION" maxlength="512" required (focus)="isFocused = 'description'"
+                (blur)="isFocused = ''">
+              </textarea>
+            </nz-form-control>
+
+            <h6 *ngIf="DESCRIPTION && isFocused === 'description'" style="font-size: 10px; color: red">
+              {{ DESCRIPTION.length }}/ 512
+            </h6>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzXs="12" nzSm="12" nzMd="12" nzXl="8" nzLg="8">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Attachment Type</nz-form-label>
+            <nz-form-control>
+              <nz-select nz-input nzPlaceHolder="Select attachment type" name="attachmenttype" [(ngModel)]="MEDIA_TYPE">
+                <nz-option nzValue="I" nzLabel="Image"></nz-option>
+                <nz-option nzValue="T" nzLabel="Document"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="MEDIA_TYPE">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Upload Attachment &nbsp;<span nz-icon nzType="info-circle" nzTheme="twotone"
+                nz-tooltip nzTooltipTitle="Please upload attachment upto 1 MB"></span></nz-form-label>
+
+            <nz-form-control>
+              <button *ngIf="!selectedFileName" nz-button style="
+                  height: 28px;
+                  padding: 0px 7px;
+                  font-size: 10px;
+                  width: 70%;
+                " (click)="image1.click()">
+                <span nz-icon nzType="upload"></span>
+                Select Attachment
+                <input #image1 name="image1" type="file" [accept]="
+                    MEDIA_TYPE == 'I'
+                      ? '.jpg, .jpeg, .png'
+                      : '.pdf, .docx, .txt'
+                  " (change)="onFileSelected($event)" style="display: none" />
+              </button>
+              <nz-progress *ngIf="progressBarImageOne" [nzPercent]="percentImageOne"></nz-progress>
+              <h6 *ngIf="selectedFileName" style="font-size: 13px; color: #4c4cff">
+                {{ selectedFileName }}
+                <a [href]="imgUrl + 'notificationAttachment/' + selectedFileName" target="_blank"
+                  style="margin-left: 10px" nz-icon nzType="eye" nzTheme="fill"></a>
+                <a nz-icon nzType="delete" nzTheme="fill" style="margin-left: 10px" (click)="clearImage()">
+                </a>
+              </h6>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close(myForm)" class="ant-btn" style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" nz-dropdown
+      (click)="save(false, myForm)">
+      <span>Send</span>
+    </button>
+  </div>
+  <div>
+    <nz-modal [(nzVisible)]="isVisibleMiddle" nzTitle="Compress File" nzCentered (nzOnCancel)="onCancel()"
+      (nzOnOk)="showConfirm()" [nzOkLoading]="isSpinning" [nzCancelLoading]="isSpinning">
+      <ng-container *nzModalContent>
+        <p>
+          The selected file is greater than 1 MB. Would you like to compress
+          this to 1 mb?
+        </p>
+      </ng-container>
+    </nz-modal>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<div>
+  <form nz-form>
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Parent Role</nz-form-label>
+            <nz-input-group>
+              <nz-select
+                name="parent_id"
+                nzPlaceHolder="Select Parent Role"
+                nzShowSearch
+                style="width: 100%"
+                [(ngModel)]="data.parent_id"
+                (ngModelChange)="onChange($event)"
+              >
+                <nz-option [nzValue]="0" [nzLabel]="'None'"></nz-option>
+                <nz-option
+                  *ngFor="let role of roles"
+                  [nzValue]="role.id"
+                  [nzLabel]="role.name"
+                ></nz-option>
+              </nz-select>
+            </nz-input-group>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Name </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Input is required">
+              <input
+                nz-input
+                name="name"
+                placeholder="Enter Role Name"
+                [(ngModel)]="data.name"
+                required
+                maxlength="64"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Type</nz-form-label>
+            <nz-select
+              name="type"
+              nzShowSearch
+              style="width: 100%"
+              [(ngModel)]="data.type"
+              nzPlaceHolder="Select Type"
+            >
+              <nz-option nzValue="SUPERADMIN" nzLabel="SuperAdmin"></nz-option>
+              <nz-option nzValue="USER" nzLabel="User"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label>Description</nz-form-label>
+            <nz-form-control>
+              <textarea
+                nz-input
+                rows="3"
+                name="description"
+                placeholder="Enter Description"
+                [(ngModel)]="data.description"
+                maxlength="512"
+              ></textarea>
+              <br />
+              <small
+                *ngIf="data.description"
+                style="font-size: 9px; color: red"
+              >
+                {{ data.description.length }}/ 512
+              </small>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button
+      type="button"
+      nz-button
+      (click)="close()"
+      class="ant-btn"
+      style="margin-right: 8px"
+    >
+      <span>Cancel</span>
+    </button>
+
+    <button
+      type="button"
+      class="ant-btn ant-btn-primary"
+      *ngIf="!data.id"
+      nz-button
+      nz-dropdown
+      [nzDropdownMenu]="menu"
+      (click)="save(false)"
+    >
+      <span>Save & Close</span>
+    </button>
+
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li
+          nz-menu-item
+          class="menuc"
+          style="border-radius: 4px; background-color: #40a9ff"
+        >
+          <a style="color: white" (click)="save(true)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <button
+      type="button"
+      class="ant-btn ant-btn-primary"
+      nz-button
+      [nzLoading]="isSpinning"
+      *ngIf="data.id"
+      (click)="save(false)"
+    >
+      <span>Update & close</span>
+    </button>
+  </div>
+</div>

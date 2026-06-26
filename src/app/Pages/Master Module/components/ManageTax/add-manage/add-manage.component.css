@@ -1,0 +1,65 @@
+nz-form-item{
+    display: inline-block;
+    margin-bottom: 5px;
+    width: -webkit-fill-available;
+    padding: 0px 10px;
+    /* font-family: '"Poppins", sans-serif !important'; */
+  }
+
+     @media (max-width:376px) {
+  ::ng-deep .ant-drawer-content-wrapper {
+    width: 100vw !important;
+  }
+  
+  ::ng-deep .ant-drawer-content {
+    width: 100vw !important;
+  }
+  
+  ::ng-deep .ant-drawer-body {
+    padding:16px 20px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: calc(100vh - 100px) !important;
+    margin-bottom: 50px !important;
+  }
+  
+  ::ng-deep .ant-drawer-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: white !important;
+    padding: 8px 12px !important;
+    border-top: 1px solid #f0f0f0 !important;
+    z-index: 1000 !important;
+  }
+  
+  ::ng-deep .ant-drawer-header {
+    padding: 8px 12px !important;
+  }
+  
+  ::ng-deep .ant-drawer-title {
+    font-size: 14px !important;
+  }
+  
+  nz-form-item {
+    padding: 0px 2px !important;
+    margin-bottom: 3px !important;
+  }
+  
+  ::ng-deep .ant-form-item-label {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+  }
+  
+  ::ng-deep .ant-input {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+  }
+  
+  ::ng-deep .ant-btn {
+    font-size: 12px !important;
+    height: 28px !important;
+    padding: 0 8px !important;
+  }
+}

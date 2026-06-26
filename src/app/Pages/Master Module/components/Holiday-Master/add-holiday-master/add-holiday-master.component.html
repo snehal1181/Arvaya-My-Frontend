@@ -1,0 +1,146 @@
+<div>
+  <form nz-form #HolidayMasterPage="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <!-- <div *ngIf="decreptedroleId == 1" nz-col nzSpan="24" style="text-align: center">
+          <nz-radio-group
+            name="availfor"
+            style="margin-bottom: 13px"
+            [(ngModel)]="change"
+            (ngModelChange)="holidaychange($event)"
+            required
+          >
+            <label nz-radio [nzValue]="'H'">Hospital</label>
+            <label nz-radio [nzValue]="'L'">Lab</label>
+          </nz-radio-group>
+        </div> -->
+
+        <div nz-col nzSpan="24" class="form-group" style="padding-left: 10px">
+          <nz-form-label nzNoColon>Select Technicians/Labs</nz-form-label>
+          <nz-form-control>
+            <nz-radio-group [(ngModel)]="radiovalue" (ngModelChange)="ontypeChange($event)" name="radio">
+              <label nz-radio nzValue="T"> Technician </label>
+              <label nz-radio nzValue="L"> Lab </label>
+            </nz-radio-group>
+          </nz-form-control>
+        </div>
+
+        <!-- Technician  Dropdown -->
+        <div nz-col nzSpan="24" *ngIf="radiovalue === 'T'">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Technician</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Technician">
+              <nz-select *ngIf="decreptedroleId == 1" nzAllowClear nzPlaceHolder="Select Technician"
+                name="TECHNICIAN_ID" [(ngModel)]="data.technician_id" [nzLoading]="loadTechnicians" required>
+                <nz-option *ngFor="let technician of technicianData" [nzValue]="technician.id"
+                  [nzLabel]="technician.name"></nz-option>
+              </nz-select>
+              <nz-select *ngIf="decreptedroleId == 3" nzAllowClear nzPlaceHolder="Select Technician"
+                name="TECHNICIAN_ID" [(ngModel)]="data.technician_id" [nzLoading]="loadTechnicians" required>
+                <nz-option *ngFor="let technician of technicianData" [nzValue]="technician.TECHNICIAN_ID"
+                  [nzLabel]="technician.LAB_TECHNICIAN_NAME"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Lab Dropdown -->
+        <div nz-col nzSpan="24" *ngIf="radiovalue === 'L'">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Lab</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Lab">
+              <nz-select nzAllowClear nzPlaceHolder="Select Lab" name="LAB_ID" [(ngModel)]="data.lab_id"
+                [nzLoading]="loadLabs" required>
+                <nz-option *ngFor="let lab of labData" [nzValue]="lab.id" [nzLabel]="lab.name"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Holiday </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Holiday ">
+              <input nz-input name="Name" [(ngModel)]="data.name" placeholder="Enter Holiday" maxlength="128" required
+                autocomplete="off" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Date</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Date">
+              <nz-date-picker [(ngModel)]="data.DATE" name="Date" nzFormat="dd/MMM/yyyy" style="width: 100%" required
+                [nzDisabledDate]="commonFunction.disabledBeforeDatebefore">
+              </nz-date-picker>
+
+               <nz-range-picker [(ngModel)]="selectedJobCreatedDate" name="JobCreatedDateTime" style="width: 100%"
+                        [nzFormat]="commonFunction.dateMMTimeSecFormat" (ngModelChange)="onDateRangeChange()">
+                    </nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Date</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Date">
+              <!-- <nz-range-picker [(ngModel)]="selectedJobCreatedDate" name="JobCreatedDateTime" style="width: 100%"
+                [nzFormat]="commonFunction.dateMMTimeSecFormat"
+                [nzDisabledDate]="commonFunction.disabledBeforeDatebefore" >
+              </nz-range-picker> -->
+
+              <nz-range-picker [(ngModel)]="selectedDate" name="selectedDate" style="width: 100%"
+                [nzFormat]="commonFunction.dateMMTimeFormat" [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                [nzDisabledDate]="commonFunction.disabledBeforeDatebefore">
+              </nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.is_active"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Reason</nz-form-label>
+            <nz-form-control>
+              <textarea rows="2" required nz-input maxlength="256" minlength="2" name="remark1"
+                placeholder="Enter Remark" [(ngModel)]="data.reason"></textarea>
+              <span style="color: red; font-size: 10px" *ngIf="data.reason">{{ data.reason.length }}/256</span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false, HolidayMasterPage)">
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+          <a style="color: white" (click)="save(true, HolidayMasterPage)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false, HolidayMasterPage)">
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div nz-row style="margin-bottom: 5px">
+  <div nz-col nzSpan="8"></div>
+  <div nz-col nzSpan="8">
+    <nz-input-group [nzPrefix]="prefixIconSearch" class="custom-search-input">
+      <input type="text" nz-input name="searchmenu" placeholder="Enter at least 3 characters and enter to search"
+        [(ngModel)]="searchQuery" (ngModelChange)="onSearchQueryChange($event)" (keydown.enter)="onEnterKeyPress()"
+        style="height: 35px" />
+    </nz-input-group>
+    <ng-template #prefixIconSearch>
+      <span nz-icon nzType="search" class="search-icon"></span>
+    </ng-template>
+  </div>
+
+  <div nz-col nzSpan="8"></div>
+</div>
+<br />
+<div style="height: 100vh;overflow-y: none;">
+
+  <nz-spin [nzSpinning]="loadingRecords" style="margin: 0px 100px ;">
+    <div nz-row [nzGutter]="24" style="height: 70vh; overflow: auto; padding: 0 20px;">
+      <div nz-col nzSpan="6" *ngFor="let title of objectKeys(titleWiseChildren); let i = index"
+        style="margin-bottom: 20px;">
+        <p style="
+          border-left: 4px solid #0d6efd;
+          text-transform: uppercase;
+          font-weight: 700;
+          font-size: 15px;
+          padding: 5px 10px;
+          margin-bottom: 8px;
+          background: #4141ff14;
+        ">
+          {{ title }}
+        </p>
+
+        <div style="border-top: 1px solid #d9d9d9; margin-bottom: 5px;"></div>
+
+        <div *ngFor="let child of titleWiseChildren[title]">
+          <p [routerLink]="child.link" [ngStyle]="{ cursor: 'pointer' }" [ngClass]="{
+            hovered: true,
+            searched: showclass && child.title.toLowerCase().includes(searchQuery.toLowerCase())
+          }" (click)="onMenuClick()" style="
+            font-size: 13px;
+            margin-bottom: 6px;
+            margin-left: 3px;
+            font-weight: 400;
+            color: grey;
+          ">
+            {{ child.title }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+
+</div>

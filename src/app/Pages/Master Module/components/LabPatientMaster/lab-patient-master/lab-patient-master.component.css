@@ -1,0 +1,1157 @@
+th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    /* font-weight: bold; */
+}
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+
+:host::ng-deep .ant-card-body {
+  padding: 0px;
+}
+
+.select{
+  width: 200px;
+  padding: 8px;
+  display: block;
+}
+
+.search-box {
+    padding: 8px;
+  }
+
+  .search-box input {
+    width: 188px;
+    display: block;
+  }
+
+  .search-box button {
+    width: 90px;
+  }
+
+  .search-button {
+    margin-right: 8px;
+  }
+
+  nz-select {
+    width: 100%;
+  }
+
+  .margin-row {
+    margin: 10px 0px;
+  }
+
+.ant-drawer {
+  z-index: 999 !important;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.mb-0{
+    margin-bottom: 0;
+}
+
+.mr-0{
+    margin-right: 0!important;
+}
+
+.w-space-pre-line{
+    white-space: pre-line;
+}
+
+.fs-15{
+    font-size: 15px;
+}
+
+.flex-end{
+    display: flex; justify-content: flex-end;
+}
+
+
+@media (max-width:426px) {
+   .ant-form-inline .ant-form-item {
+    flex: none;
+    flex-wrap: nowrap;
+    margin-right: 0px;
+    margin-bottom: 10px;
+}
+}
+
+/* Enhanced Filter Container Styles */
+
+.filter-box {
+
+  background: linear-gradient(135deg, #f8fbff 0%, #e8f4ff 100%);
+
+  border: 1px solid rgba(0, 122, 255, 0.2);
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.1);
+
+  position: relative;
+
+  overflow: hidden;
+
+}
+
+
+
+.filter-box::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 4px;
+
+  background: linear-gradient(90deg, #007aff 0%, #00d4ff 100%);
+
+}
+
+
+
+.filter-header {
+
+  padding: 4px 8px 2px 8px;
+
+}
+
+
+
+.filter-content-container {
+
+  background: white;
+
+  border-radius: 8px;
+
+  padding: 6px;
+
+  border: 1px solid rgba(0, 122, 255, 0.1);
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+}
+
+
+
+.filter-header-title {
+
+  display: flex;
+
+  align-items: center;
+
+  margin-bottom: 16px;
+
+  padding-bottom: 12px;
+
+  border-bottom: 2px solid rgba(0, 122, 255, 0.1);
+
+}
+
+
+
+.filter-icon {
+
+  color: #007aff;
+
+  font-size: 18px;
+
+  margin-right: 8px;
+
+}
+
+
+
+.filter-title-text {
+
+  font-weight: 600;
+
+  color: #007aff;
+
+  font-size: 14px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+}
+
+
+
+.filter-tags-container {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin: 4px;
+
+  padding: 8px;
+
+  background: linear-gradient(135deg, #f8fbff 0%, #f0f8ff 100%);
+
+  border-radius: 8px;
+
+  border: 1px solid rgba(0, 122, 255, 0.08);
+
+}
+
+
+
+.filter-tag {
+
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+
+  border: 1px solid rgb(0 122 255);
+
+  border-radius: 12px;
+
+  padding: 10px 14px;
+
+  transition: all 0.3s ease;
+
+  cursor: pointer;
+
+  position: relative;
+
+  overflow: hidden;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+}
+
+
+
+.filter-tag:hover {
+
+  border-color: #007aff;
+
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15);
+
+  transform: translateY(-1px);
+
+}
+
+
+
+.filter-tag.active-filter {
+
+  background: linear-gradient(135deg, #e6f7ff 0%, #d1e7ff 100%);
+
+  border-color: #007aff;
+
+  transform: translateY(-2px);
+
+}
+
+
+
+.filter-tag.active-filter::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  width: 4px;
+
+  height: 100%;
+
+  background: linear-gradient(180deg, #007aff 0%, #00d4ff 100%);
+
+  border-radius: 12px 0 0 12px;
+
+}
+
+
+
+.filter-tag-content {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  min-width: 200px;
+
+}
+
+
+
+.filter-name {
+
+  font-weight: 600;
+
+  color: #2c3e50;
+
+  font-size: 13px;
+
+  flex: 1;
+
+  margin-right: 12px;
+
+  letter-spacing: 0.3px;
+
+}
+
+
+
+.filter-actions {
+
+  display: flex;
+
+  gap: 8px;
+
+  align-items: center;
+
+  padding: 4px;
+
+  background: rgba(255, 255, 255, 0.7);
+
+  border-radius: 6px;
+
+}
+
+
+
+.action-icon {
+
+  width: 22px;
+
+  height: 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 6px;
+
+  transition: all 0.3s ease;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+}
+
+
+
+.action-icon:hover {
+
+  transform: scale(1.15);
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+}
+
+
+
+.apply-icon {
+
+  color: #52c41a;
+
+  background: rgba(82, 196, 26, 0.08);
+
+}
+
+
+
+.apply-icon:hover {
+
+  background: rgba(82, 196, 26, 0.2);
+
+  color: #389e0d;
+
+}
+
+
+
+.delete-icon {
+
+  color: #ff4d4f;
+
+  background: rgba(255, 77, 79, 0.08);
+
+}
+
+
+
+.delete-icon:hover {
+
+  background: rgba(255, 77, 79, 0.2);
+
+  color: #cf1322;
+
+}
+
+
+
+.view-icon {
+
+  color: #007aff;
+
+  background: rgba(0, 122, 255, 0.08);
+
+}
+
+
+
+.view-icon:hover {
+
+  background: rgba(0, 122, 255, 0.2);
+
+  color: #0056cc;
+
+}
+
+
+
+.no-filters-message {
+
+  text-align: center;
+
+  padding: 12px 8px;
+
+  color: #8c8c8c;
+
+  font-size: 14px;
+
+}
+
+
+
+.no-data-icon {
+
+  font-size: 32px;
+
+  color: #d9d9d9;
+
+  margin-bottom: 6px;
+
+  display: block;
+
+}
+
+
+
+.filter-actions-container {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  margin-top: 8px;
+
+  padding: 8px 12px 8px 12px;
+
+  gap: 10px;
+
+  background: white;
+  border-radius: 8px;
+
+  border: 1px solid rgba(0, 122, 255, 0.08);
+
+}
+
+
+
+.filter-action-btn {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border-radius: 10px;
+
+  font-weight: 500;
+
+  transition: all 0.3s ease;
+
+  height: 34px;
+
+  padding: 0 16px;
+
+  font-size: 13px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+.filter-action-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.25);
+
+}
+
+
+
+.clear-btn {
+
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+
+  border: none;
+
+  color: white;
+
+}
+
+
+
+.clear-btn:hover {
+
+  background: linear-gradient(135deg, #ff5252 0%, #ff6b6b 100%);
+
+  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.3);
+
+}
+
+
+
+.add-btn {
+
+  background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
+
+  border: none;
+
+  color: white;
+
+}
+
+
+
+.add-btn:hover {
+
+  background: linear-gradient(135deg, #0056cc 0%, #00a8cc 100%);
+
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
+
+}
+
+
+
+/* Responsive adjustments */
+
+@media (max-width: 768px) {
+
+  .filter-tags-container {
+
+    gap: 8px;
+
+    padding: 6px;
+
+  }
+
+
+
+  .filter-tag {
+
+    padding: 8px 12px;
+
+    border-radius: 10px;
+
+  }
+
+
+
+  .filter-tag-content {
+
+    min-width: 140px;
+
+  }
+
+
+
+  .filter-actions {
+
+    gap: 6px;
+
+    padding: 3px;
+
+  }
+
+
+
+  .action-icon {
+
+    width: 20px;
+
+    height: 20px;
+
+    font-size: 13px;
+
+  }
+
+
+
+  .filter-actions-container {
+
+    padding: 6px 10px;
+
+    gap: 8px;
+
+  }
+
+
+
+  .filter-action-btn {
+
+    height: 32px;
+
+    padding: 0 12px;
+
+    font-size: 12px;
+
+  }
+
+}
+
+
+
+@media (max-width: 480px) {
+
+  .filter-header {
+
+    padding: 6px 8px 3px 8px;
+
+  }
+
+
+
+  .filter-content-container {
+
+    padding: 8px;
+
+  }
+
+
+
+  .filter-tags-container {
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding: 6px;
+
+  }
+
+
+
+  .filter-tag {
+
+    width: 100%;
+
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+  }
+
+
+
+  .filter-tag-content {
+
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    min-width: unset;
+
+    width: 100%;
+
+  }
+
+
+
+  .filter-name {
+
+    font-size: 12px;
+
+    margin-right: 8px;
+
+    flex: 1;
+
+  }
+
+
+
+  .filter-actions {
+
+    gap: 4px;
+
+    padding: 2px;
+
+    background: rgba(255, 255, 255, 0.5);
+
+    border-radius: 4px;
+
+  }
+
+
+
+  .action-icon {
+
+    width: 18px;
+
+    height: 18px;
+
+    font-size: 12px;
+
+    border-radius: 4px;
+
+  }
+
+
+
+  .filter-actions-container {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 8px;
+
+    padding: 8px;
+
+  }
+
+
+
+  .filter-action-btn {
+
+    width: 100%;
+
+    justify-content: center;
+
+    height: 36px;
+
+    font-size: 13px;
+
+    padding: 0;
+
+    border-radius: 8px;
+
+  }
+
+}
+
+
+
+@media (max-width: 320px) {
+
+  .filter-tag {
+
+    padding: 6px 8px;
+
+  }
+
+
+
+  .filter-name {
+
+    font-size: 11px;
+
+    margin-right: 6px;
+
+  }
+
+
+
+  .action-icon {
+
+    width: 16px;
+
+    height: 16px;
+
+    font-size: 11px;
+
+  }
+
+
+
+  .filter-actions {
+
+    gap: 3px;
+
+  }
+
+
+
+  .filter-action-btn {
+
+    height: 32px;
+
+    font-size: 12px;
+
+  }
+
+}
+
+
+
+/* Modern Table Styling */
+
+.my-table {
+
+  border-radius: 12px !important;
+
+  overflow: hidden;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  background: white;
+
+}
+
+
+
+.mt-10 {
+
+  margin-top: 10px;
+
+}
+
+
+
+.my-table .ant-table {
+
+  border-radius: 12px !important;
+
+  border: none !important;
+
+}
+
+
+
+.my-table .ant-table-container {
+
+  border-radius: 12px !important;
+
+  border: none !important;
+
+}
+
+
+
+.my-table .ant-table-thead>tr>th {
+
+  background: #f8f9fa !important;
+
+  color: #495057 !important;
+
+  font-weight: 600 !important;
+
+  font-size: 14px !important;
+
+  border-right: 1px solid #e9ecef !important;
+
+  border-bottom: 2px solid #e9ecef !important;
+
+  padding: 16px 12px !important;
+
+  white-space: nowrap;
+
+}
+
+
+
+.my-table .ant-table-thead>tr>th:last-child {
+
+  border-right: none !important;
+
+}
+
+
+
+.my-table .ant-table-tbody>tr>td {
+
+  border-right: 1px solid #f1f3f4 !important;
+
+  border-bottom: 1px solid #f1f3f4 !important;
+
+  padding: 5px !important;
+
+  vertical-align: middle !important;
+
+  background: white !important;
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.my-table .ant-table-tbody>tr>td:last-child {
+
+  border-right: none !important;
+
+}
+
+
+
+.my-table .ant-table-tbody>tr:hover>td {
+
+  background: #f8f9fa !important;
+
+}
+
+
+
+.my-table .ant-table-tbody>tr:last-child>td {
+
+  border-bottom: 1px solid #e9ecef !important;
+
+}
+
+
+
+/* Horizontal line between table and pagination */
+
+.my-table .ant-table-wrapper {
+
+  border-bottom: 2px solid #e9ecef !important;
+
+  padding-bottom: 16px !important;
+
+}
+
+.edit-action {
+
+  color: #007aff !important;
+
+  font-size: 16px !important;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 32px;
+
+  height: 32px;
+
+  border-radius: 6px;
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.edit-action:hover {
+
+  background: rgba(0, 122, 255, 0.1) !important;
+
+  transform: scale(1.1);
+
+}
+
+
+
+.no-data {
+
+  color: #6c757d !important;
+
+  font-style: italic;
+
+}
+
+
+
+.status-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px;
+
+  border-radius: 20px;
+
+  font-size: 12px !important;
+
+  font-weight: 600 !important;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+}
+
+
+
+.status-badge.active {
+
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%) !important;
+
+  color: #155724 !important;
+
+  border: 1px solid #b8dacc;
+
+}
+
+
+
+.status-badge.inactive {
+
+  background: linear-gradient(135deg, #f8d7da 0%, #f1b0b7 100%) !important;
+
+  color: #721c24 !important;
+
+  border: 1px solid #e6b8bb;
+
+}
+
+
+
+.status-badge i {
+
+  font-size: 14px !important;
+
+}
+
+
+
+/* Table Pagination Styling */
+
+.my-table .ant-pagination {
+
+  margin-top: 16px !important;
+
+  padding: 0 20px 0 12px !important;
+
+}
+
+::ng-deep .ant-table-pagination.ant-pagination {
+  margin: 16px !important;
+}
+
+.my-table .ant-pagination-item {
+
+  border-radius: 6px !important;
+
+  border: 1px solid #e9ecef !important;
+
+}
+
+
+
+.my-table .ant-pagination-item-active {
+
+  background: #007aff !important;
+
+  border-color: #007aff !important;
+
+}
+
+
+
+/* Responsive Table */
+
+@media (max-width: 768px) {
+
+  .my-table .ant-table-thead>tr>th {
+
+    padding: 12px 8px !important;
+
+    font-size: 13px !important;
+
+  }
+
+
+
+  .my-table .ant-table-tbody>tr>td {
+
+    padding: 12px 8px !important;
+
+  }
+
+  .status-badge {
+
+    padding: 4px 8px !important;
+
+    font-size: 11px !important;
+
+  }
+
+}
+
+
+
+@media (max-width: 480px) {
+
+  .my-table .ant-table-thead>tr>th {
+
+    padding: 10px 6px !important;
+
+    font-size: 12px !important;
+
+  }
+
+
+
+  .my-table .ant-table-tbody>tr>td {
+
+    padding: 10px 6px !important;
+
+  }
+
+
+
+  .edit-action {
+
+    width: 28px;
+
+    height: 28px;
+
+    font-size: 14px;
+
+  }
+
+  .status-badge {
+
+    padding: 3px 6px !important;
+
+    font-size: 10px !important;
+
+    gap: 4px;
+
+  }
+
+}

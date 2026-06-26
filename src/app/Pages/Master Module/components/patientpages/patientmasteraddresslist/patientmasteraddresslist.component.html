@@ -1,0 +1,60 @@
+<nz-spin nzTip="Loading..." [nzSpinning]="loadingRecords">
+  <div nz-row>
+    <div nz-col nzSpan="24" style="padding: 10px;">
+      <div class="cardstyle">
+        <div style="text-align: center" (click)="addaddress()">
+          <span nz-icon nzType="plus-circle" nzTheme="outline" style="
+                      font-size: 50px !important;
+                      color: #1890ff;
+                    "></span>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzSpan="24" *ngFor="let dataaa of data;let i=index" style="padding: 10px;">
+      <div nz-row>
+        <div nz-col nzSpan="24" class="cardstyle ">
+          <div nz-row>
+            <div class="subnam" nz-col nzSpan="24" style="font-size: 12px !important;text-align: end; ">
+              <nz-tag [nzColor]="'gold'" *ngIf="dataaa.type.trim() =='P'">Permanent</nz-tag>&nbsp;&nbsp;
+              <nz-tag [nzColor]="'gold'" *ngIf="dataaa.type.trim() =='C'">Current</nz-tag>&nbsp;&nbsp;
+
+              <a (click)="edit(data,i)"><span nz-icon nzType="edit" nzTheme="twotone" style="font-size: 15px"
+                  nzTooltipTitle="Edit" nz-tooltip></span></a>
+            </div>
+            <div class="subnam" nz-col nzSpan="24" style="font-size: 12px !important; ">
+              {{dataaa.line_1}} ,{{dataaa.line_2}}
+            </div>
+            <div class="subnam" nz-col nzSpan="24" style="font-size: 12px !important;">
+              {{ dataaa["country_name"] }},
+              {{ dataaa["state_name"] }},{{dataaa["district_name"]}}
+            </div>
+            <div class="subnam" nz-col nzSpan="24" style="font-size: 12px !important; ">
+              {{ dataaa["pincode_name"] }}
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</nz-spin>
+
+
+
+
+<div *ngIf="addressvisible">
+  <nz-drawer [nzBodyStyle]="{
+        height: 'calc(100% - 55px)',
+        overflow: 'auto',
+        'padding-bottom': '53px'
+      }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="400" [nzVisible]="addressvisible"
+    [nzTitle]="addresstitle" (nzOnClose)="addressclose()" (nzKeyboard)="(true)">
+    <ng-container *nzDrawerContent>
+      <app-patientmasteraddressadd [drawerClose]="closeCallback" [data]="drawerdata" [patientId]="patientId">
+      </app-patientmasteraddressadd>
+    </ng-container>
+  </nz-drawer>
+</div>

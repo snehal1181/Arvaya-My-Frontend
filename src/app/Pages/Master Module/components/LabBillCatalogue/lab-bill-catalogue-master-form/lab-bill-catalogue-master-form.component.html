@@ -1,0 +1,257 @@
+<div>
+	<form #labtechician="ngForm"
+		nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+			<div nz-row>
+				<!-- Personal Information Section -->
+				<div nz-col
+					nzSpan="24"
+					class="form-group"
+					style="padding-left:10px;">
+					<nz-form-label nzNoColon>Select Test/Package</nz-form-label>
+					<nz-form-control>
+						<nz-radio-group [(ngModel)]="radiovalue"
+						    (ngModelChange)="ontypeChange($event)"
+							name="radio">
+							<label nz-radio
+								nzValue="T">
+								Test
+							</label>
+							<label nz-radio
+								nzValue="P">
+								Package
+							</label>
+						</nz-radio-group>
+					</nz-form-control>
+
+				</div>
+			
+				<!-- LAB_ID -->
+				<div nz-col
+					nzSpan="24"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Lab
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Lab">
+							<nz-select [(ngModel)]="data.LAB_ID"
+								[nzLoading]="labloading"
+								(ngModelChange)="onLabChange($event)"
+								name="labid"
+								nzPlaceHolder="Select Lab"
+								nzShowSearch
+								required>
+								<nz-option *ngFor="let lab of labs"
+									[nzValue]="lab.ID"
+									[nzLabel]="lab.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- TEST_ID -->
+				<div *ngIf="radiovalue=='T'"
+					nz-col
+					nzSpan="24"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Test
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Test">
+							<nz-select [(ngModel)]="data.TEST_ID"
+								[nzLoading]="testloading"
+								name="testid"
+								nzPlaceHolder="Select Test"
+								nzShowSearch
+								required>
+								<nz-option *ngFor="let test of tests"
+									[nzValue]="test.ID"
+									[nzLabel]="test.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- PACKAGE_ID -->
+				<div *ngIf="radiovalue=='P'"
+					nz-col
+					nzSpan="24"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Package
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Package">
+							<nz-select [(ngModel)]="data.PACKAGE_ID"
+								[nzLoading]="packageloading"
+								name="packageid"
+								nzPlaceHolder="Select Package"
+								nzShowSearch
+								required>
+								<nz-option *ngFor="let package of packages"
+									[nzValue]="package.ID"
+									[nzLabel]="package.PACKAGE_NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<!-- <div nz-col
+					nzSpan="24"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Type
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Type">
+							<nz-select [(ngModel)]="data.TYPE"
+								[nzLoading]="appointmenttypeloading"
+								name="type"
+								nzShowSearch
+								nzPlaceHolder="Select Type"
+								required>
+								<nz-option *ngFor="let type of types"
+									[nzValue]="type.ID"
+									[nzLabel]="type.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div> -->
+				<div nz-col
+					nzSpan="12"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Mode
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Mode">
+							<nz-select [(ngModel)]="data.MODE"
+								name="mode"
+								nzPlaceHolder="Select Mode"
+								required>
+								<nz-option nzValue="ON"
+									nzLabel="Online"></nz-option>
+								<nz-option nzValue="OF"
+									nzLabel="Offline"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- TYPE -->
+
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Bill Amount
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Bill Amount">
+							<input [(ngModel)]="data.BILL_AMOUNT" nz-input name="billAmount" maxlength="10"
+								(keypress)="commonFunction.omit($event)" placeholder="Enter Bill Amount" required>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- TAX_ID -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired nzNoColon>
+							Tax
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Select Tax">
+							<nz-select [(ngModel)]="data.TAX_ID" name="taxid" nzPlaceHolder="Select Tax" required
+								(ngModelChange)="onTaxChange($event)">
+								<nz-option *ngFor="let tax of taxes" [nzValue]="tax.ID"
+									[nzLabel]="tax.TAX_NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- TOTAL_AMOUNT -->
+				<div nz-col nzSpan="12" class="form-group">
+					<nz-form-item>
+						<nz-form-label nzNoColon>
+							Total Price
+						</nz-form-label>
+						<nz-form-control nzHasFeedback nzErrorTip="Enter Total Amount">
+							<input [(ngModel)]="data.TOTAL_PRICE" nz-input name="totalAmount" maxlength="20" disabled
+								placeholder="Enter Total Amount" readonly>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- IS_ACTIVE -->
+				<div nz-col
+					nzSpan="12"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Is Active
+						</nz-form-label>
+						<nz-form-control>
+							<nz-switch [(ngModel)]="data.IS_ACTIVE"
+								name="isActive"
+								nzCheckedChildren="Active"
+								nzUnCheckedChildren="Inactive"></nz-switch>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- Footer Buttons -->
+			</div>
+
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close()"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.ID"
+			[nzDropdownMenu]="menu"
+			[nzLoading]="isSpinning"
+			(click)="save(false, labtechician)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px; background-color: #40a9ff;">
+					<a (click)="save(true, labtechician)"
+						style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.ID"
+			[nzLoading]="isSpinning"
+			(click)="save(false, labtechician)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,36 @@
+nz-form-item{
+    display: inline-block;
+    margin-bottom: 5px;
+    width: -webkit-fill-available;
+    padding: 0px 10px;
+    /* font-family: '"Poppins", sans-serif !important'; */
+  }
+
+@media (max-width: 426px) {
+  ::ng-deep .ant-drawer-content-wrapper {
+    width: 100vw !important;
+  }
+  
+  ::ng-deep .ant-drawer-content {
+    width: 100vw !important;
+  }
+  
+  ::ng-deep .ant-drawer-body {
+    padding: 16px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: calc(100vh - 120px) !important;
+    margin-bottom: 55px !important;
+  }
+  
+  ::ng-deep .ant-drawer-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: white !important;
+    padding: 12px 16px !important;
+    border-top: 1px solid #f0f0f0 !important;
+    z-index: 1000 !important;
+  }
+}

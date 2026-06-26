@@ -1,0 +1,133 @@
+<div>
+	<form #CityMasterPage="ngForm"
+		nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+		
+
+			<!-- Name Field -->
+			<div nz-row>
+				<div nz-col
+					nzSpan="24">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Name
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please enter a valid name">
+							<input [(ngModel)]="data.NAME"
+								nz-input
+								name="NAME"
+								placeholder="Enter Name"
+								maxlength="256"
+								required
+								autocomplete="off">
+						</nz-form-control>
+						<h6 *ngIf="data.NAME"
+							style="color: red; font-size: 10px">
+							{{ data.NAME.length }}/256
+						</h6>
+					</nz-form-item>
+				</div>
+			</div>
+
+			<!-- Sequence Number and Status Fields -->
+			<div nz-row>
+                <div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Type
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please select a valid type">
+							<nz-select [(ngModel)]="data.TYPE"
+								name="TYPE"
+								nzPlaceHolder="Select Type"
+								required>
+								<nz-option nzValue="L"
+									nzLabel="Lab"></nz-option>
+								<nz-option nzValue="H"
+									nzLabel="Hospital"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Sequence No.
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please enter a valid sequence number">
+							<nz-input-number [(ngModel)]="data.SEQ_NO"
+								[nzMin]="1"
+								[nzStep]="1"
+								style="width: 100%;"
+								name="SEQ_NO"
+								nzPlaceHolder="Enter Sequence No"
+                                disabled
+								required></nz-input-number>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzNoColon>Status</nz-form-label>
+						<nz-form-control>
+							<nz-switch [(ngModel)]="data.IS_ACTIVE"
+								name="IS_ACTIVE"
+								nzCheckedChildren="Active"
+								nzUnCheckedChildren="Inactive"></nz-switch>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+			</div>
+
+		</nz-spin>
+	</form>
+
+	<div class="footer">
+		<button (click)="close()"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.ID"
+			[nzDropdownMenu]="menu"
+			[nzLoading]="isSpinning"
+			(click)="save(false,CityMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px;background-color: #40a9ff;">
+					<a (click)="save(true,CityMasterPage)"
+						style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.ID"
+			[nzLoading]="isSpinning"
+			(click)="save(false,CityMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

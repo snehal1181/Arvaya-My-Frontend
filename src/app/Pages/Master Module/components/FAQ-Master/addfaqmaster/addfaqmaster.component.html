@@ -1,0 +1,117 @@
+<div>
+  <form nz-form #ServiceMasterPage="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <!-- Service Type Dropdown -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Service Type</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Service Type">
+              <nz-select nzShowSearch nzAllowClear="true" name="SERVICE_TYPE" nzPlaceHolder="Select Service Type"
+                [(ngModel)]="data.type" required>
+                <nz-option *ngFor="let type of serviceTypes" [nzValue]="type.ID" [nzLabel]="type.LABEL"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- Consultation Mode Dropdown -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Consultation Mode</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Consultation Mode">
+              <nz-select nzShowSearch nzAllowClear="true" name="CONSULTATION_MODE"
+                nzPlaceHolder="Select Consultation Mode" [(ngModel)]="data.consultation_mode"
+                (ngModelChange)="onConsultationModeChange($event)" required>
+                <nz-option *ngFor="let mode of consultationModes" [nzValue]="mode.ID"
+                  [nzLabel]="mode.LABEL"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Appointment Type Dropdown -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Appointment Type</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Select Appointment Type">
+              <nz-select nzShowSearch nzAllowClear="true" name="APPOINMENT_TYPE" nzPlaceHolder="Select Appointment Type"
+                [(ngModel)]="data.appoinment_type" required>
+                <!-- Display options based on CONSULTATION_MODE -->
+                <nz-option *ngFor="let type of filteredAppointmentTypes" [nzValue]="type.ID"
+                  [nzLabel]="type.LABEL"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Question Input -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Question</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Question">
+              <input nz-input name="QUESTION" [(ngModel)]="data.question" placeholder="Enter Question" maxlength="128"
+                required autocomplete="off" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Answer Textarea -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Answer</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Answer">
+              <textarea nz-input rows="2" name="ANSWER" [(ngModel)]="data.answer" placeholder="Enter Answer"
+                maxlength="256" required></textarea>
+              <span style="color: red; font-size: 10px" *ngIf="data.answer">
+                {{ data.answer.length }}/256
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Sequence No. Input (Disabled) -->
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Sequence No.">
+              <input nz-input placeholder="Sequence No." name="SEQ_NO" [(ngModel)]="data.seq_no"
+                (keypress)="commonFunction.onlynum($event)" maxlength="8" autocomplete="off" disabled />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Active Status Switch -->
+        <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="IS_ACTIVE" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.is_active"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false, ServiceMasterPage)">
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+          <a style="color: white" (click)="save(true, ServiceMasterPage)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false, ServiceMasterPage)">
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>

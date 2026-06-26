@@ -1,0 +1,168 @@
+
+    <form nz-form #LabAppointmentPage="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+
+            <div nz-row>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Patient</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Select Patient">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Patient" name="PATIENT_ID"
+                                [(ngModel)]="data.PATIENT_ID" nzShowSearch required>
+                                <nz-option *ngFor="let data of PatientData" [nzValue]="data.ID" [nzLabel]="data.NAME"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Slot</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Select Slot">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Slot" name="SLOT_ID"
+                                [(ngModel)]="data.SLOT_ID" nzShowSearch required>
+                                <nz-option *ngFor="let data of slotData" [nzValue]="data.ID" [nzLabel]="data.NAME"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <div nz-row>
+                
+            </div>
+            <div nz-row>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Test</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Select Test">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Test" name="TEST_ID"
+                                [(ngModel)]="data.TEST_ID" nzShowSearch required>
+                                <nz-option *ngFor="let data of testData" [nzValue]="data.ID" [nzLabel]="data.NAME"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Package</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Select Package">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Package" name="PACKAGE_ID"
+                                [(ngModel)]="data.PACKAGE_ID" nzShowSearch required>
+                                <nz-option *ngFor="let data of PackageData" [nzValue]="data.ID" [nzLabel]="data.NAME"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row>
+               
+            </div>
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Notes</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Notes ">
+                            <textarea nz-input name="notes" [(ngModel)]="data.NOTES" placeholder="Enter Notes"
+                                maxlength="1024" required autocomplete="off" ></textarea>
+                        </nz-form-control>
+                        <span style="color: red; font-size: 10px" *ngIf="data.NOTES">{{ data.NOTES.length }}/1024</span>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row>
+                <div nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12">
+                    <nz-form-item>
+                      <nz-form-label nzNoColon >Report</nz-form-label>
+            
+                      <nz-form-control nzHasFeedback nzErrorTip="Select Image">
+                        <button *ngIf="data.REPORT == ' ' || data.REPORT == null" nz-button 
+                          style="height: 28px;padding: 0px 7px;font-size: 12px;width: 100%;" (click)="image1.click()">
+                          <i nz-icon nzType="upload" nzTheme="outline"></i>
+                          <input #image1 name="image1" type="file" accept=".png, .jpg, .jpeg" (change)="onFileSelected($event)"
+                            style="display: none" />
+                        </button>
+                        <span *ngIf="!data.REPORT || data.REPORT.trim() === ''"
+                          style="color: red; font-size: 10px !important;  display: block; margin-top: 5px;">
+                          *Please select an image file (PNG, JPG, JPEG) with a size up to 1MB.
+                        </span>
+            
+                        <!-- <br /> -->
+            
+                        <div *ngIf="data.REPORT != null && data.REPORT != undefined && data.REPORT != ' '" style="display: flex; justify-content: center">
+                          <span> {{ data.REPORT }}</span> &nbsp;&nbsp;
+                          <a style="color: blue; margin-right: 9px" (click)="viewImage(data.REPORT)" nz-tooltip
+                            nzTooltipTitle="Click Here To View Uploaded Document">
+                            <span nz-icon nzType="eye" nzTheme="outline"></span>
+                          </a>
+                          <span *ngIf="data.ID">
+                            <span style="cursor: pointer" nz-popconfirm nzPopconfirmTitle="Are you sure want delete?"
+                              nzPopconfirmPlacement="top" (nzOnConfirm)="image1DeleteConfirm(data)" (nzOnCancel)="deleteCancel()">
+                              <span nz-icon nzType="delete" nzTheme="twotone" nz-tooltip nzTooltipTitle="Delete">
+                              </span>
+                            </span>
+                          </span>
+                          <span *ngIf="!data.ID">
+                            <span style="cursor: pointer; margin-left: 10px" nz-popconfirm
+                              nzPopconfirmTitle="Are you sure want Delete?" nzPopconfirmPlacement="top"
+                              (nzOnConfirm)="removeImage()" (nzOnCancel)="deleteCancel()">
+                              <span nz-icon nzType="delete" nzTheme="twotone" nz-tooltip nzTooltipTitle="Delete">
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </nz-form-control>
+                    </nz-form-item>
+                    
+                  </div>
+
+                  <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Date</nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <nz-date-picker
+                            name="DATE"
+                            [nzFormat]="'dd/MMM/yyyy'"
+                            [(ngModel)]="data.NEXT_FOLLOUP_DATE"
+                            
+                          ></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row>
+               
+
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzNoColon>Status</nz-form-label>
+                        <nz-form-control>
+                            <nz-switch name="status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                                [(ngModel)]="data.STATUS"></nz-switch>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+            </div>
+        </nz-spin>
+    </form>
+
+    <div class="footer">
+        <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px;">
+            <span>Cancel</span>
+        </button>
+        <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.ID" nz-button nz-dropdown
+            [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false,LabAppointmentPage)">
+            <span>Save & Close</span>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+                    <a style="color:white" (click)="save(true,LabAppointmentPage)">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+        <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+            (click)="save(false,LabAppointmentPage)">
+            <span>Update & Close</span>
+        </button>
+    </div>

@@ -1,0 +1,177 @@
+<div>
+  <form #CityMasterPage="ngForm" nz-form>
+    <nz-spin [nzSpinning]="isSpinning">
+      <!-- Patient Number Field -->
+      <!-- {{data.LAB_ID}} -->
+      <!-- Name Field -->
+      <div nz-col nzSpan="24" class="form-group">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon> Lab </nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Select Lab">
+            <nz-select [(ngModel)]="data.lab_id" name="labId" nz-input nzPlaceHolder="Select Lab" style="width: 100%"
+              [disabled]="showdata">
+              <nz-option *ngFor="let lab of labs" [nzValue]="lab.id" [nzLabel]="lab.name"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-row>
+        <!-- <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Lab Name </nz-form-label>
+            <nz-form-control
+              nzHasFeedback
+              nzErrorTip="Please enter a valid name"
+            >
+              <input
+                [(ngModel)]="internalLabName"
+                nz-input
+                name="NAME1"
+                placeholder="Enter Name"
+                maxlength="256"
+                required
+                autocomplete="off"
+                disabled
+              />
+            </nz-form-control>
+            <h6 *ngIf="data.NAME" style="color: red; font-size: 10px">
+              {{ data.NAME.length }}/256
+            </h6>
+          </nz-form-item>
+        </div> -->
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Name </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid name">
+              <input [(ngModel)]="data.name" nz-input name="name" (keypress)="commonFunction.alphaOnly($event)"
+                placeholder="Enter name" maxlength="256" required autocomplete="off" />
+            </nz-form-control>
+            <h6 *ngIf="data.name" style="color: red; font-size: 10px">
+              {{ data.name.length }}/256
+            </h6>
+          </nz-form-item>
+        </div>
+
+        <!-- Date of Birth Field -->
+
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Patient No. </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid patient number">
+              <input [(ngModel)]="data.patient_no" nz-input name="PATIENT_NO" (keypress)="alphaOnly1($event)"
+                placeholder="Enter Patient No" maxlength="16" required autocomplete="off" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Mobile Number </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid mobile number">
+              <input [(ngModel)]="data.mobile_number" nz-input name="mobile_number" placeholder="Enter Mobile Number"
+                maxlength="10" (keypress)="commonFunction.omit($event)" [pattern]="commonFunction.mobpattern" required
+                type="tel" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Mobile Number Field -->
+
+
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Gender </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please select a valid gender">
+              <!-- <nz-select [(ngModel)]="data.GENDER"
+							name="GENDER"
+							nzPlaceHolder="Select Gender"
+							required>
+							<nz-option *ngFor="let gender of genderList"
+								[nzValue]="gender.value"
+								[nzLabel]="gender.label">
+							</nz-option>
+						</nz-select> -->
+              <nz-radio-group name="gender" [(ngModel)]="data.gender" required>
+                <label nz-radio nzValue="M">Male</label>
+                <label nz-radio nzValue="F">Female</label>
+                <label nz-radio [nzValue]="'O'">Other</label>
+
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Blood Group Field -->
+
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Date of Birth </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please select a valid date of birth">
+              <nz-date-picker [(ngModel)]="data.dob" nz-input name="DOB" style="width: 100%"
+                placeholder="Select Date of Birth" nzFormat="dd/MM/yyyy" nzPlacement="bottomLeft" required>
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon> Blood Group </nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid blood group">
+              <nz-select nzAllowClear nzPlaceHolder="Select Blood Group" name="blood_group"
+                [(ngModel)]="data.blood_group" required>
+                <nz-option [nzValue]="'A+'" nzLabel="A+"></nz-option>
+                <nz-option [nzValue]="'A-'" nzLabel="A-"></nz-option>
+                <nz-option [nzValue]="'B+'" nzLabel="B+"></nz-option>
+                <nz-option [nzValue]="'B-'" nzLabel="B-"></nz-option>
+                <nz-option [nzValue]="'AB+'" nzLabel="AB+"></nz-option>
+                <nz-option [nzValue]="'AB-'" nzLabel="AB-"></nz-option>
+                <nz-option [nzValue]="'O+'" nzLabel="O+"></nz-option>
+                <nz-option [nzValue]="'O-'" nzLabel="O-"></nz-option>
+              </nz-select>
+              <!-- <input [(ngModel)]="data.BLOOD_GROUP"
+								nz-input
+								name="BLOOD_GROUP"
+								placeholder="Enter Blood Group"
+								maxlength="8"
+								required> -->
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch name="STATUS" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.is_active"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button (click)="close()" type="button" nz-button class="ant-btn" style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+    <button *ngIf="!data.id" [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false, CityMasterPage)"
+      type="button" class="ant-btn ant-btn-primary" nz-button nz-dropdown>
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+          <a (click)="save(true, CityMasterPage)" style="color: white">
+            Save & New
+          </a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button *ngIf="data.id" [nzLoading]="isSpinning" (click)="save(false, CityMasterPage)" type="button"
+      class="ant-btn ant-btn-primary" nz-button>
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>

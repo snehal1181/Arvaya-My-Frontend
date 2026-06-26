@@ -1,0 +1,129 @@
+<div>
+    <form nz-form #accountMasterPage="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+            <!-- Row 1: Country and State -->
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Country</nz-form-label>
+                        <nz-form-control nzErrorTip="Please Select Country">
+                            <nz-select nzShowSearch nzAllowClear required nzPlaceHolder="Select Country" name="countryname"
+                                [(ngModel)]="data.country_id" [nzLoading]="loadcountries" (ngModelChange)="getstates($event)">
+                                <nz-option *ngFor="let role of CountryList" [nzValue]="role.id" [nzLabel]="role.name">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>State</nz-form-label>
+                        <nz-form-control nzErrorTip="Please Select State">
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select State" name="statename"
+                                [(ngModel)]="data.state_id" required  [nzLoading]="loadstates" (ngModelChange)="getDist($event)">
+                                <nz-option *ngFor="let role of state" [nzValue]="role.id" [nzLabel]="role.name">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>District</nz-form-label>
+                        <nz-form-control nzErrorTip="Please Select District">
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select District" name="tempDistrict"
+                                [(ngModel)]="data.district_id" [nzLoading]="loaddistract" required >
+                                <nz-option *ngFor="let role of district" [nzValue]="role.id" [nzLabel]="role.name">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Area</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Area Name ">
+                            <input nz-input name="areaname" [(ngModel)]="data.area_name" placeholder="Enter Area Name"
+                                maxlength="128" required autocomplete="off" />
+                        </nz-form-control>
+                        <!-- <span style="color: red; font-size: 10px" *ngIf="data.NAME">{{ data.NAME.length }}/256</span> -->
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Pincode</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid 
+                        Pincode ">
+                            <input nz-input name="Pincode" [pattern]="commonFunction.PincodePatt" (keypress)="commonFunction.omit($event)"[(ngModel)]="data.pincode_number" placeholder="Enter Pincode"
+                            maxlength="6" required autocomplete="off" #pincode="ngModel" />
+                        </nz-form-control>
+                        
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Sequence Number">
+                            <nz-input-number disabled style="width: 100%" name="seqno" [(ngModel)]="data.seq_no"
+                                [nzMin]="1" [nzStep]="1" required>
+                            </nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="8">
+                    <nz-form-item>
+                        <nz-form-label nzNoColon>Status </nz-form-label>
+                        <nz-form-control>
+                            <nz-switch name="Status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                                [(ngModel)]="data.is_active">
+                            </nz-switch>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+
+        </nz-spin>
+    </form>
+
+    <div class="footer">
+        <button type="button" nz-button style="margin-right: 8px" class="ant-btn" style="margin-right: 8px"
+            (click)="close(accountMasterPage)">
+            <span>Cancel</span>
+        </button>
+
+        <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown
+            [nzDropdownMenu]="menu" (click)="save(false, accountMasterPage)">
+            <span>Save & Close</span>
+        </button>
+
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+                    <a (click)="save(true, accountMasterPage)">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+
+        <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+            (click)="save(false, accountMasterPage)">
+            <span>Update & close</span>
+        </button>
+    </div>
+</div>
+
+<div *ngIf="mapDraweVisible">
+    <nz-modal [(nzVisible)]="mapDraweVisible" nzClosable="true" nzMask="true" nzMaskClosable="true" nzWidth="1000px"
+        [nzFooter]="modalFooter" [nzTitle]="mapDrawerTitle" (nzOnCancel)="clearSearchBox()"
+        [nzStyle]="{ 'margin-top': '-80px' }">
+        <ng-container *nzModalContent>
+            <div id="map" style="height: 500px; width: 100%"></div>
+        </ng-container>
+    </nz-modal>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" (click)="clearSearchBox()">Save</button>
+        <!-- <button nz-button nzType="default" (click)="closemapModal()">Close</button> -->
+    </ng-template>
+</div>

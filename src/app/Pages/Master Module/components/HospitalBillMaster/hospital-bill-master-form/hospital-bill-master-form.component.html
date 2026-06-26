@@ -1,0 +1,159 @@
+<div>
+	<form #labtechician="ngForm"
+		nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+			<div nz-row>
+				<!-- CATALOG_ID -->
+				<div nz-col
+					nzSpan="24"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Catalog
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Catalog">
+							<nz-select [(ngModel)]="data.CATALOG_ID"
+								name="catalogId"
+								nzPlaceHolder="Select Catalog"
+								required>
+								<nz-option *ngFor="let catalog of catalogs"
+									[nzValue]="catalog.ID"
+									[nzLabel]="catalog.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- APPOINTMENT_ID -->
+				<div nz-col
+					nzSpan="12"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Appointment
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Appointment">
+							<nz-select [(ngModel)]="data.APPOINTMENT_ID"
+								name="appointmentId"
+								nzPlaceHolder="Select Appointment"
+								required>
+								<nz-option *ngFor="let appointment of appointments"
+									[nzValue]="appointment.ID"
+									[nzLabel]="appointment.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- PAYMENT_INFO -->
+				<div nz-col
+					nzSpan="12"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Payment Info
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Enter Payment Info">
+							<input [(ngModel)]="data.PAYMENT_INFO"
+								nz-input
+								name="paymentInfo"
+								maxlength="255"
+								placeholder="Enter Payment Info"
+								required>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- PAYMENT_STATUS -->
+				<div nz-col
+					nzSpan="12"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Payment Status
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Payment Status">
+							<nz-select [(ngModel)]="data.PAYMENT_STATUS"
+								name="paymentStatus"
+								nzPlaceHolder="Select Payment Status"
+								required>
+								<nz-option *ngFor="let status of paymentStatuses"
+									[nzValue]="status.ID"
+									[nzLabel]="status.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<!-- PAYMENT_DATE -->
+				<div nz-col
+					nzSpan="12"
+					class="form-group">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Payment Date
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Select Payment Date">
+							<nz-date-picker [(ngModel)]="data.PAYMENT_DATE"
+								name="paymentDate"
+								nzPlaceHolder="Select Payment Date"
+                                nzFormat="dd/MM/yyyy"
+                                style="width: 100%;"
+								required></nz-date-picker>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+			</div>
+
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close()"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.ID"
+			[nzDropdownMenu]="menu"
+			[nzLoading]="isSpinning"
+			(click)="save(false, labtechician)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px; background-color: #40a9ff;">
+					<a (click)="save(true, labtechician)"
+						style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.ID"
+			[nzLoading]="isSpinning"
+			(click)="save(false, labtechician)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

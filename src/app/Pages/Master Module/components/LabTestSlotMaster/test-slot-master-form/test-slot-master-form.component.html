@@ -1,0 +1,145 @@
+<div>
+	<form #labtechician="ngForm"
+		nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+			<div nz-row>
+                <!-- DATE -->
+                <div nz-col nzSpan="12" class="form-group">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzNoColon>Date</nz-form-label>
+                    <nz-form-control nzHasFeedback nzErrorTip="Select Date">
+                      <nz-date-picker [(ngModel)]="data.DATE"
+                                      name="date"
+                                      nzPlaceHolder="Select Date"
+                                      [nzFormat]="'dd/MM/yyyy'"
+                                      style="width: 100%;"></nz-date-picker>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              
+                <!-- START TIME -->
+                <div nz-col nzSpan="12" class="form-group">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzNoColon>Start Time</nz-form-label>
+                    <nz-form-control nzHasFeedback nzErrorTip="Select Start Time">
+                      <nz-time-picker [(ngModel)]="data.START"
+                                      name="startTime"
+                                      nzFormat="HH:mm"
+                                      nzPlaceHolder="Select Start Time"
+                                      style="width: 100%;"></nz-time-picker>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              
+                <!-- END TIME -->
+                <div nz-col nzSpan="12" class="form-group">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzNoColon>End Time</nz-form-label>
+                    <nz-form-control nzHasFeedback nzErrorTip="Select End Time">
+                      <nz-time-picker [(ngModel)]="data.END"
+                                      name="endTime"
+                                      nzFormat="HH:mm"
+                                      nzPlaceHolder="Select End Time"
+                                      style="width: 100%;"></nz-time-picker>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              
+                <!-- IS_BLOCKED -->
+                <!-- <div nz-col nzSpan="12" class="form-group">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzNoColon>Is Blocked</nz-form-label>
+                    <nz-form-control nzHasFeedback nzErrorTip="Select Blocked Status">
+                      <nz-select [(ngModel)]="data.IS_BLOCKED"
+                                 name="isBlocked"
+                                 nzPlaceHolder="Select Blocked Status"
+                                 style="width: 100%;">
+                        <nz-option [nzValue]="1" nzLabel="Yes"></nz-option>
+                        <nz-option [nzValue]="0" nzLabel="No"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div> -->
+                <div nz-col nzSpan="6">
+                  <nz-form-item>
+                      <nz-form-label nzNoColon>Is Booked</nz-form-label>
+                      <nz-form-control>
+                          <nz-switch name="IsBlocked" nzCheckedChildren="Yes" nzUnCheckedChildren="No"
+                              [(ngModel)]="data.IS_BOOKED"></nz-switch>
+                      </nz-form-control>
+                  </nz-form-item>
+              </div>
+                <div nz-col nzSpan="6">
+                  <nz-form-item>
+                      <nz-form-label nzNoColon>Is Blocked</nz-form-label>
+                      <nz-form-control>
+                          <nz-switch name="IsBlocked" nzCheckedChildren="Yes" nzUnCheckedChildren="No"
+                              [(ngModel)]="data.IS_BLOCKED"></nz-switch>
+                      </nz-form-control>
+                  </nz-form-item>
+              </div>
+              
+              
+                <!-- BLOCKED_REASON -->
+                <div nz-col nzSpan="24" class="form-group" *ngIf="data.IS_BLOCKED== true">
+                  <nz-form-item>
+                    <nz-form-label nzNoColon >Blocked Reason</nz-form-label>
+                    <nz-form-control nzHasFeedback nzErrorTip="Enter Blocked Reason">
+                      <input [(ngModel)]="data.BLOCKED_REASON"
+                             name="blockedReason"
+                             nz-input
+                             placeholder="Enter Blocked Reason"
+                             maxlength="512">
+                    </nz-form-control>
+                    <h6 *ngIf="data.BLOCKED_REASON"
+                        style="font-size: 10px;color: red;">
+                      {{ data.BLOCKED_REASON?.length }}/512
+                    </h6>
+                  </nz-form-item>
+                </div>
+              
+              
+              </div>
+              
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close()"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+		<button *ngIf="!data.ID"
+			[nzDropdownMenu]="menu"
+			[nzLoading]="isSpinning"
+			(click)="save(false, labtechician)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>Save & Close</span>
+		</button>
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px; background-color: #40a9ff;">
+					<a (click)="save(true, labtechician)"
+						style="color:white">
+						Save & New
+					</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+		<button *ngIf="data.ID"
+			[nzLoading]="isSpinning"
+			(click)="save(false, labtechician)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & Close</span>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,97 @@
+<div>
+    <form nz-form #QualificationTypeForm="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Qualification Type</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Select Qualification Type">
+                            <nz-select nzAllowClear="true" nzPlaceHolder="Select Qualification Type"
+                                name="qualification_type_id" [(ngModel)]="data.qualification_type_id" required>
+                                <nz-option *ngFor="let qualification of qualificationTypeData"
+                                    [nzValue]="qualification.id" [nzLabel]="qualification.name"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Name</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Name">
+                            <input nz-input name="name" [(ngModel)]="data.name" placeholder="Enter Name" maxlength="128"
+                                required autocomplete="off" />
+                        </nz-form-control>
+                        <span style="color: red; font-size: 10px" *ngIf="data.name">{{ data.name.length }}/128</span>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Short Code</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Short Code">
+                            <input nz-input name="short_code" [(ngModel)]="data.short_code"
+                                placeholder="Enter Short Code" maxlength="64" required autocomplete="off" />
+                        </nz-form-control>
+                        <span style="color: red; font-size: 10px" *ngIf="data.short_code">{{ data.short_code.length
+                            }}/64</span>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <div nz-row>
+
+                <div nz-col nzSpan="9">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Sequence Number">
+                            <nz-input-number style="width: 100%;" name="seq_no" [(ngModel)]="data.seq_no" [nzMin]="1"
+                                [nzStep]="1" disabled required>
+                            </nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzSpan="7">
+                    <nz-form-item>
+                        <nz-form-label nzNoColon> &nbsp; Status</nz-form-label>
+                        <nz-form-control>
+                            <nz-switch name="is_active" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                                [(ngModel)]="data.is_active"></nz-switch>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzSpan="9"></div>
+
+            </div>
+
+        </nz-spin>
+    </form>
+
+    <div class="footer">
+        <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px;">
+            <span>Cancel</span>
+        </button>
+        <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown
+            [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false,QualificationTypeForm)">
+            <span>Save & Close</span>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+                    <a style="color:white" (click)="save(true,QualificationTypeForm)">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+        <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+            (click)="save(false,QualificationTypeForm)">
+            <span>Update & Close</span>
+        </button>
+    </div>
+</div>

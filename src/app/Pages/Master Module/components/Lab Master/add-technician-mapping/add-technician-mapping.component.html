@@ -1,0 +1,90 @@
+<div>
+
+    <div nz-row>
+        <div nz-col nzSpan="18"></div>
+
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-input-group [nzPrefix]="prefixIconSearch" class="custom-search-input">
+                    <input type="text" autocomplete="off" name="search" (ngModelChange)="search($event)" nz-input
+                        placeholder="Search..." [(ngModel)]="searchText" />
+                </nz-input-group>
+                <ng-template #prefixIconSearch>
+                    <span nz-icon nzType="search" class="search-icon"></span>
+                </ng-template>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row>
+        <div nz-col nzSpan="24">
+            <nz-table class="my-scroll no-wrap1" nzBordered #promote [nzData]="dataList1"
+                [nzLoading]="tecnicalSpecificationisSpinning" [nzSize]="'small'" [nzScroll]="{ x: '800px', y: '55vh' }"
+                nzShowSizeChanger [nzFrontPagination]="false">
+                <thead>
+                    <tr>
+                        <th nzLeft nzWidth="20px" style="font-weight: bold; text-align: center" [(nzChecked)]="checked"
+                            (nzCheckedChange)="onAllChecked($event)"> &nbsp;
+                            <!-- Select All -->
+                        </th>
+
+                        <th nzWidth="80px" [nzSortFn]="true">Select Technician</th>
+
+                        <th nzWidth="80px" [nzSortFn]="true" (nzSortOrderChange)="sortData('DESCRIPTION', $event)">
+                            Association Date
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let data of promote.data">
+                        <!-- <tr> -->
+
+                        <td nzLeft style="text-align: center;">
+                            <!-- <label nz-checkbox [nzChecked]="data.IS_ACTIVE === 1"(nzCheckedChange)="onItemChecked(data, $event)"></label> -->
+                            <label nz-checkbox (nzCheckedChange)="onItemChecked(data, $event)"></label>
+                        </td>
+
+
+                        <td style="white-space: pre-line; text-align: left">
+                            <nz-form-item>
+                                <nz-input-group style="text-align: center; width: 115%;">
+                                    <nz-select name="parent_id" nzShowSearch style="width: 230px;"
+                                        nzPlaceHolder="Select Technician ">
+                                        <!-- [nzLoading]="loadingForm" -->
+                                        <!-- <nz-option *ngFor="let val of forms" [nzValue]="val.ID" [nzLabel]="val.NAME">
+                                  </nz-option> -->
+
+                                        <nz-option *ngFor="let val of forms">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-input-group>
+                            </nz-form-item>
+                        </td>
+
+                        <td style="text-align: left;">
+                            <nz-form-item style="text-align: center;">
+                                <nz-form-control>
+                                    <nz-date-picker [nzShowTime]="true" [(ngModel)]="data.ASSOCIATION_DATE">
+                                    </nz-date-picker>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+
+
+<div class="footer">
+    <button type="button" nz-button (click)="mapTechnicalDrawerClose()" class="ant-btn"
+        style="margin-right: 8px;"><span>Cancel</span></button>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning"
+        (click)="mapTechnicalDrawerSave()"><span>Save &
+            Close</span></button>
+</div>

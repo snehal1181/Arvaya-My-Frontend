@@ -1,0 +1,60 @@
+nz-form-item{
+    display: inline-block;
+    margin-bottom: 5px;
+    width: -webkit-fill-available;
+    padding: 0px 10px;
+  }
+
+
+  .formname {
+    color: rgba(0, 0, 0, .85);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.4;
+}
+  
+@media(max-width:426px){
+  .formname {
+   margin-bottom: 5px;
+  }
+}
+
+
+
+th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    /* font-weight: bold; */
+}
+
+.select{
+  width: 200px;
+  padding: 8px;
+  display: block;
+}
+
+.search-box {
+    padding: 8px;
+  }
+
+  .search-box input {
+    width: 188px;
+    display: block;
+  }
+
+  .search-box button {
+    width: 90px;
+  }
+
+  .search-button {
+    margin-right: 8px;
+  }
+
+  nz-select {
+    width: 100%;
+  }
+
+  .margin-row {
+    margin: 10px 0px;
+  }
+

@@ -1,0 +1,87 @@
+<div>
+    <form nz-form #QualificationTypeForm="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+            
+            <!-- NAME -->
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Name</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Name">
+                            <input nz-input name="name" [(ngModel)]="data.name" placeholder="Enter Name" maxlength="128"
+                                required autocomplete="off" />
+                        </nz-form-control>
+                        <span style="color: red; font-size: 10px" *ngIf="data.name">
+                            {{ data.name.length }}/128
+                        </span>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label nzNoColon>&nbsp; Description</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Description">
+                            <textarea nz-input name="description" [(ngModel)]="data.description"
+                                placeholder="Enter Description" maxlength="1024" rows="3" autocomplete="off">
+                  </textarea>
+                        </nz-form-control>
+                        <span style="color: red; font-size: 10px" *ngIf="data.description">
+                            {{ data.description.length }}/1024
+                        </span>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <!-- SEQ_NO -->
+            <div nz-row>
+                <div nz-col nzSpan="10">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+                        <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Sequence Number">
+                            <nz-input-number style="width: 100%;" name="seq_no" [(ngModel)]="data.seq_no" [nzMin]="1"
+                                [nzStep]="1" disabled required>
+                            </nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- IS_ACTIVE -->
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzNoColon>Status</nz-form-label>
+                        <nz-form-control>
+                            <nz-switch name="is_active" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                                [ngModel]="data.is_active === 1" (ngModelChange)="data.is_active = $event ? 1 : 0">
+                            </nz-switch>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+        </nz-spin>
+    </form>
+
+    <div class="footer">
+        <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px;">
+            <span>Cancel</span>
+        </button>
+        <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown
+            [nzDropdownMenu]="menu" [nzLoading]="isSpinning" (click)="save(false,QualificationTypeForm)">
+            <span>Save & Close</span>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+                    <a style="color:white" (click)="save(true,QualificationTypeForm)">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+        <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+            (click)="save(false,QualificationTypeForm)">
+            <span>Update & Close</span>
+        </button>
+    </div>
+</div>

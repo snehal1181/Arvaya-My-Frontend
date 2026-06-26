@@ -1,0 +1,471 @@
+<div class="my-box">
+  <form nz-form #CityMasterPage="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <div nz-col nzSpan="11">
+          <div nz-row>
+            <div nz-col nzSpan="24">
+              <span>
+                <b> Lab Details </b>
+              </span>
+            </div>
+          </div>
+          <div nz-row class="my-box">
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon> Name </nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Enter Lab Name">
+                  <input [(ngModel)]="data.name" (keypress)="commonFunction.omit_special_char($event)" nz-input
+                    name="hospitalclinicname" maxlength="128" placeholder="Enter Lab Name" required />
+                </nz-form-control>
+                <h6 *ngIf="data.name" style="font-size: 10px; color: red">
+                  {{ data.name ? data.name.length : "" }}/128
+                </h6>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>
+                  Contact Number
+                </nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Enter Valid Contact Number">
+                  <input [(ngModel)]="data.contact_number" (keypress)="commonFunction.omitwithminus($event)" nz-input
+                    name="contactno" minlength="7" maxlength="11" placeholder="Enter Contact Number" required />
+                </nz-form-control>
+                <h6 *ngIf="data.contact_number" style="font-size: 10px; color: red">
+                  {{ data.contact_number ? data.contact_number.length : "" }}/11
+                </h6>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12"></div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzNoColon nzRequired>
+                  Registration Proof
+                </nz-form-label>
+                <span></span>
+                <nz-form-control nzHasFeedback nzErrorTip="Select Image">
+                  <button *ngIf="
+                      data.registration_proof == ' ' ||
+                      data.registration_proof == null
+                    " (click)="image1.click()" nz-button style="
+                      height: 28px;
+                      padding: 0px 7px;
+                      font-size: 10px;
+                      width: 100%;
+                    ">
+                    Upload Registration Proof
+                    <input #image1 (change)="onFileSelected($event)" name="image1" type="file"
+                      accept=".png, .jpg, .jpeg," style="display: none" required />
+                  </button>
+                  <span *ngIf="
+                      !data.registration_proof ||
+                      data.registration_proof.trim() === ''
+                    " style="
+                      color: #107dd5;
+                      font-size: 10px !important;
+                      display: block;
+                      margin-top: 5px;
+                    ">
+                    Please select an image file (PNG, JPG, JPEG) with a size up
+                    to 1MB.
+                  </span>
+                  <span *ngIf="
+                      data.registration_proof != null &&
+                      data.registration_proof != undefined &&
+                      data.registration_proof != ' '
+                    ">
+                    <div *ngIf="progressBarImageOne">
+                      <nz-progress [style.width]="percentImageOne + '%'" [nzPercent]="percentImageOne">
+                        {{ percentImageOne }}%
+                      </nz-progress>
+                    </div>
+                  </span>
+
+                  <div *ngIf="
+                      data.registration_proof != null &&
+                      data.registration_proof != undefined &&
+                      data.registration_proof != ' '
+                    ">
+                    <a (click)="viewImage(data.registration_proof, 'idProof')" style="color: blue; margin-right: 9px">
+                      {{ data.registration_proof }}
+                    </a>
+                    <a (click)="viewImage(data.registration_proof, 'idProof')" style="color: blue; margin-right: 9px"
+                      nz-tooltip nzTooltipTitle="Click Here To View Uploaded Document">
+                      <span nz-icon nzType="eye" nzTheme="outline"></span>
+                    </a>
+                    <span *ngIf="data.id">
+                      <span (nzOnConfirm)="IdentityDeleteConfirm(data)" (nzOnCancel)="deleteCancel()"
+                        style="cursor: pointer" nz-popconfirm nzPopconfirmTitle="Are you sure want delete?"
+                        nzPopconfirmPlacement="top" style="cursor: pointer; color: red">
+                        <span [nzTwotoneColor]="'#FF0000'" nz-icon nzType="delete" nzTheme="twotone" nz-tooltip
+                          nzTooltipTitle="Delete">
+                        </span>
+                      </span>
+                    </span>
+
+                    <span *ngIf="!data.id">
+                      <span (nzOnConfirm)="removeImageIdentity()" (nzOnCancel)="deleteCancel()"
+                        style="cursor: pointer; margin-left: 10px" nz-popconfirm
+                        nzPopconfirmTitle="Are you sure want Delete?" nzPopconfirmPlacement="top"
+                        style="cursor: pointer; color: red">
+                        <span [nzTwotoneColor]="'#FF0000'" nz-icon nzType="delete" nzTheme="twotone" nz-tooltip
+                          nzTooltipTitle="Delete">
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzNoColon nzRequired> Photo</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Select Image">
+                  <button *ngIf="data.photo == ' ' || data.photo == null" (click)="photoInput.click()" nz-button style="
+                      height: 28px;
+                      padding: 0px 7px;
+                      font-size: 10px;
+                      width: 100%;
+                    ">
+                    Upload Photo
+                    <input #photoInput (change)="onPhotoFileSelected($event)" name="photoInput" type="file"
+                      accept=".png, .jpg, .jpeg" style="display: none" required />
+                  </button>
+                  <span *ngIf="!data.photo || data.photo.trim() === ''" style="
+                      color: #107dd5;
+                      font-size: 10px !important;
+                      display: block;
+                      margin-top: 5px;
+                    ">
+                    Please select an image file (PNG, JPG, JPEG) with a size up
+                    to 1MB.
+                  </span>
+                  <span *ngIf="
+                      data.photo != null &&
+                      data.photo != undefined &&
+                      data.photo != ' '
+                    ">
+                    <div *ngIf="profileprogressBarPhoto">
+                      <nz-progress [style.width]="profilepercentPhoto + '%'" [nzPercent]="profilepercentPhoto">
+                        {{ profilepercentPhoto }}%
+                      </nz-progress>
+                    </div>
+                  </span>
+                  <div *ngIf="
+                      data.photo != null &&
+                      data.photo != undefined &&
+                      data.photo != ' '
+                    ">
+                    <a (click)="viewImage(data.photo, 'profilePhoto')" style="color: blue; margin-right: 9px">
+                      {{ data.photo }}
+                    </a>
+                    <a (click)="viewImage(data.photo, 'profilePhoto')" style="color: blue; margin-right: 9px" nz-tooltip
+                      nzTooltipTitle="Click Here To View Uploaded Image">
+                      <span nz-icon nzType="eye" nzTheme="outline"></span>
+                    </a>
+                    <span *ngIf="data.id">
+                      <span (nzOnConfirm)="profilephotoDeleteConfirm(data)" (nzOnCancel)="deleteCancel()"
+                        style="cursor: pointer" nz-popconfirm nzPopconfirmTitle="Are you sure want delete?"
+                        nzPopconfirmPlacement="top" style="cursor: pointer; color: red">
+                        <span [nzTwotoneColor]="'#FF0000'" nz-icon nzType="delete" nzTheme="twotone" nz-tooltip
+                          nzTooltipTitle="Delete"></span>
+                      </span>
+                    </span>
+                    <span *ngIf="!data.id">
+                      <span (nzOnConfirm)="profileremovePhoto()" (nzOnCancel)="deleteCancel()"
+                        style="cursor: pointer; margin-left: 10px" nz-popconfirm
+                        nzPopconfirmTitle="Are you sure want Delete?" nzPopconfirmPlacement="top"
+                        style="cursor: pointer; color: red">
+                        <span [nzTwotoneColor]="'#FF0000'" nz-icon nzType="delete" nzTheme="twotone" nz-tooltip
+                          nzTooltipTitle="Delete"></span>
+                      </span>
+                    </span>
+                  </div>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzNoColon>Website Link</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Enter Website Link">
+                  <input [(ngModel)]="data.website_link" nz-input name="websitelink" maxlength="256"
+                    placeholder="Enter Website Link" />
+                </nz-form-control>
+                <h6 *ngIf="data.website_link" style="font-size: 10px; color: red">
+                  {{ data.website_link ? data.website_link.length : "" }}/256
+                </h6>
+              </nz-form-item>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="24">
+                <nz-form-item>
+                  <nz-form-label style="margin-top: 5px" nzNoColon>
+                    Select Location
+                  </nz-form-label>
+                  <i (click)="openmapModal()" nz-icon style="cursor: pointer">
+                    <img src="assets/loc.png" style="margin-top: 5px" height="30px" width="30px" />
+                  </i>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-control>
+                    <input [(ngModel)]="data.latitude" (keypress)="commonFunction.numberWithDecimal($event)" nz-input
+                      name="latitude" placeholder="Enter Latitude" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-control>
+                    <input [(ngModel)]="data.longitude" (keypress)="commonFunction.numberWithDecimal($event)" nz-input
+                      name="longitude" placeholder="Enter Longitude" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </div>
+
+          <div nz-col nzSpan="24" *ngIf="!this.data.id">
+            <div nz-row>
+              <div nz-col nzSpan="24">
+                <span>
+                  <b>Registration Details</b>
+                </span>
+              </div>
+            </div>
+
+            <div nz-row class="my-box">
+              <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="15">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzNoColon>Email Id</nz-form-label>
+                  <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Email Id">
+                    <input nz-input autocomplete="off" name="emailid" placeholder="Enter Email Id"
+                      [pattern]="commonFunction.emailpattern" required maxlength="128" [(ngModel)]="data.email_id" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="9">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzNoColon>Mobile Number</nz-form-label>
+                  <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Mobile No">
+                    <input nz-input autocomplete="off" name="mobileno" placeholder="Enter Mobile No."
+                      [pattern]="commonFunction.mobpattern" (keypress)="commonFunction.omit($event)"
+                      [(ngModel)]="data.mobile_number" maxlength="10" minlength="10" required />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="9" nzXl="15">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzNoColon>Password </nz-form-label>
+
+                  <nz-form-control nzHasFeedback nzRequired nzErrorTip="Password must be 8 character">
+                    <nz-input-group [nzSuffix]="suffixTemplate">
+                      <input nz-input [type]="passwordVisible ? 'text' : 'password'" name="password"
+                        [(ngModel)]="data.password" maxlength="32" minlength="8" placeholder="Password"
+                        autocomplete="off" required [disabled]="!isChangeable" />
+                    </nz-input-group>
+
+                    <ng-template #suffixTemplate>
+                      <i nz-icon [nzType]="passwordVisible ? 'eye' : 'eye-invisible'"
+                        (click)="passwordVisible = !passwordVisible"></i>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzSpan="1"></div>
+        <div nz-col nzSpan="12">
+          <div nz-row>
+            <div nz-col nzSpan="24">
+              <span>
+                <b>Address Details</b>
+              </span>
+            </div>
+          </div>
+          <div nz-row class="my-box">
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>
+                  Address Line 1
+                </nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Enter Address Line 1">
+                  <textarea [(ngModel)]="data.address_line_1" rows="2" nz-input name="addressline1" maxlength="512"
+                    placeholder="Enter Address Line 1" required>
+                  </textarea>
+                </nz-form-control>
+                <h6 *ngIf="data.address_line_1" style="font-size: 10px; color: red">
+                  {{
+                  data.address_line_1 ? data.address_line_1.length : ""
+                  }}/512
+                </h6>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzNoColon> Address Line 2 </nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Enter Address Line 1">
+                  <textarea [(ngModel)]="data.address_line_2" rows="2" nz-input name="addressline2" maxlength="512"
+                    placeholder="Enter Address Line 2" required>
+                  </textarea>
+                </nz-form-control>
+                <h6 *ngIf="data.address_line_2" style="font-size: 10px; color: red">
+                  {{
+                  data.address_line_2 ? data.address_line_2.length : ""
+                  }}/512
+                </h6>
+              </nz-form-item>
+            </div>
+            <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>Country</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Select Country">
+                  <nz-select nzAllowClear="true" nzPlaceHolder="Select Country" name="COUNTRY_ID"
+                    [(ngModel)]="data.country_id" nzShowSearch required (ngModelChange)="getStateData($event)">
+                    <nz-option *ngFor="let country of countryData" [nzValue]="country.id"
+                      [nzLabel]="country.name"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>State</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Select State">
+                  <nz-select nzAllowClear="true" nzPlaceHolder="Select State" name="STATE_ID"
+                    [(ngModel)]="data.state_id" nzShowSearch required (ngModelChange)="getDistrict($event)">
+                    <nz-option *ngFor="let state of stateData" [nzValue]="state.id" [nzLabel]="state.name"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <!-- <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="12" *ngIf="(!countryWithStatesAvailable || countryWithStatesAvailable['IS_STATE_AVALIBLE'] !== 0 ) || (!stateWithDistrictsAvailable || stateWithDistrictsAvailable['IS_DISTRICT_AVALIBLE'] !== 0)"> -->
+            <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>District</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Select District">
+                  <nz-select nzAllowClear="true" nzPlaceHolder="Select District" name="DISTRICT_ID"
+                    [(ngModel)]="data.district_id" nzShowSearch required>
+                    <nz-option *ngFor="let district of districtData" [nzValue]="district.id"
+                      [nzLabel]="district.name"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12"></div>
+          </div>
+          <div nz-col nzSpan="24" class="my-box">
+            <div nz-row>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzNoColon>
+                    Sequence No.
+                  </nz-form-label>
+                  <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Sequence Number">
+                    <input [(ngModel)]="data.seq_no" nz-input disabled style="width: 100%" name="seqno"
+                      placeholder="Enter Sequence no" required />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzNoColon>Is Active</nz-form-label>
+                  <nz-form-control>
+                    <nz-switch [ngModel]="data.is_active" name="status" nzCheckedChildren="Active"
+                      nzUnCheckedChildren="Inactive"></nz-switch>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+
+  <div class="footer">
+    <button type="button" nz-button (click)="close()" class="ant-btn" style="margin-right: 8px">
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.id" nz-button nz-dropdown [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning" (click)="save(false, CityMasterPage)">
+      <span>Save & Close</span>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+          <a style="color: white" (click)="save(true, CityMasterPage)">Save & New</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.id"
+      (click)="save(false, CityMasterPage)">
+      <span>Update & Close</span>
+    </button>
+  </div>
+</div>
+
+<nz-modal [nzWidth]="900" [(nzVisible)]="ImageModalVisible" [nzContent]="content" [nzTitle]="'Image View'"
+  [nzFooter]="ImageModalFooter" (nzOnCancel)="ImageModalCancel()" nzMaskClosable="false" nzClosable="false">
+  <ng-template #content>
+    <nz-spin [nzSpinning]="isSpinning">
+      <div *ngIf="imageshow != undefined && imageshow != null && imageshow != ''" class="ss" style="
+          height: 500px;
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        ">
+        <iframe [src]="imageshow" style="width: 100%; height: 100%; border: none" frameborder="0"></iframe>
+      </div>
+    </nz-spin>
+  </ng-template>
+  <ng-template #ImageModalFooter>
+    <button (click)="ImageModalCancel()" nz-button nzType="default">
+      Close
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- Google Map Modal -->
+<nz-modal [(nzVisible)]="mapDraweVisible" [nzFooter]="modalFooter" [nzTitle]="'Select Location on Map'"
+  (nzOnCancel)="mapDraweVisible = false" nzWidth="800px">
+  <ng-container *nzModalContent>
+    <div style="position: relative; display: inline-block; width: 50%">
+      <input #searchBox type="text" placeholder="Search location..." style="
+          width: 100%;
+          padding: 8px 40px 8px 15px; /* Space for icon */
+          margin-bottom: 10px;
+          border: 1px solid rgb(204, 204, 204);
+          border-radius: 11px;
+          font-size: 14px;
+        " />
+      <span nz-icon nzType="search" nzTheme="outline" class="search-icon" style="
+          position: absolute;
+          top: 30%;
+          right: 17px;
+          /* font-size: 43px; */
+          color: gray;
+          font-size: 16px;
+          cursor: pointer;
+        "></span>
+    </div>
+
+    <div #mapContainer style="width: 750px; height: 400px"></div>
+  </ng-container>
+
+  <ng-template #modalFooter>
+    <button (click)="saveSelectedLocation()" nz-button nzType="primary">
+      Save
+    </button>
+  </ng-template>
+</nz-modal>
